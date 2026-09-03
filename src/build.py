@@ -607,10 +607,13 @@ ExpiresByType image/jpeg "access plus 1 year"
 ExpiresByType image/png "access plus 1 year"
 ExpiresByType image/webp "access plus 1 year"
 ExpiresByType image/svg+xml "access plus 1 year"
-ExpiresByType text/html "access plus 1 hour"
+ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
 
 <IfModule mod_headers.c>
+<FilesMatch "\.(html)$">
+Header set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
 Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "SAMEORIGIN"
 Header set Referrer-Policy "strict-origin-when-cross-origin"
