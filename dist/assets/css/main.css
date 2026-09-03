@@ -161,8 +161,10 @@
   .nav a::after{content:"";position:absolute;inset-inline:0;inset-block-end:0;block-size:2px;background:var(--bronze);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
   .nav a:hover::after,.nav a[aria-current=page]::after{transform:scaleX(1)}
   .header__cta{display:none}
-  .burger{display:inline-grid;place-items:center;inline-size:2.75rem;block-size:2.75rem;border-radius:50%;border:1px solid var(--line)}
-  .burger svg{inline-size:1.3rem;block-size:1.3rem}
+  .burger{display:inline-grid;place-items:center;inline-size:3rem;block-size:3rem;border:0;background:none;color:var(--graphite);margin-inline-end:-.5rem;transition:opacity .2s}
+  .burger:hover{opacity:.7}
+  .burger svg{inline-size:1.9rem;block-size:1.9rem;stroke-width:1.5}
+  .drawer .burger{color:var(--ivory);margin:0}
   @media (min-width:1000px){.nav,.header__cta{display:flex}.burger{display:none}}
 
   /* Mobile drawer */

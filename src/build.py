@@ -49,7 +49,7 @@ ICONS = {
  "mail": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
  "check": '<path d="m5 12 4.5 4.5L19 7"/>',
  "arrow": '<path d="M5 12h14M13 6l6 6-6 6"/>',
- "menu": '<path d="M4 7h16M4 12h16M4 17h16"/>',
+ "menu": '<path d="M3 7h18M3 12h18M9 17h12"/>',
  "close": '<path d="M6 6l12 12M18 6 6 18"/>',
  "shield": '<path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
  "star": '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/>',
