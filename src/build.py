@@ -27,7 +27,8 @@ CFG = dict(
 WA = f"https://wa.me/{CFG['phone_intl']}"
 OUT = os.path.join(os.path.dirname(__file__), "..", "dist")
 TODAY = datetime.date.today().isoformat()
-BUILD_STAMP = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')
+BUILD_STAMP = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+ASSET_VER = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M')  # cache-busting query string for CSS/JS
 SITEMAP = []
 
 def e(s): return html.escape(str(s), quote=True)
@@ -132,7 +133,7 @@ def footer():
  <div class="footer__bottom"><span>© {TODAY[:4]} {e(CFG['name'])}. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/sitemap.xml">Sitemap</a></span></div>
 </div></footer>
 <a class="wa-float" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">{I("wa")}<span>Book on WhatsApp</span></a>
-<script src="/assets/js/main.js" defer></script>'''
+<script src="/assets/js/main.js?v={ASSET_VER}" defer></script>'''
 
 def local_business_schema():
     return {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+"/#business","name":CFG['name'],"url":CFG['url'],
@@ -173,7 +174,7 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/img/he
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap">
-<link rel="stylesheet" href="/assets/css/main.css?v=1">
+<link rel="stylesheet" href="/assets/css/main.css?v={ASSET_VER}">
 {ld}{ga}
 </head>
 <body>
