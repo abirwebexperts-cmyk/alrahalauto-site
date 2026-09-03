@@ -121,6 +121,78 @@ def header(current):
   <div class="drawer__foot"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} WhatsApp {CFG['phone']}</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} Call now</a></div>
 </div>'''
 
+
+def booking_dialog():
+    models_by_brand = [("Range Rover",["Range Rover (Vogue)","Range Rover Sport","Range Rover Velar","Range Rover Evoque"]),
+                       ("Land Rover",["Defender","Discovery","Discovery Sport","Freelander"]),
+                       ("Other brands",["BMW","Mercedes-Benz","Audi","Porsche","Jaguar","Bentley","Rolls-Royce","Other"])]
+    vehicle_opts = "".join(f'<optgroup label="{e(b)}">'+"".join(f'<option>{e(m)}</option>' for m in ms)+'</optgroup>' for b,ms in models_by_brand)
+    years = "".join(f'<option>{y}</option>' for y in range(datetime.date.today().year+1, 1999, -1))
+    svc_groups = [("Servicing & diagnostics",["Periodic Service & Oil Change","Computer Diagnostics","Pre-Purchase Inspection","Battery Replacement"]),
+                  ("Engine & drivetrain",["Engine Repair & Rebuild","Timing Chain Replacement","Turbocharger Repair","Gearbox & Transmission","Transfer Case & Differentials","Engine & Gearbox Mounts","Oil Leak Repair","Fuel System & Injectors","Cooling System & Overheating","Exhaust & DPF Cleaning"]),
+                  ("Chassis & comfort",["Air Suspension Repair","Brake Service & Repair","Steering & Rack Repair","Wheel Alignment & Tyres","Air Conditioning Service","Electrical & Wiring Repair","Infotainment & Electronics"]),
+                  ("Body & appearance",["Body Repair & Paint","Detailing & Ceramic Coating","Off-Road Preparation"]),
+                  ("Not sure",["I'm not sure — please advise"])]
+    svc_html = "".join(f'<fieldset class="bk-group"><legend>{e(g)}</legend>'+"".join(f'<label class="bk-chip"><input type="checkbox" name="Service" value="{e(x)}"><span>{e(x)}</span></label>' for x in xs)+'</fieldset>' for g,xs in svc_groups)
+    slots = "".join(f'<label class="bk-chip bk-chip--slot"><input type="radio" name="Time" value="{t}"><span>{t}</span></label>' for t in ["8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","4:00 PM","5:00 PM","6:00 PM","7:00 PM","8:00 PM"])
+    return f'''
+<dialog class="bk" id="bookDialog" aria-labelledby="bkTitle">
+ <form class="bk__form" data-booking novalidate>
+  <header class="bk__head">
+   <div><p class="bk__kicker">{I("wa")} Book on WhatsApp</p><h2 id="bkTitle">Book your service</h2></div>
+   <button type="button" class="bk__close" data-bk-close aria-label="Close">{I("close")}</button>
+  </header>
+  <ol class="bk__steps" role="list"><li data-step-dot="1" class="is-active">Vehicle</li><li data-step-dot="2">Service &amp; time</li><li data-step-dot="3">Your details</li></ol>
+
+  <section class="bk__step is-active" data-step="1">
+   <div class="form__row">
+    <label class="field">Vehicle<select name="Vehicle" required><option value="" selected disabled>Select your vehicle</option>{vehicle_opts}</select></label>
+    <label class="field">Model year<select name="Year" required><option value="" selected disabled>Year</option>{years}</select></label>
+   </div>
+   <div class="form__row">
+    <label class="field">Engine (optional)<input name="Engine" type="text" placeholder="e.g. 3.0 SDV6, 5.0 V8, P400"></label>
+    <label class="field">Mileage (optional)<input name="Mileage" type="text" inputmode="numeric" placeholder="e.g. 85,000 km"></label>
+   </div>
+   <label class="field">Plate number (optional)<input name="Plate" type="text" placeholder="e.g. Sharjah 2 12345"></label>
+  </section>
+
+  <section class="bk__step" data-step="2">
+   <p class="bk__label">What does the car need? <small>Select one or more</small></p>
+   <div class="bk__services">{svc_html}</div>
+   <label class="field">Describe the symptoms (optional)<textarea name="Symptoms" placeholder="e.g. rattle on cold start, sinks on rear left overnight, AC not cold in traffic"></textarea></label>
+   <div class="form__row">
+    <label class="field">Preferred date<input name="Date" type="date" required></label>
+    <div class="field"><span>Preferred time</span><div class="bk__slots">{slots}</div><p class="form__hint" data-hint="time">Please choose a time slot.</p></div>
+   </div>
+   <p class="form__note">Open Saturday–Thursday, 8:00 AM–1:00 PM and 4:00 PM–9:00 PM. Closed Friday.</p>
+  </section>
+
+  <section class="bk__step" data-step="3">
+   <div class="form__row">
+    <label class="field">Your name<input name="Name" type="text" required autocomplete="name"></label>
+    <label class="field">Mobile number<input name="Phone" type="tel" required autocomplete="tel" placeholder="05x xxx xxxx"></label>
+   </div>
+   <p class="bk__label">How would you like to bring the car?</p>
+   <div class="bk__slots">
+    <label class="bk-chip bk-chip--slot"><input type="radio" name="Drop-off" value="I will drive in" checked><span>I will drive in</span></label>
+    <label class="bk-chip bk-chip--slot"><input type="radio" name="Drop-off" value="Please collect from me"><span>Collection & delivery</span></label>
+    <label class="bk-chip bk-chip--slot"><input type="radio" name="Drop-off" value="Recovery truck needed (car not drivable)"><span>Recovery needed</span></label>
+   </div>
+   <label class="field" data-address hidden>Collection address<input name="Address" type="text" placeholder="Area, building, landmark"></label>
+   <label class="bk-check"><input type="checkbox" name="Waiting" value="Yes"><span>I would like to wait at the workshop while the work is done</span></label>
+   <div class="bk__summary" data-summary aria-live="polite"></div>
+  </section>
+
+  <footer class="bk__foot">
+   <button type="button" class="btn btn--ghost" data-bk-prev hidden>Back</button>
+   <span class="bk__spacer"></span>
+   <button type="button" class="btn btn--dark" data-bk-next>Continue {I("arrow")}</button>
+   <button type="submit" class="btn btn--wa btn--lg" data-bk-send hidden>{I("wa")} Send booking on WhatsApp</button>
+  </footer>
+  <p class="form__note bk__privacy">Tapping send opens WhatsApp with your booking pre-filled. Nothing is stored on this website.</p>
+ </form>
+</dialog>'''
+
 def footer():
     svc = "".join(f'<li><a href="/services/{s["slug"]}/">{e(s["name"])}</a></li>' for s in SERVICES[:8])
     mdl = "".join(f'<li><a href="/models/{m["slug"]}/">{e(m["name"])}</a></li>' for m in MODELS)
@@ -137,7 +209,8 @@ def footer():
  </div>
  <div class="footer__bottom"><span>© {TODAY[:4]} {e(CFG['name'])}. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/sitemap.xml">Sitemap</a></span></div>
 </div></footer>
-<a class="wa-float" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">{I("wa")}<span>Book on WhatsApp</span></a>
+<button class="wa-float" type="button" data-bk-open aria-haspopup="dialog" aria-controls="bookDialog">{I("wa")}<span>Book on WhatsApp</span></button>
+{booking_dialog()}
 <script src="/assets/js/main.js?v={ASSET_VER}" defer></script>'''
 
 def local_business_schema():
@@ -361,7 +434,7 @@ def service_page(s, m=None):
     related = "".join(f'<li><a href="/services/{x["slug"]}/{m["slug"]+"/" if m else ""}">{e(x["name"])} {I("arrow")}</a></li>' for x in SERVICES if x is not s)[:0] or "".join(f'<li><a href="/services/{x["slug"]}/{(m["slug"]+"/") if m else ""}">{e(x["name"])}<span>›</span></a></li>' for x in SERVICES[:12] if x is not s)
     models_list = "".join(f'<a href="/services/{s["slug"]}/{x["slug"]}/">{e(x["name"])}</a>' for x in MODELS if x is not m)
     body = page_hero(title_h, e(s['short']), bcs, f"assets/img/services/{s['slug']}.jpg")
-    body += f'''
+    body += f'''<span hidden data-page-service="{e(s['name'])}"></span>
 <section class="section"><div class="wrap with-aside">
  <article class="prose">
   {intro}

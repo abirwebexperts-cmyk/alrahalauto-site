@@ -75,6 +75,80 @@
     update(); setInterval(update, 60000);
   }
 
+  /* Booking dialog (3-step) */
+  const dlg = document.getElementById('bookDialog');
+  if (dlg) {
+    const form = dlg.querySelector('[data-booking]');
+    const steps = [...form.querySelectorAll('.bk__step')], dots = [...form.querySelectorAll('[data-step-dot]')];
+    const prev = form.querySelector('[data-bk-prev]'), next = form.querySelector('[data-bk-next]'), send = form.querySelector('[data-bk-send]');
+    const summary = form.querySelector('[data-summary]'), addr = form.querySelector('[data-address]');
+    let cur = 0;
+    const dateEl = form.querySelector('[name=Date]');
+    const today = new Date(); dateEl.min = today.toISOString().slice(0, 10);
+    const show = i => {
+      cur = i;
+      steps.forEach((s, k) => s.classList.toggle('is-active', k === i));
+      dots.forEach((d, k) => { d.classList.toggle('is-active', k === i); d.classList.toggle('is-done', k < i); });
+      prev.hidden = i === 0; next.hidden = i === steps.length - 1; send.hidden = i !== steps.length - 1;
+      if (i === steps.length - 1) renderSummary();
+      steps[i].querySelector('input,select,textarea')?.focus({ preventScroll: true });
+      dlg.querySelector('.bk__form').scrollTo({ top: 0 });
+    };
+    const validate = i => {
+      let ok = true;
+      steps[i].querySelectorAll('[required]').forEach(el => {
+        const bad = !el.value || (el.type === 'tel' && !/^\+?[\d\s-]{8,}$/.test(el.value));
+        el.closest('.field')?.classList.toggle('is-invalid', bad); if (bad) ok = false;
+      });
+      if (i === 1) {
+        const anySvc = form.querySelectorAll('[name=Service]:checked').length > 0;
+        form.querySelector('.bk__services').style.outline = anySvc ? '' : '2px solid var(--danger)';
+        const t = form.querySelector('[name=Time]:checked'); form.querySelector('[data-hint=time]').classList.toggle('is-on', !t);
+        if (dateEl.value) { const d = new Date(dateEl.value + 'T12:00:00'); if (d.getDay() === 5) { dateEl.closest('.field').classList.add('is-invalid'); dateEl.setCustomValidity('Closed on Friday'); ok = false; } else dateEl.setCustomValidity(''); }
+        ok = ok && anySvc && !!t;
+      }
+      return ok;
+    };
+    const buildLines = () => {
+      const f = new FormData(form), g = k => f.get(k)?.toString().trim() || '';
+      const svcs = f.getAll('Service').join(', ');
+      const dt = g('Date') ? new Date(g('Date') + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      const L = ['*New booking request — Al Rahal Auto Maintenance*', ''];
+      L.push(`*Vehicle:* ${g('Vehicle')} ${g('Year')}`.trim());
+      if (g('Engine')) L.push(`*Engine:* ${g('Engine')}`);
+      if (g('Mileage')) L.push(`*Mileage:* ${g('Mileage')}`);
+      if (g('Plate')) L.push(`*Plate:* ${g('Plate')}`);
+      L.push(`*Service:* ${svcs}`);
+      if (g('Symptoms')) L.push(`*Symptoms:* ${g('Symptoms')}`);
+      L.push(`*Preferred:* ${dt} at ${g('Time')}`);
+      L.push(`*Name:* ${g('Name')}`, `*Mobile:* ${g('Phone')}`, `*Drop-off:* ${g('Drop-off')}`);
+      if (g('Address')) L.push(`*Address:* ${g('Address')}`);
+      if (g('Waiting')) L.push('*Waiting at workshop:* Yes');
+      L.push('', `Sent from ${location.href}`);
+      return L;
+    };
+    const renderSummary = () => {
+      const rows = buildLines().slice(2, -2).map(l => { const m = l.match(/^\*(.+?):\*\s*(.*)$/); return m ? `<b>${m[1]}</b><span>${m[2].replace(/</g,'&lt;') || '—'}</span>` : ''; }).join('');
+      summary.innerHTML = `<div>${rows}</div>`;
+    };
+    form.addEventListener('input', () => { if (cur === steps.length - 1) renderSummary(); });
+    document.querySelectorAll('[data-bk-open]').forEach(b => b.addEventListener('click', () => { dlg.showModal(); show(0); }));
+    dlg.querySelectorAll('[data-bk-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+    next.addEventListener('click', () => { if (validate(cur)) show(cur + 1); });
+    prev.addEventListener('click', () => show(cur - 1));
+    form.querySelectorAll('[name=Drop-off]').forEach(r => r.addEventListener('change', () => { addr.hidden = !/collect/i.test(r.value) && !/Recovery/.test(r.value) ? true : !r.checked; }));
+    form.addEventListener('change', e => { if (e.target.name === 'Drop-off') { const v = form.querySelector('[name=Drop-off]:checked').value; addr.hidden = !(/collect|Recovery/.test(v)); } });
+    form.addEventListener('submit', e => {
+      e.preventDefault(); if (!validate(2)) return;
+      window.open(`https://wa.me/${WA}?text=${encodeURIComponent(buildLines().join('\n'))}`, '_blank', 'noopener');
+      dlg.close();
+    });
+    // pre-select service from page context
+    const ctx = document.querySelector('[data-page-service]')?.dataset.pageService;
+    if (ctx) form.querySelectorAll('[name=Service]').forEach(cb => { if (cb.value === ctx) cb.checked = true; });
+  }
+
   /* Sticky header shadow */
   const header = document.querySelector('.header');
   const onScroll = () => header?.classList.toggle('is-stuck', scrollY > 10);
