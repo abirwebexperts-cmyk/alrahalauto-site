@@ -112,13 +112,13 @@ def header(current):
 <header class="header"><div class="wrap">
   {LOGO}
   <nav class="nav" aria-label="Main">{links}</nav>
-  <a class="btn btn--wa header__cta" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} <span>Book on</span> WhatsApp</a>
+  <a data-bk-open class="btn btn--wa header__cta" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} <span>Book on</span> WhatsApp</a>
   <button class="burger" data-open-drawer aria-label="Open menu">{I("menu")}</button>
 </div></header>
 <div class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer__head">{LOGO}<button class="burger" data-close-drawer aria-label="Close menu">{I("close")}</button></div>
   <nav aria-label="Mobile">{"".join(f'<a href="{h}" data-close-drawer>{t}</a>' for t,h in NAV)}</nav>
-  <div class="drawer__foot"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} WhatsApp {CFG['phone']}</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} Call now</a></div>
+  <div class="drawer__foot"><a data-bk-open class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} WhatsApp {CFG['phone']}</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} Call now</a></div>
 </div>'''
 
 
@@ -271,12 +271,12 @@ def crumbs(items):
 
 def page_hero(title, lede, bcs, bg):
     return f'''<section class="page-hero"><div class="page-hero__bg">{img(bg, "", loading="eager")}</div><div class="wrap">{crumbs(bcs)}<h1>{title}</h1><p class="lede">{lede}</p>
-    <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I would like to enquire about {re.sub('<[^>]+>','',title)}.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} {CFG['phone']}</a></div></div></section>'''
+    <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I would like to enquire about {re.sub('<[^>]+>','',title)}.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} {CFG['phone']}</a></div></div></section>'''
 
 def book_band(h="Book your Range Rover service on WhatsApp", p="Send your model, year and the issue. A technician replies within minutes with a clear price and the next available slot."):
     return f'''<section class="book" id="book"><div class="wrap">
   <p class="kicker">Ready when you are</p><h2>{h}</h2><p class="lede">{p}</p>
-  <a class="btn btn--wa btn--xl" href="{wa("Hello Al Rahal, I would like to book a service. My car is: ")}" target="_blank" rel="noopener">{I("wa")} Book Now · {CFG['phone']}</a>
+  <a data-bk-open class="btn btn--wa btn--xl" href="{wa("Hello Al Rahal, I would like to book a service. My car is: ")}" target="_blank" rel="noopener">{I("wa")} Book Now · {CFG['phone']}</a>
   <div class="book__note"><span>{I("check")} Reply within minutes</span><span>{I("check")} Fixed price before work starts</span><span>{I("check")} Collection & delivery available</span></div>
 </div></section>'''
 
@@ -339,7 +339,7 @@ def build_home():
   <p class="hero__eyebrow"><span class="hero__rule"></span>Independent Range Rover &amp; Land Rover specialists<span class="hero__dot"></span>{e(CFG['city'])}</p>
   <h1 class="hero__title">Your Range Rover, <br><em>cared for</em> by people <br>who know it best.</h1>
   <p class="hero__lede">Dealer-level diagnostics, genuine parts and technicians who have spent their careers inside Land Rover engine bays. Fixed prices, honest advice and every job documented on WhatsApp.</p>
-  <div class="hero__actions"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service for my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost btn--lg" href="/services/">Explore services {I("arrow")}</a></div>
+  <div class="hero__actions"><a data-bk-open class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service for my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost btn--lg" href="/services/">Explore services {I("arrow")}</a></div>
   <a class="hero__scroll" href="#services" aria-label="Scroll to services"><span>Scroll</span><i></i></a>
  </div>
  <div class="hero__marquee"><div class="marquee__track">{marquee}{marquee}</div></div>
@@ -415,6 +415,13 @@ def build_services_index():
     body += f'<section class="section"><div class="wrap"><div class="grid grid--3">{cards}</div></div></section>' + book_band()
     page("services/", f"Range Rover Repair & Service Menu | {CFG['name']} {CFG['city']}", f"All {len(SERVICES)} Range Rover and Land Rover services at Al Rahal: engine, gearbox, air suspension, brakes, diagnostics, AC and more. Fixed prices on WhatsApp.", body, "/services/", breadcrumbs=[("Home","/"),("Services","/services/")], image="assets/img/hero/services-hero.jpg")
 
+VEHICLE_MAP={"range-rover-vogue":"Range Rover (Vogue)","range-rover-sport":"Range Rover Sport","range-rover-velar":"Range Rover Velar","range-rover-evoque":"Range Rover Evoque","land-rover-defender":"Defender","land-rover-discovery":"Discovery","discovery-sport":"Discovery Sport"}
+def ctx_tags(service=None, model=None):
+    t=""
+    if service: t+=f'<span hidden data-page-service="{e(service)}"></span>'
+    if model and model['slug'] in VEHICLE_MAP: t+=f'<span hidden data-page-vehicle="{e(VEHICLE_MAP[model["slug"]])}"></span>'
+    return t
+
 def service_page(s, m=None):
     """Service page, optionally specialised for a model (programmatic SEO)."""
     slug = f"services/{s['slug']}/" + (f"{m['slug']}/" if m else "")
@@ -429,7 +436,7 @@ def service_page(s, m=None):
     related = "".join(f'<li><a href="/services/{x["slug"]}/{m["slug"]+"/" if m else ""}">{e(x["name"])} {I("arrow")}</a></li>' for x in SERVICES if x is not s)[:0] or "".join(f'<li><a href="/services/{x["slug"]}/{(m["slug"]+"/") if m else ""}">{e(x["name"])}<span>›</span></a></li>' for x in SERVICES[:12] if x is not s)
     models_list = "".join(f'<a href="/services/{s["slug"]}/{x["slug"]}/">{e(x["name"])}</a>' for x in MODELS if x is not m)
     body = page_hero(title_h, e(s['short']), bcs, f"assets/img/services/{s['slug']}.jpg")
-    body += f'''<span hidden data-page-service="{e(s['name'])}"></span>
+    body += ctx_tags(s['name'], m) + f'''
 <section class="section"><div class="wrap with-aside">
  <article class="prose">
   {intro}
@@ -439,11 +446,11 @@ def service_page(s, m=None):
   <h2>How we work</h2>
   <p>Every job begins with a proper diagnosis on the lift and on Land Rover's diagnostic platform. You receive a written report, photos and a fixed price on WhatsApp before any work begins. Genuine or OE-equivalent parts are used, every repair carries a written warranty, and the vehicle is road tested before handover.</p>
   {faq_html}
-  <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I need {s['name']} for my {car}. ")}" target="_blank" rel="noopener">{I("wa")} Get a fixed price on WhatsApp</a></div>
+  <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I need {s['name']} for my {car}. ")}" target="_blank" rel="noopener">{I("wa")} Get a fixed price on WhatsApp</a></div>
   <h2>This service by model</h2><div class="tags">{models_list}</div>
  </article>
  <aside class="aside">
-  <div class="aside__box aside__box--dark"><h3>Book {e(s['name'].lower())}</h3><p>Message us with your model and year. We reply within minutes during working hours.</p><a class="btn btn--wa" href="{wa(f"Hello Al Rahal, I need {s['name']} for my {car}. ")}" target="_blank" rel="noopener">{I("wa")} {CFG['phone']}</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} Call</a></div>
+  <div class="aside__box aside__box--dark"><h3>Book {e(s['name'].lower())}</h3><p>Message us with your model and year. We reply within minutes during working hours.</p><a data-bk-open class="btn btn--wa" href="{wa(f"Hello Al Rahal, I need {s['name']} for my {car}. ")}" target="_blank" rel="noopener">{I("wa")} {CFG['phone']}</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} Call</a></div>
   <div class="aside__box"><h3>Other services</h3><ul role="list">{related}</ul><a class="card__link" href="/services/">All services {I("arrow")}</a></div>
  </aside>
 </div></section>''' + book_band(f"Book {e(s['name'].lower())} on WhatsApp")
@@ -463,11 +470,11 @@ def build_models():
                 (f"What are the most common {m['name']} problems?", f"On the {m['name']} we most often see {', '.join(x.lower() for x in m['issues'][:3])}. All are diagnosed and repaired in-house."),
                 (f"Do you use genuine parts on the {m['name']}?", "Yes. Genuine Land Rover parts by default, with high-quality OE-equivalent options offered where they provide better value.")]
         faq_html, faq_schema = faq_block(faqs)
-        body = page_hero(f"{e(m['name'])} <br>specialist service & repair", e(m['intro']), [("Home","/"),("Models","/models/"),(m['name'], f"/models/{m['slug']}/")], f"assets/img/models/{m['slug']}.jpg")
+        body = ctx_tags(None, m) + page_hero(f"{e(m['name'])} <br>specialist service & repair", e(m['intro']), [("Home","/"),("Models","/models/"),(m['name'], f"/models/{m['slug']}/")], f"assets/img/models/{m['slug']}.jpg")
         body += f'''<section class="section"><div class="wrap split">
   <div class="prose"><h2>Known issues on the {e(m['name'])}</h2><p>These are the faults that bring {e(m['name'])} owners to us most often. Each has a proven, permanent repair.</p><ul class="checks" role="list">{issues}</ul>
    <p class="mt-6"><strong>Generations:</strong> {e(m['short'])} · <strong>Years:</strong> {e(m['years'])}<br><strong>Engines covered:</strong> {e(m['engines'])}</p>
-   <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I have a {m['name']} and need help with: ")}" target="_blank" rel="noopener">{I("wa")} Book {e(m['name'].split('(')[0].strip())} service</a></div></div>
+   <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I have a {m['name']} and need help with: ")}" target="_blank" rel="noopener">{I("wa")} Book {e(m['name'].split('(')[0].strip())} service</a></div></div>
   <div class="card__media" style="border-radius:var(--radius-lg);aspect-ratio:4/5">{img(f"assets/img/models/{m['slug']}-detail.jpg", m['name']+" in the workshop")}</div>
  </div></section>
  <section class="section section--bone"><div class="wrap"><div class="section-head"><h2>Every service for the {e(m['name'])}</h2></div><div class="grid grid--3">{svcs}</div></div></section>
@@ -521,16 +528,22 @@ def build_about():
 <section class="section"><div class="wrap split split--rev">
  <div class="prose"><p class="kicker">What we stand for</p><h2>The dealer's tools. A specialist's attention. Fair prices.</h2>
   <ul class="checks" role="list"><li>{I("check")}<span>Every fault diagnosed properly before any part is recommended</span></li><li>{I("check")}<span>A fixed price on WhatsApp before work begins</span></li><li>{I("check")}<span>Genuine Land Rover parts, or high-quality OE alternatives explained and agreed with you</span></li><li>{I("check")}<span>Photos of worn parts and every stage of the repair</span></li><li>{I("check")}<span>Road test and quality check before handover</span></li><li>{I("check")}<span>Written warranty on parts and labour</span></li></ul>
-  <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a></div></div>
+  <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a></div></div>
  <div class="card__media" style="border-radius:var(--radius-lg);aspect-ratio:4/5">{img("assets/img/about/founders.jpg", "Al Rahal technicians at work")}</div>
 </div></section>''' + book_band()
     page("about/", f"About Al Rahal | Range Rover Specialists in {CFG['city']}, {CFG['experience']} Years", f"Al Rahal Auto Maintenance Workshop, {CFG['city']}: more than {CFG['experience']} years of Range Rover and Land Rover service and repair with dealer-level diagnostics and genuine parts.", body, "/about/", image="assets/img/about/about-hero.jpg", breadcrumbs=[("Home","/"),("About","/about/")])
 
 def build_contact():
-    form = wa_form("Booking request", BOOK_FIELDS)
-    body = page_hero("Contact & book", "Every enquiry goes straight to a technician on WhatsApp. Fill in the form or message us directly.", [("Home","/"),("Contact","/contact/")], "assets/img/hero/contact-hero.jpg")
+    card = f'''<div class="bk-card">
+  <p class="kicker">Three quick steps</p><h2>Book your service on WhatsApp</h2>
+  <p class="lede">Choose your vehicle and service, pick a date and time within our opening hours, add your details, and the booking arrives on our WhatsApp ready to confirm.</p>
+  <ol class="bk-card__steps" role="list"><li><strong>Vehicle</strong><span>Model, year & service</span></li><li><strong>Date & time</strong><span>Slots within opening hours</span></li><li><strong>Your details</strong><span>Name, mobile, drop-off</span></li></ol>
+  <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--xl" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Start booking</a><a class="btn btn--ghost" href="{wa("Hello Al Rahal, I have a quick question.")}" target="_blank" rel="noopener">Quick question instead {I("arrow")}</a></div>
+  <p class="form__note">Nothing is stored on this website. Your booking is sent directly to {e(CFG['phone'])}.</p>
+ </div>'''
+    body = page_hero("Contact & book", "Every enquiry goes straight to a technician on WhatsApp. Book in three steps, or call and visit us in Sharjah.", [("Home","/"),("Contact","/contact/")], "assets/img/hero/contact-hero.jpg")
     body += f'''<section class="section"><div class="wrap split">
- <div><h2>Book on WhatsApp</h2><p class="lede">Complete the form and tap send. WhatsApp opens with your details pre-filled and we reply within minutes during working hours.</p><div class="mt-6">{form}</div></div>
+ {card}
  <div class="contact-info">
   <div>{I("wa")}<div><strong>WhatsApp</strong><a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener"><span>{e(CFG['phone'])} · tap to chat</span></a></div></div>
   <div>{I("phone")}<div><strong>Phone</strong><a href="tel:+{CFG['phone_intl']}"><span>Mobile +971 55 747 9292</span></a><br><a href="tel:+{CFG['landline_intl']}"><span>Tel +971 6 558 3559</span></a></div></div>
@@ -541,8 +554,7 @@ def build_contact():
  </div>
 </div></section>'''
     page("contact/", f"Contact & Book | {CFG['name']} {CFG['city']} · WhatsApp {CFG['phone']}", f"Book your Range Rover or Land Rover service on WhatsApp {CFG['phone']}. Address, hours and map for Al Rahal Auto Maintenance in {CFG['city']}.", body, "/contact/", image="assets/img/hero/contact-hero.jpg", breadcrumbs=[("Home","/"),("Contact","/contact/")])
-    # Booking page (same form, service-focused)
-    body = page_hero("Book a service", "Choose your model and the service you need. We confirm a time and a fixed price on WhatsApp.", [("Home","/"),("Book","/book/")], "assets/img/hero/contact-hero.jpg") + f'<section class="section"><div class="wrap" style="max-inline-size:820px">{form}</div></section>'
+    body = '<span hidden data-bk-autoopen></span>' + page_hero("Book a service", "Choose your model and the service you need. We confirm a time and a fixed price on WhatsApp.", [("Home","/"),("Book","/book/")], "assets/img/hero/contact-hero.jpg") + f'<section class="section"><div class="wrap" style="max-inline-size:820px">{card}</div></section>'
     page("book/", f"Book a Range Rover Service on WhatsApp | {CFG['short']}", f"Book your Range Rover or Land Rover service in {CFG['city']} in under a minute. Fixed price confirmed on WhatsApp {CFG['phone']}.", body, "/contact/", breadcrumbs=[("Home","/"),("Book","/book/")])
 
 def build_misc():

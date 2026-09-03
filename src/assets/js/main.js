@@ -129,7 +129,7 @@
       summary.innerHTML = `<div>${rows}</div>`;
     };
     form.addEventListener('input', () => { if (cur === steps.length - 1) renderSummary(); });
-    document.querySelectorAll('[data-bk-open]').forEach(b => b.addEventListener('click', () => { dlg.showModal(); show(0); }));
+    document.querySelectorAll('[data-bk-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); if (drawer?.hasAttribute('data-open')) close(); dlg.showModal(); show(0); }));
     dlg.querySelectorAll('[data-bk-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
     dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
     next.addEventListener('click', () => { if (validate(cur)) show(cur + 1); });
@@ -144,6 +144,9 @@
     // pre-select service from page context
     const ctx = document.querySelector('[data-page-service]')?.dataset.pageService;
     if (ctx) { const sel = form.querySelector('[name=Service]'); if ([...sel.options].some(o => o.value === ctx)) sel.value = ctx; }
+    if (document.querySelector('[data-bk-autoopen]')) setTimeout(() => { dlg.showModal(); show(0); }, 400);
+    const ctxV = document.querySelector('[data-page-vehicle]')?.dataset.pageVehicle;
+    if (ctxV) { const sel = form.querySelector('[name=Vehicle]'); if ([...sel.options].some(o => o.value === ctxV)) sel.value = ctxV; }
   }
 
   /* Sticky header shadow */

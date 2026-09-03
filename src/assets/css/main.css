@@ -391,6 +391,11 @@
   .wa-float svg{inline-size:1.6rem;block-size:1.6rem}
   @media (max-width:640px){.wa-float span{display:none}.wa-float{padding:.85rem}}
 
+  .bk-card{display:grid;gap:1rem;padding:var(--sp-6);border-radius:var(--radius-lg);background:var(--white);border:1px solid var(--line)}
+  .bk-card__steps{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));counter-reset:c}
+  .bk-card__steps li{counter-increment:c;display:grid;gap:.15rem;padding:.8rem 1rem;border-radius:var(--radius);background:var(--ivory);font-size:.85rem}
+  .bk-card__steps li::before{content:"0" counter(c);font-family:var(--font-display);color:var(--bronze);font-size:1.3rem;line-height:1}
+  .bk-card__steps span{color:var(--muted);font-size:.78rem}
   /* Booking dialog */
   .bk{border:0;padding:0;background:transparent;max-inline-size:none;max-block-size:none;inline-size:100%;block-size:100%;margin:0;color:var(--graphite)}
   .bk::backdrop{background:rgb(27 31 35 / .6);backdrop-filter:blur(6px)}
