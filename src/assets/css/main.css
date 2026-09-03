@@ -459,13 +459,13 @@
   .bk-card__steps li::before{content:"0" counter(c);font-family:var(--font-display);color:var(--bronze);font-size:1.3rem;line-height:1}
   .bk-card__steps span{color:var(--muted);font-size:.78rem}
   /* Booking dialog */
-  .bk{border:0;padding:0;margin:0;background:transparent;max-inline-size:none;max-block-size:none;inline-size:100%;block-size:100%;position:fixed;inset:0;color:var(--graphite);display:none;justify-items:end;align-items:stretch}
+  .bk{border:0;padding:0;margin:0;background:transparent;max-inline-size:none;max-block-size:none;inline-size:100%;block-size:100%;position:fixed;inset:0;color:var(--graphite);display:none;place-items:center;padding:1.5rem}
   .bk[open]{display:grid}
   .bk::backdrop{background:rgb(27 31 35 / .6);backdrop-filter:blur(6px)}
-  .bk__form{position:relative;inline-size:min(100%,34rem);block-size:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--ivory);border-start-start-radius:var(--radius-lg);border-end-start-radius:var(--radius-lg);box-shadow:var(--shadow);display:grid;grid-template-rows:auto auto 1fr auto auto;grid-auto-rows:auto;align-content:start;gap:.9rem;padding:1.25rem 1.4rem 0;animation:bk-in .4s var(--ease)}
-  @keyframes bk-in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+  .bk__form{position:relative;inline-size:min(100%,36rem);block-size:auto;max-block-size:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--ivory);border-radius:var(--radius-lg);box-shadow:0 30px 80px -20px rgb(0 0 0 / .55);display:grid;grid-auto-rows:auto;align-content:start;gap:.9rem;padding:1.25rem 1.4rem 0;animation:bk-in .35s var(--ease)}
+  @keyframes bk-in{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
   @media (max-width:640px){
-    .bk{justify-items:stretch;align-items:end}
+    .bk{place-items:end stretch;padding:0}
     .bk__form{inline-size:100%;block-size:auto;max-block-size:92dvh;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:.9rem 1rem 0;gap:.7rem;animation-name:bk-up}
     @keyframes bk-up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
     .bk .field input,.bk .field select,.bk .field textarea{font-size:16px;padding:.7rem .9rem}
