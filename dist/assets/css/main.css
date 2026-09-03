@@ -550,6 +550,9 @@
   .tags a{font-size:.8rem;font-weight:700;padding:.4rem .8rem;border-radius:999px;border:1px solid var(--line);transition:background .2s}
   .tags a:hover{background:var(--bone)}
   .section--dark .tags a:hover{background:color-mix(in oklab,var(--ivory) 10%,transparent)}
+  .areas{display:grid;gap:var(--sp-6)}
+  .area-group h2{font-size:var(--fs-2);margin-block-end:.8rem}
+  .tags--lg a{font-size:.95rem;padding:.6rem 1rem;background:var(--white)}
   .timeline{display:grid;gap:var(--sp-5);border-inline-start:2px solid var(--bronze);padding-inline-start:var(--sp-5)}
   .timeline li{display:grid;gap:.3rem;position:relative}
   .timeline li::before{content:"";position:absolute;inset-inline-start:calc(-1 * var(--sp-5) - 7px);inset-block-start:.5rem;inline-size:12px;block-size:12px;border-radius:50%;background:var(--bronze)}
