@@ -237,7 +237,7 @@ def footer():
 
 def local_business_schema():
     return {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+"/#business","name":CFG['name'],"url":CFG['url'],
-      "image":CFG['url']+"/assets/brand/hero-home-1871.jpg","logo":CFG['url']+"/assets/brand/logo.png","telephone":["+"+CFG['phone_intl'],"+"+CFG['landline_intl']],"email":CFG['email'],
+      "image":CFG['url']+"/assets/brand/hero-home-1871.07ec78f3.jpg","logo":CFG['url']+"/assets/brand/logo.png","telephone":["+"+CFG['phone_intl'],"+"+CFG['landline_intl']],"email":CFG['email'],
       "priceRange":"$$",
       "address":{"@type":"PostalAddress","streetAddress":CFG['address'],"addressLocality":CFG['city'],"addressCountry":"AE"},
       "geo":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},
@@ -247,7 +247,7 @@ def local_business_schema():
       "areaServed":CFG['city'],"knowsAbout":["Range Rover repair","Land Rover repair","BMW repair","Mercedes-Benz repair","Audi repair"],
       "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":s['name'],"url":f"{CFG['url']}/services/{s['slug']}/"}} for s in SERVICES]}
 
-def page(path, title, desc, body, current="/", schema=None, image="assets/brand/hero-home-1871.jpg", breadcrumbs=None, kind="website"):
+def page(path, title, desc, body, current="/", schema=None, image="assets/brand/hero-home-1871.07ec78f3.jpg", breadcrumbs=None, kind="website"):
     """Write one HTML page. path like 'services/x/' → dist/services/x/index.html"""
     canonical = CFG['url'] + "/" + path
     schemas = [local_business_schema()]
@@ -378,8 +378,8 @@ def build_home():
 <section class="hero">
  <div class="hero__media">
   <picture>
-   <source type="image/webp" srcset="/assets/brand/hero-home-900.webp 900w, /assets/brand/hero-home-1400.webp 1400w, /assets/brand/hero-home-1871.webp 1870w" sizes="100vw">
-   <img src="/assets/brand/hero-home-1400.jpg" srcset="/assets/brand/hero-home-900.jpg 900w, /assets/brand/hero-home-1400.jpg 1400w, /assets/brand/hero-home-1871.jpg 1870w" sizes="100vw" alt="Al Rahal Auto Maintenance Workshop in Sharjah at dusk, with Range Rovers parked outside" width="1871" height="840" loading="eager" fetchpriority="high" decoding="async">
+   <source type="image/webp" srcset="/assets/brand/hero-home-900.07ec78f3.webp 900w, /assets/brand/hero-home-1400.07ec78f3.webp 1400w, /assets/brand/hero-home-1871.07ec78f3.webp 1870w" sizes="100vw">
+   <img src="/assets/brand/hero-home-1400.07ec78f3.jpg" srcset="/assets/brand/hero-home-900.07ec78f3.jpg 900w, /assets/brand/hero-home-1400.07ec78f3.jpg 1400w, /assets/brand/hero-home-1871.07ec78f3.jpg 1870w" sizes="100vw" alt="Al Rahal Auto Maintenance Workshop in Sharjah at dusk, with Range Rovers parked outside" width="1871" height="840" loading="eager" fetchpriority="high" decoding="async">
   </picture>
  </div>
  <div class="wrap hero__inner">
