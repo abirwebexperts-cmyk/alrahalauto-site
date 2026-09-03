@@ -154,8 +154,8 @@
   .logo{display:flex;align-items:center;flex:none}
   .logo img{block-size:44px;inline-size:auto;max-inline-size:min(60vw,360px);object-fit:contain}
   @media (min-width:1000px) and (max-width:1200px){.logo img{block-size:30px}.header__cta span{display:none}.header__cta{padding:.7rem 1rem}.hours__closed{display:none}.header .wrap{gap:1rem}.nav{gap:.8rem}}
-  @media (max-width:480px){.logo img{block-size:34px}}
-  .drawer .logo img,.ft .logo img{block-size:40px}
+  @media (max-width:640px){.logo img{block-size:auto;inline-size:min(100%,calc(100vw - 6.5rem));max-inline-size:300px}.header .wrap{gap:.75rem}}
+  .drawer .logo img{block-size:auto;inline-size:min(100%,calc(100vw - 6.5rem));max-inline-size:280px}.ft .logo img{block-size:40px}
   .nav{display:none;gap:clamp(.85rem,1.4vw,1.6rem);font-weight:600;font-size:var(--fs--1)}
   .nav a{position:relative;padding-block:.4rem;white-space:nowrap}
   .nav a::after{content:"";position:absolute;inset-inline:0;inset-block-end:0;block-size:2px;background:var(--bronze);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}

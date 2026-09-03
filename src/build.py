@@ -88,8 +88,6 @@ ICONS = {
 # ------------------------------------------------------------------ LAYOUT
 LOGO = '''<a class="logo" href="/" aria-label="{name} home">
   <picture>
-    <source media="(max-width:480px)" type="image/webp" srcset="/assets/brand/logo-compact.webp 1x, /assets/brand/logo-compact@2x.webp 2x">
-    <source media="(max-width:480px)" srcset="/assets/brand/logo-compact.png 1x, /assets/brand/logo-compact@2x.png 2x">
     <source type="image/webp" srcset="/assets/brand/logo.webp 1x, /assets/brand/logo@2x.webp 2x">
     <img src="/assets/brand/logo.png" srcset="/assets/brand/logo.png 1x, /assets/brand/logo@2x.png 2x" alt="{name}" width="{w}" height="48" decoding="async">
   </picture></a>'''.format(name=CFG['name'], w=round(2106*48/254))
