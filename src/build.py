@@ -267,12 +267,6 @@ def build_home():
   <h1 class="hero__title">Your Range Rover, <br><em>cared for</em> by people <br>who know it best.</h1>
   <p class="hero__lede">Dealer-level diagnostics, genuine parts and technicians who have spent their careers inside Land Rover engine bays. Fixed prices, honest advice and every job documented on WhatsApp.</p>
   <div class="hero__actions"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service for my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost btn--lg" href="/services/">Explore services {I("arrow")}</a></div>
-  <ul class="hero__proof" role="list">
-   <li><strong>Since {CFG['founded']}</strong><span>Dedicated to Land Rover</span></li>
-   <li><strong>12,000<sup>+</sup></strong><span>Range Rovers serviced</span></li>
-   <li><strong>4.9<small>/5</small></strong><span>Rated by owners on Google</span></li>
-   <li><strong>Pathfinder &amp; SDD</strong><span>The dealer's own diagnostics</span></li>
-  </ul>
   <a class="hero__scroll" href="#services" aria-label="Scroll to services"><span>Scroll</span><i></i></a>
  </div>
  <div class="hero__marquee"><div class="marquee__track">{marquee}{marquee}</div></div>
