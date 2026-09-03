@@ -262,20 +262,18 @@ def build_home():
     body = f'''
 <section class="hero">
  <div class="hero__media">{img("assets/img/hero/home-hero.jpg", "Range Rover in the Al Rahal workshop", loading="eager")}</div>
- <div class="wrap">
-  <div class="hero__grid">
-   <div>
-    <p class="kicker">Independent Range Rover & Land Rover specialists · {e(CFG['city'])}</p>
-    <h1>Your Range Rover, cared for by people who know it best.</h1>
-    <p class="lede">Dealer-level diagnostics, genuine parts and technicians who have spent their careers inside Land Rover engine bays. Fixed prices, honest advice and every job documented on WhatsApp.</p>
-    <div class="hero__actions"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service for my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost btn--lg" href="/services/">Explore services</a></div>
-   </div>
-   <aside class="hero__card">
-    <h3>Why owners switch to Al Rahal</h3>
-    <ul role="list"><li>{I("check")}<span>Land Rover Pathfinder & SDD diagnostics, identical to the dealer</span></li><li>{I("check")}<span>Genuine parts with a written warranty on every repair</span></li><li>{I("check")}<span>Air suspension, timing chains and gearboxes rebuilt in-house</span></li><li>{I("check")}<span>Photos of every stage sent to your WhatsApp</span></li></ul>
-    <a class="btn btn--bronze" href="#book">{I("arrow")} Get a fixed price</a>
-   </aside>
-  </div>
+ <div class="wrap hero__inner">
+  <p class="hero__eyebrow"><span class="hero__rule"></span>Independent Range Rover &amp; Land Rover specialists<span class="hero__dot"></span>{e(CFG['city'])}</p>
+  <h1 class="hero__title">Your Range Rover, <br><em>cared for</em> by people <br>who know it best.</h1>
+  <p class="hero__lede">Dealer-level diagnostics, genuine parts and technicians who have spent their careers inside Land Rover engine bays. Fixed prices, honest advice and every job documented on WhatsApp.</p>
+  <div class="hero__actions"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service for my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost btn--lg" href="/services/">Explore services {I("arrow")}</a></div>
+  <ul class="hero__proof" role="list">
+   <li><strong>Since {CFG['founded']}</strong><span>Dedicated to Land Rover</span></li>
+   <li><strong>12,000<sup>+</sup></strong><span>Range Rovers serviced</span></li>
+   <li><strong>4.9<small>/5</small></strong><span>Rated by owners on Google</span></li>
+   <li><strong>Pathfinder &amp; SDD</strong><span>The dealer's own diagnostics</span></li>
+  </ul>
+  <a class="hero__scroll" href="#services" aria-label="Scroll to services"><span>Scroll</span><i></i></a>
  </div>
  <div class="hero__marquee"><div class="marquee__track">{marquee}{marquee}</div></div>
 </section>
@@ -287,7 +285,7 @@ def build_home():
  <div class="trust__item">{I("shield")}<div><strong>Warranty</strong><span>On every part and repair</span></div></div>
 </div></section>
 
-<section class="section"><div class="wrap">
+<section class="section" id="services"><div class="wrap">
  <div class="section-head reveal"><p class="kicker">Range Rover & Land Rover services</p><h2>Everything a Range Rover needs, under one roof.</h2><p class="lede">From a scheduled service to a full engine rebuild. Tap a service to see what is included, the symptoms to watch for, and the answers owners ask us most.</p></div>
  <div class="grid grid--3 reveal">{svc_cards}</div>
  <div class="cta-inline"><a class="btn btn--dark" href="/services/">View all {len(SERVICES)} services {I("arrow")}</a></div>
