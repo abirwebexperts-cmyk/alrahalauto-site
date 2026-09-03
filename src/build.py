@@ -107,7 +107,7 @@ def header(current):
     <span class="hours__slot">8:00 AM – 1:00 PM</span><span class="hours__amp">&amp;</span><span class="hours__slot">4:00 PM – 9:00 PM</span>
     <span class="hours__closed">Friday closed</span>
   </div>
-  <a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} <span>WhatsApp</span> {CFG['phone']}</a>
+  <a data-bk-open href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} <span>WhatsApp</span> {CFG['phone']}</a>
 </div></div>
 <header class="header"><div class="wrap">
   {LOGO}
