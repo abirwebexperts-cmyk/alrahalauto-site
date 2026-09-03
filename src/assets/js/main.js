@@ -94,20 +94,25 @@
       steps[i].querySelector('input,select,textarea')?.focus({ preventScroll: true });
       dlg.querySelector('.bk__form').scrollTo({ top: 0 });
     };
+    const openDlg = () => { if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', ''); document.body.style.overflow = 'hidden'; };
+    dlg.addEventListener('close', () => { document.body.style.overflow = ''; });
+    const errBox = form.querySelector('[data-error]');
+    const showError = (msg, el) => { errBox.textContent = msg; errBox.hidden = !msg; if (el && msg) el.scrollIntoView({ block: 'center', behavior: 'smooth' }); };
     const validate = i => {
-      let ok = true;
+      const missing = []; let first = null;
       steps[i].querySelectorAll('[required]').forEach(el => {
         const bad = !el.value || (el.type === 'tel' && !/^\+?[\d\s-]{8,}$/.test(el.value));
-        el.closest('.field')?.classList.toggle('is-invalid', bad); if (bad) ok = false;
+        const f = el.closest('.field'); f?.classList.toggle('is-invalid', bad);
+        if (bad) { missing.push(f?.dataset.label || el.name); first ||= el; }
       });
       if (i === 1) {
-        const anySvc = true;
-        const t = form.querySelector('[name=Time]:checked'); form.querySelector('[data-hint=time]').classList.toggle('is-on', !t);
-        if (dateEl.value) { const d = new Date(dateEl.value + 'T12:00:00'); if (d.getDay() === 5) { dateEl.closest('.field').classList.add('is-invalid'); dateEl.setCustomValidity('Closed on Friday'); ok = false; } else dateEl.setCustomValidity(''); }
-        ok = ok && anySvc && !!t;
+        if (dateEl.value && new Date(dateEl.value + 'T12:00:00').getDay() === 5) { dateEl.closest('.field').classList.add('is-invalid'); showError('We are closed on Friday — please choose another day.', dateEl); return false; }
+        if (!form.querySelector('[name=Time]:checked')) { missing.push('a time slot'); first ||= form.querySelector('.bk__slots'); form.querySelector('[data-hint=time]').classList.add('is-on'); } else form.querySelector('[data-hint=time]').classList.remove('is-on');
       }
-      return ok;
+      if (missing.length) { showError('Please choose ' + missing.join(', ').replace(/, ([^,]*)$/, ' and $1') + ' to continue.', first); return false; }
+      showError(''); return true;
     };
+    form.addEventListener('change', () => { if (!errBox.hidden) validate(cur); });
     const buildLines = () => {
       const f = new FormData(form), g = k => f.get(k)?.toString().trim() || '';
       const svcs = g('Service');
@@ -130,7 +135,8 @@
     };
     form.addEventListener('input', () => { if (cur === steps.length - 1) renderSummary(); });
     document.querySelectorAll('[data-bk-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); if (drawer?.hasAttribute('data-open')) close(); dlg.showModal(); show(0); }));
-    dlg.querySelectorAll('[data-bk-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
+    const closeDlg = () => { if (dlg.open && typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open'); document.body.style.overflow = ''; };
+    dlg.querySelectorAll('[data-bk-close]').forEach(b => b.addEventListener('click', closeDlg));
     dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
     next.addEventListener('click', () => { if (validate(cur)) show(cur + 1); });
     prev.addEventListener('click', () => show(cur - 1));
@@ -139,12 +145,12 @@
     form.addEventListener('submit', e => {
       e.preventDefault(); if (!validate(2)) return;
       window.open(`https://wa.me/${WA}?text=${encodeURIComponent(buildLines().join('\n'))}`, '_blank', 'noopener');
-      dlg.close();
+      closeDlg();
     });
     // pre-select service from page context
     const ctx = document.querySelector('[data-page-service]')?.dataset.pageService;
     if (ctx) { const sel = form.querySelector('[name=Service]'); if ([...sel.options].some(o => o.value === ctx)) sel.value = ctx; }
-    if (document.querySelector('[data-bk-autoopen]')) setTimeout(() => { dlg.showModal(); show(0); }, 400);
+    if (document.querySelector('[data-bk-autoopen]')) setTimeout(() => { openDlg(); show(0); }, 400);
     const ctxV = document.querySelector('[data-page-vehicle]')?.dataset.pageVehicle;
     if (ctxV) { const sel = form.querySelector('[name=Vehicle]'); if ([...sel.options].some(o => o.value === ctxV)) sel.value = ctxV; }
   }

@@ -144,17 +144,17 @@ def booking_dialog():
 
   <section class="bk__step is-active" data-step="1">
    <div class="form__row">
-    <label class="field">Vehicle<select name="Vehicle" required><option value="" selected disabled>Select your vehicle</option>{vehicle_opts}</select></label>
-    <label class="field">Model year<select name="Year" required><option value="" selected disabled>Year</option>{years}</select></label>
+    <label class="field" data-label="your vehicle">Vehicle<select name="Vehicle" required><option value="" selected disabled>Select your vehicle</option>{vehicle_opts}</select></label>
+    <label class="field" data-label="the model year">Model year<select name="Year" required><option value="" selected disabled>Year</option>{years}</select></label>
    </div>
-   <label class="field">Service required<select name="Service" required><option value="" selected disabled>Choose a service</option>{svc_opts}</select></label>
+   <label class="field" data-label="the service">Service required<select name="Service" required><option value="" selected disabled>Choose a service</option>{svc_opts}</select></label>
    <label class="field">Plate number (optional)<input name="Plate" type="text" placeholder="e.g. Sharjah 2 12345"></label>
   </section>
 
   <section class="bk__step" data-step="2">
    <label class="field">Describe the issue or request (optional)<textarea name="Details" placeholder="e.g. rattle on cold start, sinks on the rear left overnight, AC not cold in traffic"></textarea></label>
    <div class="form__row">
-    <label class="field">Preferred date<input name="Date" type="date" required></label>
+    <label class="field" data-label="a date">Preferred date<input name="Date" type="date" required></label>
     <div class="field"><span>Preferred time</span><div class="bk__slots">{slots}</div><p class="form__hint" data-hint="time">Please choose a time slot.</p></div>
    </div>
    <p class="bk__hours">{I("clock")} Saturday – Thursday · 8:00 AM – 1:00 PM &amp; 4:00 PM – 9:00 PM · Friday closed</p>
@@ -162,8 +162,8 @@ def booking_dialog():
 
   <section class="bk__step" data-step="3">
    <div class="form__row">
-    <label class="field">Your name<input name="Name" type="text" required autocomplete="name"></label>
-    <label class="field">Mobile number<input name="Phone" type="tel" required autocomplete="tel" placeholder="05x xxx xxxx"></label>
+    <label class="field" data-label="your name">Your name<input name="Name" type="text" required autocomplete="name"></label>
+    <label class="field" data-label="a valid mobile number">Mobile number<input name="Phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="05x xxx xxxx"></label>
    </div>
    <p class="bk__label">How would you like to bring the car?</p>
    <div class="bk__slots">
@@ -177,6 +177,7 @@ def booking_dialog():
   </section>
 
   <footer class="bk__foot">
+   <p class="bk__error" data-error role="alert" hidden></p>
    <button type="button" class="btn btn--ghost" data-bk-prev hidden>Back</button>
    <span class="bk__spacer"></span>
    <button type="button" class="btn btn--dark" data-bk-next>Continue {I("arrow")}</button>
