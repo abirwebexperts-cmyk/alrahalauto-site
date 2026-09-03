@@ -26,6 +26,7 @@ CFG = dict(
 WA = f"https://wa.me/{CFG['phone_intl']}"
 OUT = os.path.join(os.path.dirname(__file__), "..", "dist")
 TODAY = datetime.date.today().isoformat()
+BUILD_STAMP = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')
 SITEMAP = []
 
 def e(s): return html.escape(str(s), quote=True)
@@ -146,10 +147,12 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/img/he
     if schema: schemas += schema if isinstance(schema, list) else [schema]
     ld = "".join(f'<script type="application/ld+json">{json.dumps(s, ensure_ascii=False)}</script>' for s in schemas)
     ga = f'<script async src="https://www.googletagmanager.com/gtag/js?id={CFG["ga_id"]}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{CFG["ga_id"]}");</script>' if CFG['ga_id'] else ""
+    stamp = BUILD_STAMP
     doc = f'''<!DOCTYPE html>
 <html lang="en" data-wa="{CFG['phone_intl']}">
 <head>
 <meta charset="utf-8">
+<!-- build {stamp} -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
