@@ -189,21 +189,49 @@ def booking_dialog():
 </dialog>'''
 
 def footer():
-    svc = "".join(f'<li><a href="/services/{s["slug"]}/">{e(s["name"])}</a></li>' for s in SERVICES[:8])
+    svc = "".join(f'<li><a href="/services/{x["slug"]}/">{e(x["name"])}</a></li>' for x in SERVICES[:10])
     mdl = "".join(f'<li><a href="/models/{m["slug"]}/">{e(m["name"])}</a></li>' for m in MODELS)
     brd = "".join(f'<li><a href="/brands/{b["slug"]}/">{e(b["name"])}</a></li>' for b in BRANDS)
+    hrs = "".join(f'<div class="ft-hours__row"><span>{e(d.replace("Saturday – Thursday","Sat – Thu"))}</span><span>{e(t)}</span></div>' for d,t in CFG['hours_lines'])
+    maps = "https://www.google.com/maps/search/?api=1&query=" + "Al+Rahal+Auto+Maintenance+Workshop+Jabel+Tarek+Street+Sharjah"
     return f'''
-<footer class="footer"><div class="wrap">
- <div class="footer__top">
-  <div class="footer__brand">{LOGO}<p>Independent Range Rover and Land Rover specialists in {CFG['city']} with more than {CFG['experience']} years of Land Rover experience. Dealer-level diagnostics, genuine parts and honest advice, without dealer pricing.</p>
-   <div class="social"><a href="{CFG['instagram']}" aria-label="Instagram" rel="noopener" target="_blank">{I("instagram")}</a></div></div>
-  <div><h4>Services</h4><ul>{svc}<li><a href="/services/">All services</a></li></ul></div>
-  <div><h4>Models</h4><ul>{mdl}</ul></div>
-  <div><h4>Brands</h4><ul>{brd}</ul></div>
-  <div><h4>Visit us</h4><ul><li>{e(CFG['address'])}, {e(CFG['city'])}</li>{"".join(f'<li><span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span></li>' for d,t in CFG['hours_lines'])}<li><a href="tel:+{CFG['phone_intl']}">Mobile / WhatsApp {e(CFG['phone'])}</a></li><li><a href="tel:+{CFG['landline_intl']}">Tel {e(CFG['landline'])}</a></li><li><a href="mailto:{CFG['email']}">{CFG['email']}</a></li><li><a href="/contact/">Contact & map</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li></ul></div>
+<footer class="ft">
+ <div class="ft__glow" aria-hidden="true"></div>
+ <div class="wrap">
+  <div class="ft__top">
+   <div class="ft__brand">
+    {LOGO}
+    <p class="ft__tag">Independent Range Rover &amp; Land Rover specialists in {e(CFG['city'])}. More than 25 years of experience, dealer-level diagnostics and genuine parts, without dealer pricing.</p>
+    <span class="hours__status" data-hours-status><i></i><b>Checking hours…</b></span>
+    <div class="ft__contact">
+     <a data-bk-open href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener" class="ft__contact-row">{I("wa")}<span><small>WhatsApp</small>{e(CFG['phone'])}</span></a>
+     <a href="tel:+{CFG['landline_intl']}" class="ft__contact-row">{I("phone")}<span><small>Workshop</small>{e(CFG['landline'])}</span></a>
+     <a href="mailto:{CFG['email']}" class="ft__contact-row">{I("mail")}<span><small>Email</small>{CFG['email']}</span></a>
+    </div>
+   </div>
+   <nav class="ft__col" aria-label="Services"><h4>Services</h4><ul role="list">{svc}<li><a class="ft__more" href="/services/">All {len(SERVICES)} services {I("arrow")}</a></li></ul></nav>
+   <nav class="ft__col" aria-label="Models and brands"><h4>Models</h4><ul role="list">{mdl}</ul><h4 class="ft__h4-gap">Also serviced</h4><ul role="list" class="ft__inline">{brd}</ul></nav>
+   <div class="ft__col ft__visit">
+    <h4>Visit the workshop</h4>
+    <address class="ft__addr">{I("pin")}<span>{e(CFG['address'])},<br>{e(CFG['city'])}, {e(CFG['country'])}</span></address>
+    <a class="btn btn--ghost btn--sm" href="{maps}" target="_blank" rel="noopener">Get directions {I("arrow")}</a>
+    <h4 class="ft__h4-gap">Opening hours</h4>
+    <div class="ft-hours">{hrs}</div>
+   </div>
+  </div>
+  <div class="ft__cta">
+   <div><strong>Ready to book?</strong><span>Three quick steps, straight to our WhatsApp.</span></div>
+   <a data-bk-open class="btn btn--wa" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a>
+  </div>
+  <div class="ft__bottom">
+   <p>© {TODAY[:4]} {e(CFG['name'])} Workshop. All rights reserved.</p>
+   <p class="ft__legal">Independent specialist workshop. Not affiliated with Jaguar Land Rover Limited; vehicle names are used for identification only.</p>
+   <ul class="ft__links" role="list"><li><a href="/about/">About</a></li><li><a href="/blog/">Blog</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy/">Privacy</a></li><li><a href="/sitemap.xml">Sitemap</a></li></ul>
+   <div class="ft__social"><a href="{CFG['instagram']}" aria-label="Instagram" rel="noopener" target="_blank">{I("instagram")}<span>@alrahal_auto_maintenance</span></a></div>
+  </div>
  </div>
- <div class="footer__bottom"><span>© {TODAY[:4]} {e(CFG['name'])}. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/sitemap.xml">Sitemap</a></span></div>
-</div></footer>
+ <a class="ft__top-link" href="#top" aria-label="Back to top">{I("arrow")}</a>
+</footer>
 <button class="wa-float" type="button" data-bk-open aria-haspopup="dialog" aria-controls="bookDialog">{I("wa")}<span>Book on WhatsApp</span></button>
 {booking_dialog()}
 <script src="/assets/js/main.js?v={ASSET_VER}" defer></script>'''
@@ -250,7 +278,7 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/brand/
 <link rel="stylesheet" href="/assets/css/main.css?v={ASSET_VER}">
 {ld}{ga}
 </head>
-<body>
+<body id="top">
 {header(current)}
 <main id="main">
 {body}
