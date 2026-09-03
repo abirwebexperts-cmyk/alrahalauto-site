@@ -23,6 +23,9 @@
     if (img.complete && img.naturalWidth === 0) show();
   });
 
+  /* Brand strip: revealed by the first logo that loads (inline onload); items without a file remove themselves */
+  document.querySelectorAll('.lstrip img').forEach(im => { if (im.complete && im.naturalWidth > 0) im.closest('.lstrip').hidden = false; });
+
   /* Reveal (one entrance per section) */
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { threshold: .12 });
