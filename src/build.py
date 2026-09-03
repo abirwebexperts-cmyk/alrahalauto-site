@@ -431,7 +431,7 @@ def build_home():
 <section class="section section--bone"><div class="wrap">
  <div class="section-head reveal"><p class="kicker">How it works</p><h2>Four steps from message to handover.</h2></div>
  <div class="steps reveal">
-  <div class="step"><h3>Message us</h3><p>Send your model, year and symptoms on WhatsApp. We reply within minutes with an initial view and a booking time.</p></div>
+  <div class="step"><h3>Message us</h3><p>Send your model, year and symptoms on WhatsApp. An expert replies within minutes with an initial view and a booking time.</p></div>
   <div class="step"><h3>Diagnose properly</h3><p>Your car goes on the lift and the diagnostic platform. You receive a written report with photos and a fixed price.</p></div>
   <div class="step"><h3>Approve each item</h3><p>Nothing is done without your approval. We show you the worn parts and explain what can wait.</p></div>
   <div class="step"><h3>Collect with confidence</h3><p>Road tested, cleaned, service record updated and warranty documented. Or we deliver it to your door.</p></div>
@@ -544,9 +544,9 @@ def build_brands():
 
 def build_blog():
     cards = "".join(post_card(p) for p in sorted(POSTS, key=lambda p: p['date'], reverse=True))
-    body = page_hero("The Al Rahal workshop journal", "Plain-English guides written by our technicians: what fails on Range Rovers, why, and how to prevent it. No jargon, no sales pitch.", [("Home","/"),("Blog","/blog/")], "assets/img/hero/blog-hero.jpg")
+    body = page_hero("The Al Rahal workshop journal", "Plain-English guides written by our experts: what fails on Range Rovers, why, and how to prevent it. No jargon, no sales pitch.", [("Home","/"),("Blog","/blog/")], "assets/img/hero/blog-hero.jpg")
     body += f'<section class="section"><div class="wrap"><div class="grid grid--3">{cards}</div></div></section>' + book_band()
-    page("blog/", f"Range Rover Maintenance Guides & Advice | {CFG['name']} Blog", "Expert Range Rover and Land Rover maintenance guides from Al Rahal's technicians: air suspension, timing chains, gearboxes, buying advice and summer preparation.", body, "/blog/", image="assets/img/hero/blog-hero.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/")])
+    page("blog/", f"Range Rover Maintenance Guides & Advice | {CFG['name']} Blog", "Expert Range Rover and Land Rover maintenance guides from Al Rahal's specialists: air suspension, timing chains, gearboxes, buying advice and summer preparation.", body, "/blog/", image="assets/img/hero/blog-hero.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/")])
     for i,p in enumerate(POSTS):
         d = datetime.date.fromisoformat(p['date']).strftime("%d %B %Y")
         others = [x for x in POSTS if x is not p][:3]
@@ -554,7 +554,7 @@ def build_blog():
         body = f'''<section class="page-hero"><div class="wrap">{crumbs([("Home","/"),("Blog","/blog/"),(p['title'], f"/blog/{p['slug']}/")])}<p class="kicker">{e(p['cat'])}</p><h1>{e(p['title'])}</h1><p class="meta"><time datetime="{p['date']}">{d}</time><span>{p['read']} min read</span><span>By the Al Rahal technical team</span></p></div></section>
 <section class="section"><div class="wrap with-aside">
  <article class="prose"><div class="post-hero">{img(f"assets/img/blog/{p['slug']}.jpg", p['title'], loading="eager")}</div>{p['body']}
-  <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I read your article \"" + p['title'] + "\" and would like advice about my car.")}" target="_blank" rel="noopener">{I("wa")} Ask a technician on WhatsApp</a></div></article>
+  <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I read your article \"" + p['title'] + "\" and would like advice about my car.")}" target="_blank" rel="noopener">{I("wa")} Ask an expert on WhatsApp</a></div></article>
  <aside class="aside"><div class="aside__box aside__box--dark"><h3>Worried about this on your car?</h3><p>Send a message or a short video of the symptom. We will tell you what to expect before you drive in.</p><a class="btn btn--wa" href="{wa("Hello Al Rahal, I would like advice about my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} {CFG['phone']}</a></div>
   <div class="aside__box"><h3>Related services</h3><ul role="list">{"".join(f'<li><a href="/services/{s["slug"]}/">{e(s["name"])}<span>›</span></a></li>' for s in SERVICES[:8])}</ul></div></aside>
 </div></section>
@@ -593,7 +593,7 @@ def build_contact():
   <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--xl" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Start booking</a><a class="btn btn--ghost" href="{wa("Hello Al Rahal, I have a quick question.")}" target="_blank" rel="noopener">Quick question instead {I("arrow")}</a></div>
   <p class="form__note">Nothing is stored on this website. Your booking is sent directly to {e(CFG['phone'])}.</p>
  </div>'''
-    body = page_hero("Contact & book", "Every enquiry goes straight to a technician on WhatsApp. Book in three steps, or call and visit us in Sharjah.", [("Home","/"),("Contact","/contact/")], "assets/img/hero/contact-hero.jpg")
+    body = page_hero("Contact & book", "Every enquiry goes straight to an expert on WhatsApp. Book in three steps, or call and visit us in Sharjah.", [("Home","/"),("Contact","/contact/")], "assets/img/hero/contact-hero.jpg")
     body += f'''<section class="section"><div class="wrap split">
  {card}
  <div class="contact-info">
