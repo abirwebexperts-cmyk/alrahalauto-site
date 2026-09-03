@@ -428,6 +428,10 @@
   .bk__summary div{display:grid;grid-template-columns:7rem 1fr;gap:.2rem .6rem}
   .bk__summary b{color:var(--muted);font-weight:600}
   .bk__summary:not(:empty){display:block}
+  .bk__step .form__row>.field{align-content:start}
+  .bk__hours{display:flex;gap:.5rem;align-items:center;font-size:.8rem;color:var(--muted)}
+  .bk__hours svg{inline-size:1em;block-size:1em;color:var(--bronze)}
+  .bk__steps li.is-done::before{content:"✓ ";color:var(--green-2)}
   .bk__foot{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding-block-start:.4rem;border-block-start:1px solid var(--line)}
   .bk__spacer{flex:1}
   .bk__privacy{margin-block-start:-.6rem}

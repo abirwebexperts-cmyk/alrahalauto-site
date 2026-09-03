@@ -133,7 +133,7 @@ def booking_dialog():
                   ("Chassis & comfort",["Air Suspension Repair","Brake Service & Repair","Steering & Rack Repair","Wheel Alignment & Tyres","Air Conditioning Service","Electrical & Wiring Repair","Infotainment & Electronics"]),
                   ("Body & appearance",["Body Repair & Paint","Detailing & Ceramic Coating","Off-Road Preparation"]),
                   ("Not sure",["I'm not sure — please advise"])]
-    svc_html = "".join(f'<fieldset class="bk-group"><legend>{e(g)}</legend>'+"".join(f'<label class="bk-chip"><input type="checkbox" name="Service" value="{e(x)}"><span>{e(x)}</span></label>' for x in xs)+'</fieldset>' for g,xs in svc_groups)
+    svc_opts = "".join(f'<optgroup label="{e(g)}">'+"".join(f'<option>{e(x)}</option>' for x in xs)+'</optgroup>' for g,xs in svc_groups)
     slots = "".join(f'<label class="bk-chip bk-chip--slot"><input type="radio" name="Time" value="{t}"><span>{t}</span></label>' for t in ["8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","4:00 PM","5:00 PM","6:00 PM","7:00 PM","8:00 PM"])
     return f'''
 <dialog class="bk" id="bookDialog" aria-labelledby="bkTitle">
@@ -149,22 +149,17 @@ def booking_dialog():
     <label class="field">Vehicle<select name="Vehicle" required><option value="" selected disabled>Select your vehicle</option>{vehicle_opts}</select></label>
     <label class="field">Model year<select name="Year" required><option value="" selected disabled>Year</option>{years}</select></label>
    </div>
-   <div class="form__row">
-    <label class="field">Engine (optional)<input name="Engine" type="text" placeholder="e.g. 3.0 SDV6, 5.0 V8, P400"></label>
-    <label class="field">Mileage (optional)<input name="Mileage" type="text" inputmode="numeric" placeholder="e.g. 85,000 km"></label>
-   </div>
+   <label class="field">Service required<select name="Service" required><option value="" selected disabled>Choose a service</option>{svc_opts}</select></label>
    <label class="field">Plate number (optional)<input name="Plate" type="text" placeholder="e.g. Sharjah 2 12345"></label>
   </section>
 
   <section class="bk__step" data-step="2">
-   <p class="bk__label">What does the car need? <small>Select one or more</small></p>
-   <div class="bk__services">{svc_html}</div>
-   <label class="field">Describe the symptoms (optional)<textarea name="Symptoms" placeholder="e.g. rattle on cold start, sinks on rear left overnight, AC not cold in traffic"></textarea></label>
+   <label class="field">Describe the issue or request (optional)<textarea name="Details" placeholder="e.g. rattle on cold start, sinks on the rear left overnight, AC not cold in traffic"></textarea></label>
    <div class="form__row">
     <label class="field">Preferred date<input name="Date" type="date" required></label>
     <div class="field"><span>Preferred time</span><div class="bk__slots">{slots}</div><p class="form__hint" data-hint="time">Please choose a time slot.</p></div>
    </div>
-   <p class="form__note">Open Saturday–Thursday, 8:00 AM–1:00 PM and 4:00 PM–9:00 PM. Closed Friday.</p>
+   <p class="bk__hours">{I("clock")} Saturday – Thursday · 8:00 AM – 1:00 PM &amp; 4:00 PM – 9:00 PM · Friday closed</p>
   </section>
 
   <section class="bk__step" data-step="3">

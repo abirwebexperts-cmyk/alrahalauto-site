@@ -101,8 +101,7 @@
         el.closest('.field')?.classList.toggle('is-invalid', bad); if (bad) ok = false;
       });
       if (i === 1) {
-        const anySvc = form.querySelectorAll('[name=Service]:checked').length > 0;
-        form.querySelector('.bk__services').style.outline = anySvc ? '' : '2px solid var(--danger)';
+        const anySvc = true;
         const t = form.querySelector('[name=Time]:checked'); form.querySelector('[data-hint=time]').classList.toggle('is-on', !t);
         if (dateEl.value) { const d = new Date(dateEl.value + 'T12:00:00'); if (d.getDay() === 5) { dateEl.closest('.field').classList.add('is-invalid'); dateEl.setCustomValidity('Closed on Friday'); ok = false; } else dateEl.setCustomValidity(''); }
         ok = ok && anySvc && !!t;
@@ -111,15 +110,13 @@
     };
     const buildLines = () => {
       const f = new FormData(form), g = k => f.get(k)?.toString().trim() || '';
-      const svcs = f.getAll('Service').join(', ');
+      const svcs = g('Service');
       const dt = g('Date') ? new Date(g('Date') + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '';
       const L = ['*New booking request — Al Rahal Auto Maintenance*', ''];
       L.push(`*Vehicle:* ${g('Vehicle')} ${g('Year')}`.trim());
-      if (g('Engine')) L.push(`*Engine:* ${g('Engine')}`);
-      if (g('Mileage')) L.push(`*Mileage:* ${g('Mileage')}`);
       if (g('Plate')) L.push(`*Plate:* ${g('Plate')}`);
       L.push(`*Service:* ${svcs}`);
-      if (g('Symptoms')) L.push(`*Symptoms:* ${g('Symptoms')}`);
+      if (g('Details')) L.push(`*Details:* ${g('Details')}`);
       L.push(`*Preferred:* ${dt} at ${g('Time')}`);
       L.push(`*Name:* ${g('Name')}`, `*Mobile:* ${g('Phone')}`, `*Drop-off:* ${g('Drop-off')}`);
       if (g('Address')) L.push(`*Address:* ${g('Address')}`);
@@ -146,7 +143,7 @@
     });
     // pre-select service from page context
     const ctx = document.querySelector('[data-page-service]')?.dataset.pageService;
-    if (ctx) form.querySelectorAll('[name=Service]').forEach(cb => { if (cb.value === ctx) cb.checked = true; });
+    if (ctx) { const sel = form.querySelector('[name=Service]'); if ([...sel.options].some(o => o.value === ctx)) sel.value = ctx; }
   }
 
   /* Sticky header shadow */
