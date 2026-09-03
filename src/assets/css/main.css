@@ -180,8 +180,8 @@
   .hero__media{position:absolute;inset:0;z-index:-2}
   .hero__media img{inline-size:100%;block-size:100%;object-fit:cover;object-position:78% 72%;animation:hero-zoom 16s var(--ease) both}
   .hero__media::after{content:"";position:absolute;inset:0;background:
-    linear-gradient(90deg,rgb(23 26 36 / .88) 0%,rgb(23 26 36 / .66) 34%,rgb(23 26 36 / .18) 62%,rgb(23 26 36 / 0) 85%),
-    linear-gradient(180deg,rgb(23 26 36 / .45) 0%,transparent 28%,transparent 70%,rgb(23 26 36 / .9) 100%)}
+    linear-gradient(90deg,rgb(18 22 34 / .86) 0%,rgb(18 22 34 / .6) 36%,rgb(18 22 34 / .12) 62%,rgb(18 22 34 / 0) 82%),
+    linear-gradient(180deg,rgb(18 22 34 / .35) 0%,transparent 26%,transparent 72%,rgb(18 22 34 / .88) 100%)}
   .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(40% 50% at 10% 75%,color-mix(in oklab,var(--bronze) 18%,transparent),transparent 70%)}
   .hero::after{content:"";position:absolute;inset-inline:0;inset-block-start:0;block-size:1px;background:linear-gradient(90deg,transparent,color-mix(in oklab,var(--bronze) 60%,transparent),transparent);z-index:1}
   .hero__title,.hero__lede{text-shadow:0 2px 24px rgb(0 0 0 / .45)}
