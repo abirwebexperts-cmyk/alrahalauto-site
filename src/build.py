@@ -273,7 +273,7 @@ def page_hero(title, lede, bcs, bg):
     return f'''<section class="page-hero"><div class="page-hero__bg">{img(bg, "", loading="eager")}</div><div class="wrap">{crumbs(bcs)}<h1>{title}</h1><p class="lede">{lede}</p>
     <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I would like to enquire about {re.sub('<[^>]+>','',title)}.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} {CFG['phone']}</a></div></div></section>'''
 
-def book_band(h="Book your Range Rover service on WhatsApp", p="Send your model, year and the issue. A technician replies within minutes with a clear price and the next available slot."):
+def book_band(h="Book your Range Rover service on WhatsApp", p="Send your model, year, and the issue. An expert will reply within minutes with a clear price and the next available slot."):
     return f'''<section class="book" id="book"><div class="wrap">
   <p class="kicker">Ready when you are</p><h2>{h}</h2><p class="lede">{p}</p>
   <a data-bk-open class="btn btn--wa btn--xl" href="{wa("Hello Al Rahal, I would like to book a service. My car is: ")}" target="_blank" rel="noopener">{I("wa")} Book Now · {CFG['phone']}</a>
