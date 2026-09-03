@@ -19,7 +19,8 @@ CFG = dict(
   address="Al Quoz Industrial Area 3",         # <-- change
   map_embed="https://www.google.com/maps?q=Al+Quoz+Industrial+Area+3+Dubai&output=embed",
   lat="25.1290", lng="55.2270",
-  hours="Saturday – Thursday, 8:00 AM – 8:00 PM", hours_schema="Sa-Th 08:00-20:00",
+  hours="Saturday – Thursday · 8:00 AM – 1:00 PM & 4:00 PM – 9:00 PM · Friday closed",
+  hours_lines=[("Saturday – Thursday","8:00 AM – 1:00 PM"),("Break","1:00 PM – 4:00 PM"),("Reopen","4:00 PM – 9:00 PM"),("Friday","Closed")],
   founded="2009", ga_id="",                    # GA4 id e.g. G-XXXXXXX, blank = off
   instagram="https://instagram.com/alrahalauto", facebook="https://facebook.com/alrahalauto", tiktok="https://tiktok.com/@alrahalauto",
 )
@@ -94,8 +95,13 @@ def header(current):
     return f'''
 <a class="skip" href="#main">Skip to content</a>
 <div class="topbar"><div class="wrap">
-  <span class="topbar__hours">{I("clock")} {CFG['hours']}</span>
-  <a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} WhatsApp {CFG['phone']}</a>
+  <div class="hours" aria-label="Opening hours">
+    <span class="hours__status" data-hours-status aria-live="polite"><i></i><b>Checking hours…</b></span>
+    <span class="hours__days">{I("clock")} Sat – Thu</span>
+    <span class="hours__slot">8:00 AM – 1:00 PM</span><span class="hours__amp">&amp;</span><span class="hours__slot">4:00 PM – 9:00 PM</span>
+    <span class="hours__closed">Friday closed</span>
+  </div>
+  <a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} <span>WhatsApp</span> {CFG['phone']}</a>
 </div></div>
 <header class="header"><div class="wrap">
   {LOGO}
@@ -121,7 +127,7 @@ def footer():
   <div><h4>Services</h4><ul>{svc}<li><a href="/services/">All services</a></li></ul></div>
   <div><h4>Models</h4><ul>{mdl}</ul></div>
   <div><h4>Brands</h4><ul>{brd}</ul></div>
-  <div><h4>Visit us</h4><ul><li>{e(CFG['address'])}, {e(CFG['city'])}</li><li>{e(CFG['hours'])}</li><li><a href="tel:+{CFG['phone_intl']}">{e(CFG['phone'])}</a></li><li><a href="mailto:{CFG['email']}">{CFG['email']}</a></li><li><a href="/contact/">Contact & map</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li></ul></div>
+  <div><h4>Visit us</h4><ul><li>{e(CFG['address'])}, {e(CFG['city'])}</li>{"".join(f'<li><span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span></li>' for d,t in CFG['hours_lines'])}<li><a href="tel:+{CFG['phone_intl']}">{e(CFG['phone'])}</a></li><li><a href="mailto:{CFG['email']}">{CFG['email']}</a></li><li><a href="/contact/">Contact & map</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li></ul></div>
  </div>
  <div class="footer__bottom"><span>© {TODAY[:4]} {e(CFG['name'])}. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/sitemap.xml">Sitemap</a></span></div>
 </div></footer>
@@ -134,7 +140,9 @@ def local_business_schema():
       "priceRange":"$$","foundingDate":CFG['founded'],
       "address":{"@type":"PostalAddress","streetAddress":CFG['address'],"addressLocality":CFG['city'],"addressCountry":"AE"},
       "geo":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},
-      "openingHours":CFG['hours_schema'],"sameAs":[CFG['instagram'],CFG['facebook'],CFG['tiktok']],
+      "openingHoursSpecification":[
+        {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],"opens":"08:00","closes":"13:00"},
+        {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],"opens":"16:00","closes":"21:00"}],"sameAs":[CFG['instagram'],CFG['facebook'],CFG['tiktok']],
       "areaServed":CFG['city'],"knowsAbout":["Range Rover repair","Land Rover repair","BMW repair","Mercedes-Benz repair","Audi repair"],
       "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":s['name'],"url":f"{CFG['url']}/services/{s['slug']}/"}} for s in SERVICES]}
 
@@ -476,7 +484,7 @@ def build_contact():
   <div>{I("phone")}<div><strong>Phone</strong><a href="tel:+{CFG['phone_intl']}"><span>+{CFG['phone_intl'][:3]} {CFG['phone_intl'][3:5]} {CFG['phone_intl'][5:8]} {CFG['phone_intl'][8:]}</span></a></div></div>
   <div>{I("mail")}<div><strong>Email</strong><a href="mailto:{CFG['email']}"><span>{CFG['email']}</span></a></div></div>
   <div>{I("pin")}<div><strong>Workshop</strong><span>{e(CFG['address'])}, {e(CFG['city'])}, {e(CFG['country'])}</span></div></div>
-  <div>{I("clock")}<div><strong>Hours</strong><span>{e(CFG['hours'])}</span></div></div>
+  <div>{I("clock")}<div><strong>Opening hours</strong><span class="hours-table">{"".join(f'<span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span>' for d,t in CFG['hours_lines'])}</span><span class="hours__status hours__status--inline mt-6" data-hours-status><i></i><b>Checking hours…</b></span></div></div>
   <div class="map" style="display:block"><iframe src="{CFG['map_embed']}" title="Map to Al Rahal Auto Maintenance" loading="lazy" allowfullscreen></iframe></div>
  </div>
 </div></section>'''
