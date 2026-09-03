@@ -351,6 +351,21 @@ MODEL_NAMES = [m['name'] for m in MODELS] + ["BMW","Mercedes-Benz","Audi","Porsc
 BOOK_FIELDS = [("Your name","Name","text",None),("Phone number","Phone","tel",None),("Vehicle","Vehicle","select",MODEL_NAMES),("Model year","Year","text",None),("Service needed","Service","select",SERVICE_NAMES),("Preferred date","Preferred date","date",None),("Describe the issue","Message","textarea",None)]
 
 # ------------------------------------------------------------------ PAGES
+LOGO_STRIP = [
+ # (slug, display name, region group)  → file: assets/img/brands/logos/<slug>.svg (preferred) or .png
+ ("range-rover","Range Rover","British"),("land-rover","Land Rover","British"),("jaguar","Jaguar","British"),("bentley","Bentley","British"),("rolls-royce","Rolls-Royce","British"),("mini","MINI","British"),("aston-martin","Aston Martin","British"),
+ ("mercedes-benz","Mercedes-Benz","German"),("bmw","BMW","German"),("audi","Audi","German"),("porsche","Porsche","German"),("volkswagen","Volkswagen","German"),("maybach","Maybach","German"),
+ ("ford","Ford","American"),("chevrolet","Chevrolet","American"),("gmc","GMC","American"),("cadillac","Cadillac","American"),("jeep","Jeep","American"),("dodge","Dodge","American"),("lincoln","Lincoln","American"),
+ ("toyota","Toyota","Japanese"),("lexus","Lexus","Japanese"),("nissan","Nissan","Japanese"),("infiniti","Infiniti","Japanese"),("honda","Honda","Japanese"),("mitsubishi","Mitsubishi","Japanese"),
+ ("hyundai","Hyundai","Korean"),("kia","Kia","Korean"),("genesis","Genesis","Korean"),
+]
+def logo_strip():
+    items = "".join(f'<li class="lstrip__item" title="{e(n)} service & repair"><picture><source srcset="/assets/img/brands/logos/{slug}.svg" type="image/svg+xml"><img src="/assets/img/brands/logos/{slug}.png" alt="{e(n)}" loading="lazy" decoding="async" width="160" height="64" onerror="this.closest(\'picture\').replaceWith(Object.assign(document.createElement(\'span\'),{{className:\'lstrip__name\',textContent:\'{e(n)}\'}}))"></picture></li>' for slug,n,g in LOGO_STRIP)
+    return f'''<section class="lstrip" aria-label="Brands we service">
+ <div class="wrap lstrip__head"><p class="kicker">Brands we service</p><p class="lstrip__sub">Specialists in Range Rover &amp; Land Rover, with the diagnostic platforms for every major British, German, American, Japanese and Korean marque.</p></div>
+ <div class="lstrip__track"><ul class="lstrip__row" role="list">{items}</ul><ul class="lstrip__row" role="list" aria-hidden="true">{items}</ul></div>
+</section>'''
+
 def build_home():
     feat = [s for s in SERVICES if s.get('featured')]
     svc_cards = "".join(service_card(s) for s in feat[:6])
@@ -378,6 +393,7 @@ def build_home():
  <div class="hero__marquee"><div class="marquee__track">{marquee}{marquee}</div></div>
 </section>
 
+{logo_strip()}
 <section class="trust"><div class="wrap">
  <div class="trust__item">{I("award")}<div><strong>25+ years</strong><span>Land Rover experience</span></div></div>
  <div class="trust__item">{I("diagnostics")}<div><strong>Dealer-level</strong><span>Diagnostic equipment</span></div></div>

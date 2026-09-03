@@ -239,6 +239,21 @@
   .crumbs a:hover{color:var(--bronze-2)}
   .crumbs li+li::before{content:"/";margin-inline-end:.5rem;opacity:.5}
 
+  /* Brand logo strip */
+  .lstrip{background:var(--white);border-block-end:1px solid var(--line);padding-block:var(--sp-6) var(--sp-5);overflow:hidden}
+  .lstrip__head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem 2rem;margin-block-end:var(--sp-5)}
+  .lstrip__head .kicker{margin:0}
+  .lstrip__sub{font-size:var(--fs--1);color:var(--muted);max-inline-size:60ch}
+  .lstrip__track{display:flex;gap:0;width:max-content;mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);animation:lstrip 70s linear infinite}
+  .lstrip__track:hover{animation-play-state:paused}
+  .lstrip__row{display:flex;align-items:center;gap:clamp(2.5rem,4vw,4.5rem);padding-inline-end:clamp(2.5rem,4vw,4.5rem)}
+  .lstrip__item{flex:none;display:grid;place-items:center;block-size:4rem;min-inline-size:8rem;filter:grayscale(1) opacity(.6);transition:filter .35s var(--ease),transform .35s var(--ease)}
+  .lstrip__item:hover{filter:none;transform:translateY(-2px)}
+  .lstrip__item img{block-size:3rem;inline-size:auto;max-inline-size:10rem;object-fit:contain}
+  .lstrip__name{font-family:var(--font-display);font-size:1.45rem;letter-spacing:-.01em;color:var(--graphite);white-space:nowrap;font-weight:500}
+  @keyframes lstrip{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.lstrip__track{animation:none;width:auto;flex-wrap:wrap}.lstrip__row+.lstrip__row{display:none}}
+
   /* Trust strip */
   .trust{background:var(--white);border-block-end:1px solid var(--line)}
   .trust .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:var(--sp-5);padding-block:var(--sp-6)}

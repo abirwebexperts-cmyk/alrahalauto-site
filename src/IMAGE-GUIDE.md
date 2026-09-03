@@ -41,3 +41,9 @@ assets/img/gallery/gallery-01.jpg … gallery-10.jpg
 
 ## Icons
 assets/img/apple-touch-icon.png (180 × 180 PNG of your logo). favicon.svg and logo.svg are already generated — replace with your own logo if you have one.
+
+## Brand logo strip (home page, under the hero)
+Upload official logo files to **assets/img/brands/logos/** using these exact names (SVG preferred; PNG with transparent background also works — name it `<slug>.png`):
+range-rover, land-rover, jaguar, bentley, rolls-royce, mini, aston-martin, mercedes-benz, bmw, audi, porsche, volkswagen, maybach, ford, chevrolet, gmc, cadillac, jeep, dodge, lincoln, toyota, lexus, nissan, infiniti, honda, mitsubishi, hyundai, kia, genesis
+Example: `assets/img/brands/logos/bmw.svg`. Recommended: horizontal logo, ~160×64 px box, transparent background. Logos show in full colour on hover and slide right-to-left; until a file exists the brand name is shown as text.
+Obtain logos from each manufacturer's official media/brand site and make sure you are permitted to display them.
