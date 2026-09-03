@@ -173,16 +173,28 @@
   .drawer nav a{font-family:var(--font-display);font-size:var(--fs-3);padding-block:.5rem;border-block-end:1px solid color-mix(in oklab,var(--ivory) 10%,transparent)}
   .drawer__foot{display:grid;gap:.75rem}
 
-  /* Hero — cinematic, single column, editorial type */
-  .hero{position:relative;isolation:isolate;background:var(--graphite);color:var(--ivory);min-block-size:min(92dvh,960px);display:grid;grid-template-rows:1fr auto;overflow:clip}
+  /* Hero — composed around the 2.2:1 workshop panorama */
+  .hero{position:relative;isolation:isolate;background:#171a24;color:var(--ivory);min-block-size:clamp(560px,78dvh,800px);display:grid;grid-template-rows:1fr auto;overflow:clip}
   .hero__media{position:absolute;inset:0;z-index:-2}
-  .hero__media img{inline-size:100%;block-size:100%;object-fit:cover;object-position:center 40%;opacity:.9;animation:hero-zoom 14s var(--ease) both}
+  .hero__media img{inline-size:100%;block-size:100%;object-fit:cover;object-position:78% 72%;animation:hero-zoom 16s var(--ease) both}
   .hero__media::after{content:"";position:absolute;inset:0;background:
-    linear-gradient(90deg,rgb(27 31 35 / .92) 0%,rgb(27 31 35 / .72) 38%,rgb(27 31 35 / .25) 75%,rgb(27 31 35 / .15) 100%),
-    linear-gradient(180deg,rgb(27 31 35 / .35) 0%,transparent 30%,rgb(27 31 35 / .9) 100%)}
-  .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(45% 55% at 12% 70%,color-mix(in oklab,var(--bronze) 22%,transparent),transparent 70%)}
+    linear-gradient(90deg,rgb(23 26 36 / .88) 0%,rgb(23 26 36 / .66) 34%,rgb(23 26 36 / .18) 62%,rgb(23 26 36 / 0) 85%),
+    linear-gradient(180deg,rgb(23 26 36 / .45) 0%,transparent 28%,transparent 70%,rgb(23 26 36 / .9) 100%)}
+  .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(40% 50% at 10% 75%,color-mix(in oklab,var(--bronze) 18%,transparent),transparent 70%)}
   .hero::after{content:"";position:absolute;inset-inline:0;inset-block-start:0;block-size:1px;background:linear-gradient(90deg,transparent,color-mix(in oklab,var(--bronze) 60%,transparent),transparent);z-index:1}
-  .hero__inner{position:relative;display:grid;gap:clamp(1.2rem,1rem + 1.2vw,2rem);align-content:center;padding-block:clamp(3rem,2.5rem + 3vw,5rem) clamp(2.5rem,2rem + 3vw,4rem);max-inline-size:min(100% - 2.5rem,1240px)}
+  .hero__title,.hero__lede{text-shadow:0 2px 24px rgb(0 0 0 / .45)}
+  /* Ultra-wide: the panorama fits naturally, keep it uncropped */
+  @media (min-aspect-ratio:2/1){.hero{min-block-size:min(78dvh,calc(100vw / 2.22))}.hero__media img{object-position:center 80%}}
+  /* Tablet portrait & phones: stack — text on dark, then the full photo beneath */
+  @media (max-width:900px){
+    .hero{min-block-size:auto;grid-template-rows:auto auto auto}
+    .hero__media{position:relative;inset:auto;order:2;aspect-ratio:16/10;z-index:0}
+    .hero__media img{object-position:74% 65%;animation:none}
+    .hero__media::after{background:linear-gradient(180deg,rgb(23 26 36 / .55) 0%,transparent 25%,transparent 80%,rgb(23 26 36 / .85) 100%)}
+    .hero::before{display:none}
+    .hero__marquee{order:3}
+  }
+  .hero__inner{position:relative;display:grid;gap:clamp(1.2rem,1rem + 1.2vw,2rem);align-content:center;max-inline-size:min(100% - 2.5rem,1240px);inline-size:100%;margin-inline:auto;padding-block:clamp(3rem,2.5rem + 3vw,5rem) clamp(2.5rem,2rem + 3vw,4rem);max-inline-size:min(100% - 2.5rem,1240px)}
   .hero__eyebrow{display:flex;align-items:center;gap:.9rem;font-size:var(--fs--1);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze-2);max-inline-size:none}
   .hero__rule{display:block;inline-size:2.6rem;block-size:1px;background:var(--bronze-2);flex:none}
   .hero__dot{inline-size:.3rem;block-size:.3rem;border-radius:50%;background:var(--bronze-2);opacity:.8}
@@ -208,7 +220,7 @@
   @keyframes hero-in{from{opacity:0;translate:0 22px;filter:blur(4px)}to{opacity:1;translate:0 0;filter:blur(0)}}
   @keyframes hero-zoom{from{scale:1.06}to{scale:1}}
   @keyframes scroll-line{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-  @media (max-width:640px){.hero{min-block-size:auto}.hero__title{max-inline-size:none}.hero__title br{display:none}.hero__proof{grid-template-columns:1fr 1fr;gap:1rem}.hero__eyebrow{display:block;font-size:.7rem;letter-spacing:.12em;line-height:1.7}.hero__rule{display:none}.hero__dot{display:inline-block;vertical-align:middle;margin-inline:.5rem}}
+  @media (max-width:640px){.hero__title{max-inline-size:none}.hero__title br{display:none}.hero__proof{grid-template-columns:1fr 1fr;gap:1rem}.hero__eyebrow{display:block;font-size:.7rem;letter-spacing:.12em;line-height:1.7}.hero__rule{display:none}.hero__dot{display:inline-block;vertical-align:middle;margin-inline:.5rem}}
   .hero__marquee{position:relative;border-block-start:1px solid color-mix(in oklab,var(--ivory) 14%,transparent);background:color-mix(in oklab,var(--graphite) 70%,transparent);backdrop-filter:blur(6px);padding-block:.9rem;overflow:hidden;mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
   .marquee__track{display:flex;gap:3rem;width:max-content;animation:marquee 40s linear infinite;font-family:var(--font-display);font-size:var(--fs-1);color:color-mix(in oklab,var(--ivory) 70%,transparent)}
   .marquee__track span{display:flex;gap:3rem;align-items:center}
