@@ -87,8 +87,12 @@ ICONS = {
 
 # ------------------------------------------------------------------ LAYOUT
 LOGO = '''<a class="logo" href="/" aria-label="{name} home">
-  <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 6 13v22l18 10 18-10V13z" fill="none" stroke="#B59255" stroke-width="2"/><path d="M14 30 24 10l10 20h-5l-5-10-5 10z" fill="#B59255"/><path d="M17 33h14" stroke="#B59255" stroke-width="2.5" stroke-linecap="round"/></svg>
-  <span>{short}<small>Auto Maintenance</small></span></a>'''.format(name=CFG['name'], short=CFG['short'])
+  <picture>
+    <source media="(max-width:480px)" type="image/webp" srcset="/assets/brand/logo-compact.webp 1x, /assets/brand/logo-compact@2x.webp 2x">
+    <source media="(max-width:480px)" srcset="/assets/brand/logo-compact.png 1x, /assets/brand/logo-compact@2x.png 2x">
+    <source type="image/webp" srcset="/assets/brand/logo.webp 1x, /assets/brand/logo@2x.webp 2x">
+    <img src="/assets/brand/logo.png" srcset="/assets/brand/logo.png 1x, /assets/brand/logo@2x.png 2x" alt="{name}" width="{w}" height="48" decoding="async">
+  </picture></a>'''.format(name=CFG['name'], w=round(2106*48/254))
 
 NAV = [("Range Rover","/brands/range-rover/"),("Land Rover","/brands/land-rover/"),("Services","/services/"),("Models","/models/"),("About","/about/"),("Blog","/blog/"),("Contact","/contact/")]
 
@@ -108,7 +112,7 @@ def header(current):
 <header class="header"><div class="wrap">
   {LOGO}
   <nav class="nav" aria-label="Main">{links}</nav>
-  <a class="btn btn--wa header__cta" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a>
+  <a class="btn btn--wa header__cta" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} <span>Book on</span> WhatsApp</a>
   <button class="burger" data-open-drawer aria-label="Open menu">{I("menu")}</button>
 </div></header>
 <div class="drawer" id="drawer" aria-hidden="true">
@@ -138,7 +142,7 @@ def footer():
 
 def local_business_schema():
     return {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+"/#business","name":CFG['name'],"url":CFG['url'],
-      "image":CFG['url']+"/assets/img/hero/home-hero.jpg","logo":CFG['url']+"/assets/img/logo.svg","telephone":["+"+CFG['phone_intl'],"+"+CFG['landline_intl']],"email":CFG['email'],
+      "image":CFG['url']+"/assets/img/hero/home-hero.jpg","logo":CFG['url']+"/assets/brand/logo.png","telephone":["+"+CFG['phone_intl'],"+"+CFG['landline_intl']],"email":CFG['email'],
       "priceRange":"$$",
       "address":{"@type":"PostalAddress","streetAddress":CFG['address'],"addressLocality":CFG['city'],"addressCountry":"AE"},
       "geo":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},
@@ -172,7 +176,7 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/img/he
 <meta property="og:type" content="{kind}"><meta property="og:site_name" content="{e(CFG['name'])}"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{CFG['url']}/{image}"><meta property="og:locale" content="en_AE">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}"><meta name="twitter:description" content="{e(desc)}"><meta name="twitter:image" content="{CFG['url']}/{image}">
 <meta name="geo.region" content="AE"><meta name="geo.placename" content="{e(CFG['city'])}">
-<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/brand/favicon.ico" sizes="any"><link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml"><link rel="icon" href="/assets/brand/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/main.css?v={ASSET_VER}">
@@ -493,8 +497,6 @@ def build_static():
     shutil.copytree(assets_src, os.path.join(OUT, "assets"), dirs_exist_ok=True)
     # favicon / logo svg
     fav = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#1B1F23"/><path d="M14 33 24 11l10 22h-5l-5-11-5 11z" fill="#B59255"/><path d="M17 36h14" stroke="#B59255" stroke-width="3" stroke-linecap="round"/></svg>'
-    open(os.path.join(OUT,"assets/img/favicon.svg"),"w").write(fav)
-    open(os.path.join(OUT,"assets/img/logo.svg"),"w").write(fav)
     # robots + sitemap + htaccess
     open(os.path.join(OUT,"robots.txt"),"w").write(f"User-agent: *\nAllow: /\nSitemap: {CFG['url']}/sitemap.xml\n")
     urls = "".join(f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod><changefreq>weekly</changefreq><priority>{p}</priority></url>" for u,p in SITEMAP)

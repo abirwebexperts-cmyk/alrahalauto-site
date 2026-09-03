@@ -150,11 +150,13 @@
   /* Header */
   .header{position:sticky;inset-block-start:0;z-index:50;background:color-mix(in oklab,var(--ivory) 88%,transparent);backdrop-filter:blur(14px);border-block-end:1px solid var(--line)}
   .header .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-5);min-block-size:4.5rem}
-  .logo{display:flex;align-items:center;gap:.7rem;font-family:var(--font-display);font-size:1.3rem;line-height:1;letter-spacing:-.01em}
-  .logo svg{inline-size:2.4rem;block-size:2.4rem}
-  .logo small{display:block;font-family:var(--font-body);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);margin-block-start:.25rem;font-weight:700}
-  .nav{display:none;gap:1.6rem;font-weight:600;font-size:var(--fs--1)}
-  .nav a{position:relative;padding-block:.4rem}
+  .logo{display:flex;align-items:center;flex:none}
+  .logo img{block-size:44px;inline-size:auto;max-inline-size:min(60vw,360px);object-fit:contain}
+  @media (min-width:1000px) and (max-width:1200px){.logo img{block-size:30px}.header__cta span{display:none}.header__cta{padding:.7rem 1rem}.hours__closed{display:none}.header .wrap{gap:1rem}.nav{gap:.8rem}}
+  @media (max-width:480px){.logo img{block-size:34px}}
+  .drawer .logo img,.footer .logo img{block-size:40px}
+  .nav{display:none;gap:clamp(.85rem,1.4vw,1.6rem);font-weight:600;font-size:var(--fs--1)}
+  .nav a{position:relative;padding-block:.4rem;white-space:nowrap}
   .nav a::after{content:"";position:absolute;inset-inline:0;inset-block-end:0;block-size:2px;background:var(--bronze);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
   .nav a:hover::after,.nav a[aria-current=page]::after{transform:scaleX(1)}
   .header__cta{display:none}
