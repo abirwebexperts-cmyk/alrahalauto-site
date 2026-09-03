@@ -1,0 +1,13 @@
+# cPanel Git deployment: copies the built site into public_html on every deploy.
+# Backup of the previous release is kept in ~/backups (last 10 kept).
+---
+deployment:
+  tasks:
+    - export SITE=/home/$USER/public_html
+    - export BK=/home/$USER/backups/site-$(date +%Y%m%d-%H%M%S)
+    - mkdir -p /home/$USER/backups
+    - cp -a $SITE $BK
+    - ls -dt /home/$USER/backups/site-* | tail -n +11 | xargs -r rm -rf
+    - /bin/rsync -a --delete --exclude 'assets/img/' --exclude '.well-known/' --exclude 'cgi-bin/' dist/ $SITE/
+    - /bin/rsync -a --ignore-existing dist/assets/img/ $SITE/assets/img/
+    - find $SITE -type d -exec chmod 755 {} + -o -type f -exec chmod 644 {} +

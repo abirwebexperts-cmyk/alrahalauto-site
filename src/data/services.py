@@ -1,0 +1,268 @@
+# Service pages. Each entry generates /services/<slug>/ plus one page per Land Rover model.
+# Edit text freely. Image path: assets/img/services/<slug>.jpg (1600x1200 recommended).
+
+SERVICES = [
+ dict(slug="range-rover-engine-repair", name="Engine Repair & Rebuild", icon="engine", featured=True,
+  short="Diagnosis, repair and full rebuilds for Range Rover petrol and diesel engines, including timing chains, head gaskets and low-compression faults.",
+  intro=[
+   "Range Rover engines are engineered for effortless torque, and they reward owners who service them properly. When something does go wrong, it rarely announces itself politely: a ticking on cold start, a coolant level that keeps dropping, a misfire that only appears under load. Our engine bay begins with evidence, not guesswork, running compression, leak-down and live data tests before a single bolt is touched.",
+   "We rebuild the 3.0 TDV6 and SDV6, the 5.0 supercharged V8, the 2.0 Ingenium petrol and diesel, and the older 4.4 TDV8 in-house. Timing chain stretch on the V6 diesel, crankshaft concerns on early 3.0 units, and stretch-bolt head sealing on the V8 are jobs we complete every week, using genuine or OE-equivalent components and factory torque procedures."],
+  includes=["Compression and cylinder leak-down testing","Timing chain and tensioner replacement","Head gasket, valve and cylinder head machining","Crankshaft, bearing and piston ring rebuilds","Turbocharger inspection and replacement","Oil pump, cooler and sump reseal","Post-repair road test and diagnostic report"],
+  signs=["Rattling or ticking noise on cold start","Blue or white smoke from the exhaust","Loss of power and reduced turbo boost","Engine warning light with misfire codes","Oil or coolant contamination on the dipstick"],
+  faqs=[("Is it worth rebuilding a Range Rover engine rather than replacing it?","In most cases yes. A rebuild lets us renew only the worn components while keeping the original block and matched ancillaries, and it usually costs considerably less than a new or reconditioned long block. We will always show you the measurements and let you decide."),
+        ("How long does an engine rebuild take?","A timing chain job is typically two to three days. A full rebuild with machining is usually seven to ten working days, depending on parts availability and the machining required."),
+        ("Do you offer a warranty on engine work?","Yes. All engine repairs carry a parts and labour warranty, with the exact term confirmed in writing on your invoice before work starts.")]),
+
+ dict(slug="range-rover-gearbox-repair", name="Gearbox & Transmission", icon="gearbox", featured=True,
+  short="ZF 8-speed automatic diagnostics, valve body repair, mechatronic units, fluid services and full transmission rebuilds.",
+  intro=[
+   "The ZF 8HP automatic used across the Range Rover family is a superb gearbox, but it is not 'sealed for life' in the way many owners have been told. Fluid degrades, valve body solenoids wear, and mechatronic units develop faults that show up as harsh downshifts, delayed engagement or a limp-home message on the dashboard.",
+   "Al Rahal handles transmissions the way the factory intended: fluid changed at the correct temperature with the correct adaptation reset, valve bodies tested on the bench, and full rebuilds performed on a clean-room table with new clutch packs, seals and torque converter. We also service transfer cases, differentials and the electronic parking brake modules that go with them."],
+  includes=["ZF 8HP and 6HP fluid and filter service with adaptation reset","Valve body and mechatronic unit repair","Torque converter and clutch pack rebuild","Transfer case and differential oil services","Drive shaft, propshaft and CV joint replacement","Gearbox software update and calibration"],
+  signs=["Harsh or delayed gear changes","Gearbox fault message or restricted performance","Shuddering at low speed","Slipping under acceleration","Fluid leak beneath the transmission"],
+  faqs=[("Does the Range Rover gearbox really need a fluid change?","Yes. Although marketed as lifetime fluid, ZF itself recommends a change around every 80,000 to 100,000 km. In Gulf heat and stop-start traffic we recommend closer to 60,000 km to protect the clutch packs."),
+        ("Can a mechatronic unit be repaired rather than replaced?","Often it can. Many faults are individual solenoids or the internal wiring loom, which we replace and then test. When a full unit is needed we fit a genuine or remanufactured part and code it to the vehicle."),
+        ("What is the cost of a gearbox rebuild?","It depends on which components are worn. Send us your registration and symptoms on WhatsApp and we will give you an honest range before you visit.")]),
+
+ dict(slug="air-suspension-repair", name="Air Suspension Repair", icon="suspension", featured=True,
+  short="Compressors, air struts, valve blocks, height sensors and leak tracing for every air-sprung Range Rover and Land Rover.",
+  intro=[
+   "Nothing spoils the Range Rover experience faster than a car that sags overnight or refuses to rise from access height. Air suspension faults are the most common reason owners come to us, and they are also one of the most misdiagnosed. Replacing a compressor when the real fault is a pinhole in a strut bag simply moves the problem along.",
+   "Our approach is methodical. We pressurise the system, soap-test every strut, line and fitting, check the valve block, and read compressor run times and duty cycle from the control module before recommending anything. We stock genuine, Dunlop and Arnott air springs and compressors so most repairs are completed the same day."],
+  includes=["Full system leak test and pressure hold check","Front and rear air strut replacement","Compressor, dryer and relay replacement","Valve block and pipe repair","Height sensor replacement and calibration","Suspension module software reset"],
+  signs=["Vehicle drops on one corner overnight","Suspension fault or 'normal height only' warning","Compressor running constantly or loudly","Vehicle slow to rise from access height","Uneven ride height side to side"],
+  faqs=[("Why does my Range Rover sink on one side when parked?","A leaking air spring on that corner is the usual cause. The compressor keeps the car level while it is running, but once parked the air escapes. We can confirm with a soap test in minutes."),
+        ("Can I convert to coil springs instead?","We can, but we rarely recommend it. Coil conversions remove the ride quality and off-road capability that make the car special. A properly repaired air system is reliable for many years."),
+        ("How long does an air strut replacement take?","Usually two to three hours per axle including calibration.")]),
+
+ dict(slug="brake-service", name="Brake Service & Repair", icon="brake", featured=True,
+  short="Pads, discs, calipers, electronic parking brakes and brake fluid services with genuine and Brembo components.",
+  intro=[
+   "A Range Rover weighs well over two tonnes and is capable of very high speeds, so its brakes work harder than almost any other family vehicle. Heat cycling in the Gulf accelerates pad glazing and disc warping, and the electronic parking brake on later models has its own service requirements that many general garages simply skip.",
+   "We fit genuine Land Rover, Brembo and Textar friction components, machine or replace discs to the correct run-out tolerance, and use the correct workshop tool to retract and re-calibrate the electronic parking brake. Every brake job finishes with a fluid boiling-point test and a road test that includes an ABS check."],
+  includes=["Front and rear pad and disc replacement","Brake caliper rebuild or replacement","Electronic parking brake motor and calibration","Brake fluid flush with DOT4 low-viscosity fluid","ABS sensor and wheel-speed diagnostics","Brake hose and line replacement"],
+  signs=["Squealing, grinding or judder when braking","Pulling to one side under braking","Parking brake warning or failure to release","Spongy or long brake pedal","Brake wear indicator on the dashboard"],
+  faqs=[("How often should Range Rover brake pads be replaced?","Typically every 30,000 to 50,000 km depending on driving style. Heavy city driving and towing shorten this considerably."),
+        ("Do I need to replace the discs with the pads?","Not always. We measure disc thickness and run-out and only recommend replacement when they are below the manufacturer's minimum or warped."),
+        ("Why does my electronic parking brake keep faulting?","Most often the actuator motor or the rear caliper mechanism is sticking. We can service or replace it and recalibrate the system.")]),
+
+ dict(slug="periodic-service", name="Periodic Service & Oil Change", icon="oil", featured=True,
+  short="Manufacturer-schedule servicing with genuine filters, Castrol Edge Professional oils and a digital service book stamp.",
+  intro=[
+   "Regular servicing is the cheapest insurance a Range Rover owner can buy. Modern Ingenium and V8 engines rely on precise oil specifications, extended-life filters and software checks that go far beyond a simple oil change. Missing a service interval in extreme temperatures is the most common origin of the expensive faults we see later.",
+   "We follow the Land Rover service schedule exactly, using Castrol Edge Professional oils to the correct specification, genuine oil, air, cabin and fuel filters, and a 60-point inspection that includes suspension, brakes, tyres, battery health and a full diagnostic scan. Your online service history is updated so your warranty and resale value are protected."],
+  includes=["Engine oil and filter with correct Land Rover specification","Air, pollen and fuel filter replacement","Full diagnostic scan and software check","60-point safety and wear inspection","Brake fluid and coolant condition tests","Digital service record update"],
+  signs=["Service due message on the dashboard","More than 12 months or 16,000 km since last service","Recently purchased pre-owned vehicle","Planning a long road trip","Preparing the vehicle for sale"],
+  faqs=[("How often should a Range Rover be serviced?","Every 16,000 km or 12 months for most current models, whichever comes first. In Gulf conditions we recommend an interim oil change at 8,000 km for supercharged and diesel engines."),
+        ("Will servicing at Al Rahal affect my warranty?","No. Using a qualified independent workshop with genuine parts and the correct schedule keeps your manufacturer warranty intact, and we update the online service record."),
+        ("How long does a service take?","A standard service is around two hours. A major service with all filters and brake fluid is half a day.")]),
+
+ dict(slug="diagnostics", name="Computer Diagnostics", icon="diagnostics", featured=True,
+  short="Dealer-level diagnostic equipment for every Land Rover module, from engine and gearbox to infotainment and body control.",
+  intro=[
+   "A Range Rover carries more than sixty electronic control modules talking to each other over multiple networks. A warning light on the dashboard is the very end of a long chain of events, and reading a code is only the first step. Understanding why it set, and whether the cause is electrical, mechanical or software, is what separates a fix from a parts-swapping guess.",
+   "We use Land Rover's own Pathfinder and SDD diagnostic platforms alongside Autel and oscilloscope-based testing, so we can read live data, run guided tests, perform software updates and code new components exactly as the main dealer does. You receive a written diagnostic report with a clear recommendation and a fixed price to repair."],
+  includes=["Full-vehicle module scan with fault code report","Live data analysis and guided function tests","Software updates and module programming","Key programming and immobiliser repair","CAN bus and wiring fault tracing","Battery and charging system analysis"],
+  signs=["Any warning light on the dashboard","Intermittent electrical fault","Vehicle in restricted performance mode","Features not working after a battery change","Buying a used Range Rover and want a health check"],
+  faqs=[("How much is a diagnostic check?","We charge a fixed diagnostic fee which is deducted from the repair cost if you go ahead with our recommendation. Message us on WhatsApp for the current price."),
+        ("Can you clear the codes without repairing the fault?","We can, but the fault will return. We would rather find the root cause and fix it once."),
+        ("Do you have the same diagnostic tools as the dealer?","Yes. We run the Land Rover Pathfinder and SDD systems with current software subscriptions.")]),
+
+ dict(slug="ac-repair", name="Air Conditioning Service", icon="ac", featured=True,
+  short="Compressor, condenser, evaporator and climate control repairs to keep every seat ice cold in 50°C summers.",
+  intro=[
+   "Air conditioning is not a comfort feature in the Gulf; it is essential equipment. Range Rover climate systems are complex, with multi-zone control, rear cabin units, chilled seats and cooled centre consoles all sharing one refrigerant circuit. When cooling fades, the cause is rarely 'just a top-up'.",
+   "We recover, weigh and recharge refrigerant on a calibrated machine, dye-test for leaks, check compressor clutch and control valve operation, and clean evaporators to remove the odour-causing bacteria that build up in humid conditions. Condensers damaged by road debris and blocked cabin filters are the most common causes of poor performance, and both are fixed in a single visit."],
+  includes=["Refrigerant recovery, vacuum and precise recharge","Leak detection with UV dye and electronic sniffer","Compressor, condenser and evaporator replacement","Blend door actuator and climate module repair","Evaporator antibacterial cleaning","Cabin filter and blower motor replacement"],
+  signs=["Air not cold enough or cooling fades in traffic","Bad smell when the AC starts","Compressor clicking on and off","Different temperatures from different vents","Water leaking into the footwell"],
+  faqs=[("How often should Range Rover AC be serviced?","We recommend a full performance check and evaporator clean every year before summer, and a refrigerant service every two years."),
+        ("Why does my AC smell musty?","Bacteria and mould on the evaporator core. Our antibacterial treatment removes it and a new cabin filter helps prevent it returning."),
+        ("Do you use the correct refrigerant for my model?","Yes. We stock both R134a and R1234yf for newer vehicles and use the exact weight specified for your model.")]),
+
+ dict(slug="electrical-repair", name="Electrical & Wiring Repair", icon="electrical", featured=False,
+  short="Parasitic drain tracing, harness repairs, module coding and battery system faults solved at the root.",
+  intro=[
+   "Electrical gremlins are the faults that frustrate owners most: a battery that is flat after a weekend, a window that works only sometimes, a tailgate that opens on its own. Range Rovers have complex power management with dual batteries on many models, and small faults can cascade into a dashboard full of warnings.",
+   "Our electrical technicians use oscilloscopes, current clamps and factory wiring diagrams to find the real cause. We repair harnesses to OEM standards rather than replacing entire looms, and we correctly register new batteries with the vehicle so the charging strategy is reset."],
+  includes=["Parasitic battery drain diagnosis","Main and auxiliary battery replacement with registration","Wiring harness and connector repair","Module replacement and coding","Lighting, window and tailgate motor repair","Alternator and starter motor replacement"],
+  signs=["Battery going flat overnight","Multiple random warning lights","Windows, mirrors or seats stopping intermittently","Infotainment rebooting or blank screen","Vehicle not starting despite a good battery"],
+  faqs=[("Why does my Range Rover battery keep going flat?","Usually a module that fails to go to sleep, keeping the network awake. We measure the drain over time and isolate the circuit responsible."),
+        ("Do you need to register a new battery?","Yes. Without registration the vehicle continues to charge as if the old, tired battery is fitted, shortening the life of the new one."),
+        ("Can you repair a damaged wiring loom?","In almost every case. We use OEM-grade wire, terminals and heat-shrink to restore the loom to factory standard.")]),
+
+ dict(slug="cooling-system-repair", name="Cooling System & Overheating", icon="cooling", featured=False,
+  short="Radiators, water pumps, thermostats, coolant pipes and head gasket checks for engines that must survive Gulf heat.",
+  intro=[
+   "Cooling systems on Range Rovers are pushed to their limits every summer. Plastic coolant crossover pipes on the 5.0 V8, thermostat housings on the TDV6 and auxiliary water pumps on the Ingenium engines are all known wear items, and a small leak can become a warped cylinder head within minutes if it is ignored.",
+   "We pressure-test the entire system, inspect every hose and pipe with a borescope, and check for combustion gases in the coolant before diagnosing. Repairs use genuine or upgraded aluminium replacement parts where available, and we finish with a vacuum fill so there are no air pockets."],
+  includes=["Cooling system pressure and combustion-gas test","Radiator, expansion tank and hose replacement","Water pump and auxiliary pump replacement","Thermostat and housing replacement","Coolant crossover pipe upgrade for V8 engines","Vacuum coolant fill and bleed"],
+  signs=["Temperature gauge climbing in traffic","Coolant level dropping with no visible leak","Sweet smell or steam from the engine bay","Heater blowing cold while engine is hot","Low coolant warning on the dashboard"],
+  faqs=[("Is overheating serious on a Range Rover?","Very. Aluminium engines tolerate very little overheating before the cylinder head distorts. Stop the vehicle and call us on WhatsApp for recovery."),
+        ("What coolant do you use?","Genuine Land Rover long-life coolant mixed to the correct ratio. Mixing coolant types can cause corrosion and gelling."),
+        ("How often should the coolant be changed?","Every five years or 150,000 km, or sooner if the system has been opened for a repair.")]),
+
+ dict(slug="turbo-repair", name="Turbocharger Repair", icon="turbo", featured=False,
+  short="Turbo diagnosis, actuator repair, reconditioned and new turbochargers for TDV6, SDV6 and Ingenium engines.",
+  intro=[
+   "Turbochargers spin at over 150,000 rpm and rely entirely on clean, cool oil. Extended oil intervals and short journeys coke the bearings, and a failed turbo can send oil through the intercooler and into the engine. Catching the early signs saves a great deal of money.",
+   "We check boost pressure against target, inspect shaft play with a borescope, test the electronic actuator and check oil feed and return lines before condemning a unit. Where replacement is needed we fit genuine or Garrett remanufactured turbochargers and always renew the oil feed pipe, gaskets and engine oil at the same time."],
+  includes=["Boost pressure and actuator diagnostic tests","Turbo shaft play and borescope inspection","Turbocharger replacement with new oil lines","Electronic actuator repair or replacement","Intercooler cleaning after turbo failure","Post-fit oil change and road test"],
+  signs=["Whistling or siren noise under acceleration","Loss of power and 'restricted performance'","Blue smoke from the exhaust","Excessive oil consumption","Boost pressure fault codes"],
+  faqs=[("Can a Range Rover turbo be repaired?","Sometimes the actuator or a boost pipe is the fault rather than the turbo itself. If the core is worn we recommend a remanufactured or new unit rather than a cheap rebuild kit."),
+        ("Why must the oil lines be replaced?","Old oil feed lines carry carbon deposits that can starve the new turbo of oil. Replacing them is a warranty condition for us."),
+        ("How long does a turbo replacement take?","Usually one to two days, depending on access on your particular engine.")]),
+
+ dict(slug="steering-repair", name="Steering & Rack Repair", icon="steering", featured=False,
+  short="Electric and hydraulic steering rack repair, column modules, tie rods and four-wheel alignment.",
+  intro=[
+   "Steering on a Range Rover should be silent and precise. When you hear a knock over bumps, feel a notch at centre or see a power steering warning, the cause could be the rack, the column, the pump or simply worn linkages. Replacing a rack unnecessarily is an expensive mistake.",
+   "We test hydraulic pressure on older models and read torque sensor and motor data on electric racks, inspect all ball joints and tie rods, and only then recommend a repair. Every steering job finishes on our four-wheel alignment rig with the steering angle sensor recalibrated."],
+  includes=["Steering rack inspection and replacement","Electric power steering module diagnosis","Power steering pump and hose replacement","Tie rod, ball joint and steering arm renewal","Steering column and lock module repair","Four-wheel alignment and sensor calibration"],
+  signs=["Knocking or clunking when turning","Heavy or notchy steering","Power steering warning message","Vehicle wandering or pulling","Fluid leak near the rack"],
+  faqs=[("Why is my steering heavy on cold start?","On hydraulic systems, a failing pump or blocked filter. On electric racks, usually a module or torque sensor issue that we can diagnose quickly."),
+        ("Do I need an alignment after steering repairs?","Yes, always. Correct alignment protects your tyres and restores the straight-ahead feel."),
+        ("Can a steering rack be reconditioned?","Yes, on many models we can fit a reconditioned rack with a warranty at a much lower price than a new one.")]),
+
+ dict(slug="wheel-alignment-tyres", name="Wheel Alignment & Tyres", icon="tyre", featured=False,
+  short="Laser four-wheel alignment, premium tyre supply, balancing, TPMS sensors and run-flat replacement.",
+  intro=[
+   "Range Rover suspension geometry is sensitive to ride height, so an alignment done without first setting the air suspension to the correct level is wrong before it begins. Uneven tyre wear on the inner edge is the classic result, and 22-inch tyres are not cheap to replace early.",
+   "We set ride height, then align to Land Rover specification with a Hunter laser system. We supply Pirelli, Continental, Michelin and Goodyear tyres in the correct load rating, balance with road-force measurement, and service or replace TPMS sensors so the dashboard stays quiet."],
+  includes=["Laser four-wheel alignment at correct ride height","Premium tyre supply and fitting","Road-force wheel balancing","TPMS sensor replacement and programming","Puncture repair to BS AU159 standard","Nitrogen inflation"],
+  signs=["Uneven or inner-edge tyre wear","Steering wheel off centre","Vibration at motorway speed","Tyre pressure warning that will not clear","New tyres fitted recently"],
+  faqs=[("How often should I align my Range Rover?","Every 20,000 km, after any suspension work, or whenever new tyres are fitted."),
+        ("Which tyres are best for a Range Rover in the UAE?","Tyres with a high temperature rating and the correct XL load index. We can recommend the right option for your model and driving."),
+        ("Can you repair a run-flat tyre?","Only in limited circumstances. We inspect the internal structure and advise honestly.")]),
+
+ dict(slug="battery-replacement", name="Battery Replacement", icon="battery", featured=False,
+  short="AGM main and auxiliary batteries, correct coding and registration, and charging system checks.",
+  intro=[
+   "Heat kills batteries. In the Gulf a Range Rover battery rarely lasts more than two to three years, and when it weakens the vehicle starts throwing electrical faults long before it fails to crank. Many models also carry a second auxiliary battery that owners are unaware of.",
+   "We test both batteries and the charging system, fit the correct AGM battery with the right capacity, register it to the body control module, and reset the stored charge history so the intelligent charging system works as designed. Most replacements are done while you wait."],
+  includes=["Battery and alternator load test","Main AGM battery replacement","Auxiliary battery replacement","Battery registration and charging reset","Terminal and earth strap cleaning","Stop-start system check"],
+  signs=["Slow cranking on start","Stop-start not operating","Random warning lights at start-up","Battery warning or 'low battery' message","Battery older than two years"],
+  faqs=[("Can I fit a battery myself?","Physically yes, but without registration the car will not charge it correctly and electrical faults may appear. We recommend professional fitting."),
+        ("Which battery brand do you use?","Genuine Land Rover, Varta or Bosch AGM batteries depending on availability and your preference."),
+        ("Why does my Range Rover have two batteries?","The auxiliary battery supports the stop-start system and keeps electronics stable during engine restarts.")]),
+
+ dict(slug="transfer-case-differential", name="Transfer Case & Differentials", icon="drivetrain", featured=False,
+  short="Transfer box, front and rear differential, locking diff and driveline vibration repairs for permanent four-wheel drive.",
+  intro=[
+   "Every Range Rover drives all four wheels all the time, so the transfer case and differentials work as hard as the engine. Neglected oil, worn chains and failing motor actuators show up as whining, vibration at speed or a 'transfer box fault' message.",
+   "We service and rebuild transfer boxes including the chain and clutch pack, replace differential bearings and seals, and repair the electronic locking differential and its motor. Propshaft centre bearings and CV joints are checked at the same time so you leave with a silent driveline."],
+  includes=["Transfer box oil service and chain replacement","Front and rear differential rebuild","Electronic locking differential motor repair","Propshaft and centre bearing replacement","Driveline vibration diagnosis","Terrain Response system checks"],
+  signs=["Whining noise that changes with speed","Vibration through the floor at speed","Transfer box or differential fault message","Clunk on take-off","Oil leak at the rear differential"],
+  faqs=[("How often should transfer case oil be changed?","Every 60,000 km in our conditions, or sooner if you drive off-road or tow regularly."),
+        ("Can a transfer box be rebuilt?","Yes. Chains, bearings and actuators are all serviceable and far cheaper than a replacement unit."),
+        ("What causes a driveline vibration?","Most commonly a worn propshaft centre bearing or CV joint. We check both on the lift before quoting.")]),
+
+ dict(slug="exhaust-dpf-repair", name="Exhaust & DPF Cleaning", icon="exhaust", featured=False,
+  short="DPF regeneration and cleaning, EGR valve service, AdBlue system repair and exhaust replacement.",
+  intro=[
+   "Diesel Range Rovers are superb long-distance cars, but short urban trips stop the particulate filter from regenerating. The result is a blocked DPF, a restricted performance message and, if ignored, damage to the turbocharger. AdBlue system faults on newer models bring their own countdown-to-no-start warnings.",
+   "We perform forced regenerations, off-car DPF cleaning that restores the filter to nearly new, EGR cleaning and replacement, and AdBlue injector, pump and sensor repairs. Petrol models are catered for too, with catalyst and exhaust manifold replacement and custom stainless repairs."],
+  includes=["DPF forced regeneration and pressure testing","Off-car DPF cleaning service","EGR valve and cooler cleaning or replacement","AdBlue tank, pump, injector and NOx sensor repair","Exhaust manifold, flexi and silencer replacement","Emissions and smoke testing"],
+  signs=["DPF full or 'exhaust filter' warning","Restricted performance mode","AdBlue countdown warning","Black smoke or strong diesel smell","Exhaust rattle or blowing noise"],
+  faqs=[("Can a blocked DPF be cleaned instead of replaced?","In most cases yes. Our cleaning process restores over 95% of the filter's capacity at a fraction of replacement cost."),
+        ("Why does my AdBlue warning keep coming back?","Usually a crystallised injector or a faulty NOx sensor rather than the fluid itself. We diagnose before replacing anything."),
+        ("Should I remove the DPF?","No. It is illegal, damages the engine's calibration and will fail vehicle inspection.")]),
+
+ dict(slug="infotainment-repair", name="Infotainment & Electronics", icon="screen", featured=False,
+  short="Pivi Pro and InControl Touch repairs, screen replacement, camera systems, Meridian audio and software updates.",
+  intro=[
+   "The dashboard screen is now the control centre of the car. When it freezes, reboots or goes blank you lose navigation, climate control and camera views at once. Land Rover infotainment has evolved through several generations, each with its own weaknesses, and we repair them all.",
+   "We replace failed touch screens and control units, update Pivi Pro and InControl software, repair 360-degree camera and parking sensor faults, and diagnose Meridian amplifier and speaker issues. Where possible we repair boards rather than replacing complete units."],
+  includes=["Touch screen and display replacement","Pivi Pro / InControl software updates","Reverse and 360 camera system repair","Parking sensor and module replacement","Meridian audio amplifier and speaker repair","Apple CarPlay and Android Auto activation"],
+  signs=["Screen blank, frozen or rebooting","Camera view not displaying","Navigation or maps out of date","Audio cutting out or no sound","Parking sensors constantly beeping"],
+  faqs=[("Can you update the maps and software on my Range Rover?","Yes, we can update both the system software and navigation maps on most models."),
+        ("Why does my screen keep restarting?","Usually a software issue on Pivi Pro or a failing control unit on older systems. Diagnosis takes under an hour."),
+        ("Can you enable Apple CarPlay?","On many InControl Touch Pro and Pivi vehicles, yes, with a software activation.")]),
+
+ dict(slug="pre-purchase-inspection", name="Pre-Purchase Inspection", icon="inspection", featured=False,
+  short="A 150-point inspection with full diagnostic scan, history check and written report before you buy a used Range Rover.",
+  intro=[
+   "Buying a pre-owned Range Rover is exciting, and it is also where expensive mistakes are made. A car that looks immaculate can be hiding a stretched timing chain, a failing air suspension compressor or accident repairs. An hour on our lift can save you a five-figure repair bill.",
+   "Our inspection covers engine, gearbox, driveline, suspension, brakes, body and paint depth, underbody corrosion, all electrical systems and a full diagnostic scan with fault history. You receive a written report with photos and an honest recommendation, and we are happy to negotiate with the seller on your behalf."],
+  includes=["150-point mechanical and body inspection","Full diagnostic scan with stored fault history","Paint depth and accident repair check","Engine compression and leak checks","Air suspension and gearbox condition report","Written report with photos on the same day"],
+  signs=["Considering a used Range Rover or Land Rover","Private sale with no service history","Vehicle imported from abroad","Unusual noise or warning on the test drive","Price seems too good to be true"],
+  faqs=[("How long does a pre-purchase inspection take?","Around two hours. We can usually book it within 24 hours of your WhatsApp message."),
+        ("Can the seller bring the car to you?","Yes, most sellers are happy to. We can also send a technician to the seller's location for an additional fee."),
+        ("What if the car fails the inspection?","We give you the facts and an estimated repair cost. Many buyers use the report to negotiate a fair price.")]),
+
+ dict(slug="timing-chain-replacement", name="Timing Chain Replacement", icon="chain", featured=False,
+  short="Timing chain, guide and tensioner replacement for TDV6, SDV6, 5.0 V8 and Ingenium engines before failure occurs.",
+  intro=[
+   "Timing chain wear is the single most important thing a Range Rover owner should know about. On the 3.0 V6 diesel and the 5.0 supercharged V8, stretched chains and worn tensioners are well documented, and a chain that jumps a tooth destroys the engine. The warning sign is a brief rattle on cold start that disappears within seconds.",
+   "We measure chain stretch with diagnostic timing data before recommending replacement, then fit genuine chains, guides, tensioners and crank sprockets using factory locking tools so the engine is timed exactly. The job is completed in-house with photographs of every stage for your records."],
+  includes=["Timing chain stretch measurement","Chain, guide and tensioner replacement","Crank and cam sprocket inspection","Front cover and seal replacement","Oil pump check and oil change","Post-repair timing verification"],
+  signs=["Rattle on cold start lasting a few seconds","Rough idle or misfire","Timing or camshaft correlation fault codes","Engine warning light","High mileage with no chain history"],
+  faqs=[("At what mileage should the timing chain be replaced?","On TDV6 and SDV6 engines we recommend inspection at 120,000 km and replacement when stretch is measured. On the 5.0 V8, tensioners are often the weak point and should be checked at 100,000 km."),
+        ("Is a timing chain rattle urgent?","Yes. It usually means the tensioner is no longer keeping the chain tight. Please do not ignore it."),
+        ("How long does the job take?","Two to three working days depending on engine and access.")]),
+
+ dict(slug="engine-mount-replacement", name="Engine & Gearbox Mounts", icon="mount", featured=False,
+  short="Hydraulic engine mount and gearbox mount replacement to remove vibration and clunks.",
+  intro=[
+   "Range Rover engine mounts are hydraulic, designed to isolate the cabin from vibration. When they collapse you feel a shudder at idle, a clunk on take-off and sometimes a knocking when reversing. Many owners are told the gearbox is at fault, when new mounts restore the refinement completely.",
+   "We inspect mounts under load on the lift, replace with genuine or Lemförder parts, and check the gearbox mount and transfer case mounts at the same time. It is one of the most satisfying and affordable repairs we perform."],
+  includes=["Load test of all engine and gearbox mounts","Hydraulic engine mount replacement","Gearbox and transfer case mount replacement","Exhaust hanger and heat shield check","Vibration diagnosis road test"],
+  signs=["Vibration at idle felt through the seat","Clunk on take-off or when reversing","Engine movement visible under acceleration","Knocking over bumps from the engine bay","Oil leaking from a mount"],
+  faqs=[("How long do engine mounts last?","Around 100,000 km in our climate. Heat degrades the rubber and hydraulic fluid."),
+        ("Can I replace just one mount?","We recommend replacing in pairs so the engine sits level and vibration is balanced."),
+        ("How long does replacement take?","Usually half a day for both engine mounts.")]),
+
+ dict(slug="oil-leak-repair", name="Oil Leak Repair", icon="drop", featured=False,
+  short="Precise leak tracing and repair of sumps, rocker covers, rear main seals, oil coolers and timing covers.",
+  intro=[
+   "An oil leak is never 'just a Range Rover thing'. Every leak has a source, and modern engines have several gaskets that harden in heat: rocker covers, oil filter housings, sump seals and the rear main seal between engine and gearbox. Leaking oil onto hot exhaust parts is also a fire risk.",
+   "We clean the engine, add UV dye and run the vehicle to identify the exact source before quoting, so you never pay for a repair that does not fix the leak. Most repairs use genuine gaskets and seals fitted with the correct sealant and torque."],
+  includes=["Engine degrease and UV dye leak trace","Rocker cover and oil filter housing gaskets","Sump and timing cover reseal","Rear main seal replacement","Oil cooler and pipe replacement","Turbo oil line replacement"],
+  signs=["Oil spots under the vehicle","Burning smell after driving","Oil level dropping between services","Oil visible on the engine or undertray","Low oil pressure warning"],
+  faqs=[("How do you find the exact source of the leak?","We clean the engine fully, add UV dye and inspect after a drive. The dye shows the origin precisely."),
+        ("Is a small oil leak dangerous?","It can be. Oil on the exhaust or turbo can ignite, and low oil damages the engine. Have it checked."),
+        ("How much does a rear main seal cost?","It requires gearbox removal, so it is labour intensive. Message us for a price on your model.")]),
+
+ dict(slug="fuel-system-repair", name="Fuel System & Injectors", icon="fuel", featured=False,
+  short="High-pressure fuel pump, injector testing and replacement, fuel filter and low-pressure system repairs.",
+  intro=[
+   "Range Rover fuel systems operate at very high pressures and rely on clean fuel. Contaminated diesel, missed filter changes and long idling all shorten injector life, and a single failing injector can wash a cylinder bore with fuel. Direct-injection petrol engines have their own high-pressure pump and carbon build-up issues.",
+   "We test injectors for leak-back and spray pattern, replace high-pressure pumps and fuel rails, fit genuine fuel filters, and clean intake carbon on direct-injection engines with walnut blasting. Fuel tanks, in-tank pumps and level sensors are also repaired here."],
+  includes=["Injector leak-back and balance testing","Injector replacement and coding","High-pressure fuel pump replacement","Fuel filter and water separator service","In-tank fuel pump and sender replacement","Intake walnut blasting for carbon build-up"],
+  signs=["Misfire or rough running","Difficult starting, especially when hot","Loss of power or fuel pressure fault code","Excessive fuel consumption","Diesel knock or smoke"],
+  faqs=[("How often should the diesel fuel filter be changed?","Every 32,000 km, or annually. It is the cheapest protection for your injectors."),
+        ("Do injectors need to be coded?","Yes. Each injector has a correction code that must be programmed to the engine control module."),
+        ("What is walnut blasting?","A method of cleaning carbon from the intake valves of direct-injection engines using crushed walnut shell. It restores lost power and smooth running.")]),
+
+ dict(slug="body-repair-paint", name="Body Repair & Paint", icon="paint", featured=False,
+  short="Aluminium body repair, paintless dent removal and colour-matched refinishing in a dust-controlled booth.",
+  intro=[
+   "Since 2013 Range Rovers have been built with aluminium bodies, which require different tools, rivets and bonding methods from steel. A general body shop that welds and hammers an aluminium panel can weaken the structure. Our body team is trained on Land Rover aluminium repair procedures.",
+   "From parking scrapes to accident repair we restore panels, replace bonded sections where needed, and paint in a down-draught booth with computerised colour matching so the repair is invisible. Paintless dent removal is available for minor dents where the paint is intact."],
+  includes=["Aluminium panel repair and replacement","Structural bonding and riveting to factory method","Computer colour matching and refinishing","Paintless dent removal","Bumper, grille and trim repair","Headlight restoration and replacement"],
+  signs=["Dents, scratches or scuffs","Accident damage","Faded or peeling paint","Mismatched panel colours from a previous repair","Cloudy headlights"],
+  faqs=[("Can you repair aluminium body panels?","Yes. We use the correct rivets, adhesives and tools for Land Rover aluminium structures."),
+        ("Will the paint match perfectly?","Yes. We use computerised colour matching and blend into adjacent panels where necessary."),
+        ("Do you handle insurance claims?","We can provide detailed estimates and photos for your insurer.")]),
+
+ dict(slug="detailing-ceramic-coating", name="Detailing & Ceramic Coating", icon="shine", featured=False,
+  short="Paint correction, ceramic coating, interior leather restoration and paint protection film.",
+  intro=[
+   "Desert sand, harsh sun and automatic car washes take a heavy toll on paintwork and leather. Our detailing studio restores the deep gloss of your Range Rover with multi-stage machine polishing, then locks it in with a professional ceramic coating that makes cleaning easy and resists UV damage.",
+   "Interior services include leather cleaning and conditioning, headliner and carpet extraction, and repair of worn bolsters. Paint protection film is available for front bumpers, bonnets and door edges for owners who want maximum protection."],
+  includes=["Multi-stage paint correction","Professional ceramic coating with warranty","Paint protection film","Leather cleaning, conditioning and repair","Full interior deep clean and odour removal","Wheel and glass coating"],
+  signs=["Swirl marks and dull paint","Faded or cracked leather","Water spots that will not wash off","Preparing a vehicle for sale","Newly purchased vehicle you want to protect"],
+  faqs=[("How long does a ceramic coating last?","Our professional coatings are warranted for three to five years with correct maintenance."),
+        ("Is ceramic coating worth it in the UAE?","Yes. It protects against UV fade, sand etching and water spots, and makes washing far easier."),
+        ("Can worn leather be repaired?","In most cases yes. Bolster wear, cracks and colour fading can be restored without replacing the panel.")]),
+
+ dict(slug="off-road-preparation", name="Off-Road Preparation", icon="terrain", featured=False,
+  short="Desert and overland preparation: underbody protection, recovery points, tyres, cooling upgrades and Terrain Response checks.",
+  intro=[
+   "A Land Rover is built to leave the road, and the UAE's dunes and wadis are where it comes alive. Before a desert trip your vehicle needs its cooling system, air suspension, differentials and Terrain Response system checked, and ideally some protection for the vulnerable underbody components.",
+   "We prepare vehicles for everything from a weekend dune drive to a full overland expedition: sump and transfer case guards, rated recovery points, all-terrain tyres, snorkels, roof racks and auxiliary lighting, all fitted without compromising the vehicle's electronics or warranty."],
+  includes=["Pre-trip mechanical and cooling system check","Underbody protection plates","Rated recovery points and winch fitting","All-terrain tyre supply and fitting","Snorkel, roof rack and lighting installation","Post-trip sand removal and inspection"],
+  signs=["Planning a desert or overland trip","Terrain Response fault after off-roading","Sand ingress in brakes or cooling","Damaged undertray or exhaust","Want to upgrade for regular off-road use"],
+  faqs=[("Is my Range Rover suitable for desert driving?","Yes. Every Range Rover and Land Rover is highly capable off-road when properly prepared and driven with the correct tyre pressures."),
+        ("What should I check after a desert trip?","Brakes, cooling system, air filters and underbody for sand. We offer a post-trip inspection package."),
+        ("Do modifications affect my warranty?","We fit accessories that do not interfere with the vehicle's electronics and advise on warranty implications before fitting.")]),
+]

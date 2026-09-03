@@ -1,0 +1,564 @@
+#!/usr/bin/env python3
+"""
+Al Rahal Auto Maintenance — static site generator.
+Run:  python3 build.py      →  writes plain HTML into ../dist/
+Edit  data/*.py and config below, then re-run. Upload /dist to public_html.
+"""
+import os, re, shutil, html, json, datetime
+from data.services import SERVICES
+from data.content import MODELS, BRANDS, POSTS, TESTIMONIALS, GENERAL_FAQ, GALLERY
+
+# ------------------------------------------------------------------ CONFIG
+CFG = dict(
+  name="Al Rahal Auto Maintenance", short="Al Rahal",
+  tagline="Range Rover & Land Rover Specialists",
+  url="https://www.alrahalauto.ae",           # <-- your live domain, no trailing slash
+  phone="055 747 9292", phone_intl="971557479292",
+  email="info@alrahalauto.ae",                # <-- change
+  city="Dubai", country="United Arab Emirates",
+  address="Al Quoz Industrial Area 3",         # <-- change
+  map_embed="https://www.google.com/maps?q=Al+Quoz+Industrial+Area+3+Dubai&output=embed",
+  lat="25.1290", lng="55.2270",
+  hours="Saturday – Thursday, 8:00 AM – 8:00 PM", hours_schema="Sa-Th 08:00-20:00",
+  founded="2009", ga_id="",                    # GA4 id e.g. G-XXXXXXX, blank = off
+  instagram="https://instagram.com/alrahalauto", facebook="https://facebook.com/alrahalauto", tiktok="https://tiktok.com/@alrahalauto",
+)
+WA = f"https://wa.me/{CFG['phone_intl']}"
+OUT = os.path.join(os.path.dirname(__file__), "..", "dist")
+TODAY = datetime.date.today().isoformat()
+SITEMAP = []
+
+def e(s): return html.escape(str(s), quote=True)
+def wa(msg): 
+    from urllib.parse import quote
+    return f"{WA}?text={quote(msg)}"
+
+# ------------------------------------------------------------------ ICONS (inline SVG, stroke-based, 24px grid)
+def I(name, cls=""):
+    p = ICONS[name]
+    return f'<svg class="{cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg>'
+ICONS = {
+ "wa": '<path fill="currentColor" stroke="none" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2m.01 1.67c4.55 0 8.24 3.7 8.24 8.24 0 4.55-3.7 8.24-8.24 8.24-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.2-.32a8.2 8.2 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.14.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01"/>',
+ "phone": '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2"/>',
+ "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ "pin": '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+ "mail": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+ "check": '<path d="m5 12 4.5 4.5L19 7"/>',
+ "arrow": '<path d="M5 12h14M13 6l6 6-6 6"/>',
+ "menu": '<path d="M4 7h16M4 12h16M4 17h16"/>',
+ "close": '<path d="M6 6l12 12M18 6 6 18"/>',
+ "shield": '<path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+ "star": '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/>',
+ "wrench": '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3 17.8 6.2 21l6.3-6.3a4 4 0 0 0 5.2-5.4l-2.5 2.5-2.1-2.1z"/>',
+ "engine": '<path d="M7 8V6h4v2h4l2 3h3v6h-3l-2 3H7l-2-3H3v-6h2z"/><path d="M12 11v4"/>',
+ "gearbox": '<circle cx="6" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><path d="M6 8v10M12 8v6h6M18 8v6"/><circle cx="6" cy="18" r="1.5"/>',
+ "suspension": '<path d="M12 3v3M8 6h8M9 6l6 2-6 2 6 2-6 2 6 2-6 2h6M12 18v3"/>',
+ "brake": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/>',
+ "oil": '<path d="M12 3s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11z"/><path d="M9 15a3 3 0 0 0 3 3"/>',
+ "diagnostics": '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M6 11h3l2-4 2 7 2-3h3M9 21h6"/>',
+ "ac": '<path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"/><path d="M12 3l-2 2M12 3l2 2M12 21l-2-2M12 21l2-2"/>',
+ "electrical": '<path d="M13 2 4 14h6l-1 8 9-12h-6z"/>',
+ "cooling": '<path d="M12 3v18M12 3l-2.5 2.5M12 3l2.5 2.5M12 21l-2.5-2.5M12 21l2.5-2.5M4.2 7.5l15.6 9M4.2 7.5l3.4-.7M4.2 7.5l.7 3.4M19.8 16.5l-3.4.7M19.8 16.5l-.7-3.4M19.8 7.5 4.2 16.5"/>',
+ "turbo": '<circle cx="12" cy="12" r="3"/><path d="M12 3a9 9 0 0 1 9 9h-3M12 3v3M3 12a9 9 0 0 0 9 9v-3"/>',
+ "steering": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M3.5 10.5c3-1 14-1 17 0M12 14.5V21"/>',
+ "tyre": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/>',
+ "battery": '<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10v4M7 12h4M9 10v4"/>',
+ "drivetrain": '<circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path d="M7 12h10M12 12v-5M12 7h-3M12 7h3"/>',
+ "exhaust": '<path d="M3 10h9l3-3h6v10h-6l-3-3H3z"/><path d="M21 7v10"/>',
+ "screen": '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+ "inspection": '<circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 6 6M8 10h4M10 8v4"/>',
+ "chain": '<rect x="3" y="9" width="8" height="6" rx="3"/><rect x="13" y="9" width="8" height="6" rx="3"/><path d="M11 12h2"/>',
+ "mount": '<path d="M4 18h16M6 18v-4a6 6 0 0 1 12 0v4M12 8V4"/>',
+ "drop": '<path d="M12 3s-7 8-7 12.5a7 7 0 0 0 14 0C19 11 12 3 12 3z"/>',
+ "fuel": '<path d="M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h14M15 9h2a2 2 0 0 1 2 2v6a1.5 1.5 0 0 0 3 0V9l-2-2"/><rect x="8" y="6" width="4" height="4"/>',
+ "paint": '<path d="M18 3 21 6l-9 9-4 1 1-4z"/><path d="M4 21c3-1 3-4 6-4"/>',
+ "shine": '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/><circle cx="12" cy="12" r="3"/>',
+ "terrain": '<path d="M3 18 9 8l4 6 3-4 5 8z"/><circle cx="17" cy="6" r="2"/>',
+ "car": '<path d="M5 13 7 7h10l2 6M3 13h18v5H3z"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/>',
+ "award": '<circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 7 5-3 5 3-1.5-7"/>',
+ "instagram": '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/>',
+ "facebook": '<path d="M14 9h3V5h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V9z"/>',
+ "tiktok": '<path d="M14 3v11a3.5 3.5 0 1 1-3.5-3.5M14 3c.5 3 2.5 5 5 5"/>',
+}
+
+# ------------------------------------------------------------------ LAYOUT
+LOGO = '''<a class="logo" href="/" aria-label="{name} home">
+  <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 6 13v22l18 10 18-10V13z" fill="none" stroke="#B59255" stroke-width="2"/><path d="M14 30 24 10l10 20h-5l-5-10-5 10z" fill="#B59255"/><path d="M17 33h14" stroke="#B59255" stroke-width="2.5" stroke-linecap="round"/></svg>
+  <span>{short}<small>Auto Maintenance</small></span></a>'''.format(name=CFG['name'], short=CFG['short'])
+
+NAV = [("Range Rover","/brands/range-rover/"),("Land Rover","/brands/land-rover/"),("Services","/services/"),("Models","/models/"),("About","/about/"),("Blog","/blog/"),("Contact","/contact/")]
+
+def header(current):
+    links = "".join(f'<a href="{h}"{" aria-current=\"page\"" if current.startswith(h) and h!="/" else ""}>{t}</a>' for t,h in NAV)
+    return f'''
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar"><div class="wrap">
+  <span class="topbar__hours">{I("clock")} {CFG['hours']}</span>
+  <a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} WhatsApp {CFG['phone']}</a>
+</div></div>
+<header class="header"><div class="wrap">
+  {LOGO}
+  <nav class="nav" aria-label="Main">{links}</nav>
+  <a class="btn btn--wa header__cta" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a>
+  <button class="burger" data-open-drawer aria-label="Open menu">{I("menu")}</button>
+</div></header>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer__head">{LOGO}<button class="burger" data-close-drawer aria-label="Close menu">{I("close")}</button></div>
+  <nav aria-label="Mobile">{"".join(f'<a href="{h}" data-close-drawer>{t}</a>' for t,h in NAV)}</nav>
+  <div class="drawer__foot"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} WhatsApp {CFG['phone']}</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} Call now</a></div>
+</div>'''
+
+def footer():
+    svc = "".join(f'<li><a href="/services/{s["slug"]}/">{e(s["name"])}</a></li>' for s in SERVICES[:8])
+    mdl = "".join(f'<li><a href="/models/{m["slug"]}/">{e(m["name"])}</a></li>' for m in MODELS)
+    brd = "".join(f'<li><a href="/brands/{b["slug"]}/">{e(b["name"])}</a></li>' for b in BRANDS)
+    return f'''
+<footer class="footer"><div class="wrap">
+ <div class="footer__top">
+  <div class="footer__brand">{LOGO}<p>Independent Range Rover and Land Rover specialists in {CFG['city']} since {CFG['founded']}. Dealer-level diagnostics, genuine parts and honest advice, without dealer pricing.</p>
+   <div class="social"><a href="{CFG['instagram']}" aria-label="Instagram" rel="noopener" target="_blank">{I("instagram")}</a><a href="{CFG['facebook']}" aria-label="Facebook" rel="noopener" target="_blank">{I("facebook")}</a><a href="{CFG['tiktok']}" aria-label="TikTok" rel="noopener" target="_blank">{I("tiktok")}</a></div></div>
+  <div><h4>Services</h4><ul>{svc}<li><a href="/services/">All services</a></li></ul></div>
+  <div><h4>Models</h4><ul>{mdl}</ul></div>
+  <div><h4>Brands</h4><ul>{brd}</ul></div>
+  <div><h4>Visit us</h4><ul><li>{e(CFG['address'])}, {e(CFG['city'])}</li><li>{e(CFG['hours'])}</li><li><a href="tel:+{CFG['phone_intl']}">{e(CFG['phone'])}</a></li><li><a href="mailto:{CFG['email']}">{CFG['email']}</a></li><li><a href="/contact/">Contact & map</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li></ul></div>
+ </div>
+ <div class="footer__bottom"><span>© {TODAY[:4]} {e(CFG['name'])}. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/sitemap.xml">Sitemap</a></span></div>
+</div></footer>
+<a class="wa-float" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">{I("wa")}<span>Book on WhatsApp</span></a>
+<script src="/assets/js/main.js" defer></script>'''
+
+def local_business_schema():
+    return {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+"/#business","name":CFG['name'],"url":CFG['url'],
+      "image":CFG['url']+"/assets/img/hero/home-hero.jpg","logo":CFG['url']+"/assets/img/logo.svg","telephone":"+"+CFG['phone_intl'],"email":CFG['email'],
+      "priceRange":"$$","foundingDate":CFG['founded'],
+      "address":{"@type":"PostalAddress","streetAddress":CFG['address'],"addressLocality":CFG['city'],"addressCountry":"AE"},
+      "geo":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},
+      "openingHours":CFG['hours_schema'],"sameAs":[CFG['instagram'],CFG['facebook'],CFG['tiktok']],
+      "areaServed":CFG['city'],"knowsAbout":["Range Rover repair","Land Rover repair","BMW repair","Mercedes-Benz repair","Audi repair"],
+      "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":s['name'],"url":f"{CFG['url']}/services/{s['slug']}/"}} for s in SERVICES]}
+
+def page(path, title, desc, body, current="/", schema=None, image="assets/img/hero/home-hero.jpg", breadcrumbs=None, kind="website"):
+    """Write one HTML page. path like 'services/x/' → dist/services/x/index.html"""
+    canonical = CFG['url'] + "/" + path
+    schemas = [local_business_schema()]
+    if breadcrumbs:
+        schemas.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":i+1,"name":n,"item":CFG['url']+u} for i,(n,u) in enumerate(breadcrumbs)]})
+    if schema: schemas += schema if isinstance(schema, list) else [schema]
+    ld = "".join(f'<script type="application/ld+json">{json.dumps(s, ensure_ascii=False)}</script>' for s in schemas)
+    ga = f'<script async src="https://www.googletagmanager.com/gtag/js?id={CFG["ga_id"]}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{CFG["ga_id"]}");</script>' if CFG['ga_id'] else ""
+    doc = f'''<!DOCTYPE html>
+<html lang="en" data-wa="{CFG['phone_intl']}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(title)}</title>
+<meta name="description" content="{e(desc)}">
+<link rel="canonical" href="{canonical}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#1B1F23">
+<meta property="og:type" content="{kind}"><meta property="og:site_name" content="{e(CFG['name'])}"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{CFG['url']}/{image}"><meta property="og:locale" content="en_AE">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}"><meta name="twitter:description" content="{e(desc)}"><meta name="twitter:image" content="{CFG['url']}/{image}">
+<meta name="geo.region" content="AE"><meta name="geo.placename" content="{e(CFG['city'])}">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/main.css?v=1">
+{ld}{ga}
+</head>
+<body>
+{header(current)}
+<main id="main">
+{body}
+</main>
+{footer()}
+</body></html>'''
+    d = os.path.join(OUT, path)
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f: f.write(doc)
+    SITEMAP.append((canonical, "1.0" if path=="" else "0.8"))
+
+# ------------------------------------------------------------------ PARTIALS
+def img(src, alt, cls="", loading="lazy"):
+    return f'<img src="/{src}" alt="{e(alt)}" class="{cls}" loading="{loading}" decoding="async" data-fallback>'
+
+def crumbs(items):
+    return '<ol class="crumbs" role="list">' + "".join(f'<li><a href="{u}">{e(n)}</a></li>' if i < len(items)-1 else f'<li aria-current="page">{e(n)}</li>' for i,(n,u) in enumerate(items)) + '</ol>'
+
+def page_hero(title, lede, bcs, bg):
+    return f'''<section class="page-hero"><div class="page-hero__bg">{img(bg, "", loading="eager")}</div><div class="wrap">{crumbs(bcs)}<h1>{title}</h1><p class="lede">{lede}</p>
+    <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I would like to enquire about {re.sub('<[^>]+>','',title)}.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} {CFG['phone']}</a></div></div></section>'''
+
+def book_band(h="Book your Range Rover service on WhatsApp", p="Send your model, year and the issue. A technician replies within minutes with a clear price and the next available slot."):
+    return f'''<section class="book" id="book"><div class="wrap">
+  <p class="kicker">Ready when you are</p><h2>{h}</h2><p class="lede">{p}</p>
+  <a class="btn btn--wa btn--xl" href="{wa("Hello Al Rahal, I would like to book a service. My car is: ")}" target="_blank" rel="noopener">{I("wa")} Book Now · {CFG['phone']}</a>
+  <div class="book__note"><span>{I("check")} Reply within minutes</span><span>{I("check")} Fixed price before work starts</span><span>{I("check")} Collection & delivery available</span></div>
+</div></section>'''
+
+def service_card(s):
+    return f'''<a class="card" href="/services/{s['slug']}/"><div class="card__media">{img(f"assets/img/services/{s['slug']}.jpg", s['name'] + " for Range Rover")}</div>
+    <div class="card__body"><h3>{e(s['name'])}</h3><p>{e(s['short'])}</p><span class="card__link">View service {I("arrow")}</span></div></a>'''
+
+def post_card(p):
+    d = datetime.date.fromisoformat(p['date']).strftime("%d %b %Y")
+    return f'''<a class="card" href="/blog/{p['slug']}/"><div class="card__media card__media--wide"><span class="card__tag">{e(p['cat'])}</span>{img(f"assets/img/blog/{p['slug']}.jpg", p['title'])}</div>
+    <div class="card__body"><span class="meta"><time datetime="{p['date']}">{d}</time><span>{p['read']} min read</span></span><h3>{e(p['title'])}</h3><p>{e(p['excerpt'])}</p><span class="card__link">Read article {I("arrow")}</span></div></a>'''
+
+def faq_block(items, title="Frequently asked questions"):
+    det = "".join(f'<details><summary>{e(q)}</summary><div><p>{e(a)}</p></div></details>' for q,a in items)
+    schema = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in items]}
+    return f'<h2 class="mt-7">{title}</h2><div class="faq mt-6">{det}</div>', schema
+
+def checks(items):
+    return '<ul class="checks" role="list">' + "".join(f'<li>{I("check")}<span>{e(i)}</span></li>' for i in items) + '</ul>'
+
+def wa_form(title, fields, service_default=""):
+    """fields: list of (label, name, type, options)"""
+    out = []
+    for label,name,typ,opts in fields:
+        if typ == "select":
+            o = "".join(f'<option{" selected" if v==service_default else ""}>{e(v)}</option>' for v in opts)
+            out.append(f'<label class="field">{label}<select name="{name}" required>{o}</select></label>')
+        elif typ == "textarea":
+            out.append(f'<label class="field">{label}<textarea name="{name}" placeholder=" "></textarea></label>')
+        else:
+            out.append(f'<label class="field">{label}<input name="{name}" type="{typ}" placeholder=" " {"required" if typ!="date" else ""}></label>')
+    rows = "".join(out)
+    return f'''<form class="form" data-wa-form data-wa-title="{e(title)}" novalidate>
+ <input type="text" name="website" class="vh" tabindex="-1" autocomplete="off">
+ <div class="form__row">{rows}</div>
+ <p class="form__hint">Please complete the highlighted fields.</p>
+ <button class="btn btn--wa btn--lg" type="submit">{I("wa")} Send via WhatsApp</button>
+ <p class="form__note">Tapping the button opens WhatsApp with your details pre-filled. Nothing is stored on this website.</p>
+ <p data-sent hidden><strong>Opened WhatsApp.</strong> If it did not open, message us directly on {e(CFG['phone'])}.</p>
+</form>'''
+
+SERVICE_NAMES = [s['name'] for s in SERVICES]
+MODEL_NAMES = [m['name'] for m in MODELS] + ["BMW","Mercedes-Benz","Audi","Porsche","Jaguar","Other"]
+BOOK_FIELDS = [("Your name","Name","text",None),("Phone number","Phone","tel",None),("Vehicle","Vehicle","select",MODEL_NAMES),("Model year","Year","text",None),("Service needed","Service","select",SERVICE_NAMES),("Preferred date","Preferred date","date",None),("Describe the issue","Message","textarea",None)]
+
+# ------------------------------------------------------------------ PAGES
+def build_home():
+    feat = [s for s in SERVICES if s.get('featured')]
+    svc_cards = "".join(service_card(s) for s in feat[:6])
+    models = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])} · {e(m["years"])}</span><em>View specialist services</em></a>' for m in MODELS[:4])
+    brands = "".join(f'<a href="/brands/{b["slug"]}/">{I("car")}<span>{e(b["name"])}</span><small>{"Specialist" if b["primary"] else "Serviced & repaired"}</small></a>' for b in BRANDS)
+    quotes = "".join(f'<blockquote class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><p>{e(t)}</p><footer><span>{e(n)}</span><span>{e(c)}</span></footer></blockquote>' for t,n,c in TESTIMONIALS)
+    posts = "".join(post_card(p) for p in POSTS[:3])
+    faq_html, faq_schema = faq_block(GENERAL_FAQ[:5])
+    marquee = "".join(f'<span>{e(s["name"])}<i></i></span>' for s in SERVICES[:12])
+    body = f'''
+<section class="hero">
+ <div class="hero__media">{img("assets/img/hero/home-hero.jpg", "Range Rover in the Al Rahal workshop", loading="eager")}</div>
+ <div class="wrap">
+  <div class="hero__grid">
+   <div>
+    <p class="kicker">Independent Range Rover & Land Rover specialists · {e(CFG['city'])}</p>
+    <h1>Your Range Rover, cared for by people who know it best.</h1>
+    <p class="lede">Dealer-level diagnostics, genuine parts and technicians who have spent their careers inside Land Rover engine bays. Fixed prices, honest advice and every job documented on WhatsApp.</p>
+    <div class="hero__actions"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service for my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a><a class="btn btn--ghost btn--lg" href="/services/">Explore services</a></div>
+   </div>
+   <aside class="hero__card">
+    <h3>Why owners switch to Al Rahal</h3>
+    <ul role="list"><li>{I("check")}<span>Land Rover Pathfinder & SDD diagnostics, identical to the dealer</span></li><li>{I("check")}<span>Genuine parts with a written warranty on every repair</span></li><li>{I("check")}<span>Air suspension, timing chains and gearboxes rebuilt in-house</span></li><li>{I("check")}<span>Photos of every stage sent to your WhatsApp</span></li></ul>
+    <a class="btn btn--bronze" href="#book">{I("arrow")} Get a fixed price</a>
+   </aside>
+  </div>
+ </div>
+ <div class="hero__marquee"><div class="marquee__track">{marquee}{marquee}</div></div>
+</section>
+
+<section class="trust"><div class="wrap">
+ <div class="trust__item">{I("award")}<div><strong data-count="17" data-suffix="+">17+</strong><span>Years dedicated to Land Rover</span></div></div>
+ <div class="trust__item">{I("car")}<div><strong data-count="12000" data-suffix="+">12,000+</strong><span>Range Rovers serviced</span></div></div>
+ <div class="trust__item">{I("star")}<div><strong>4.9 / 5</strong><span>Google rating from owners</span></div></div>
+ <div class="trust__item">{I("shield")}<div><strong>Warranty</strong><span>On every part and repair</span></div></div>
+</div></section>
+
+<section class="section"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">Range Rover & Land Rover services</p><h2>Everything a Range Rover needs, under one roof.</h2><p class="lede">From a scheduled service to a full engine rebuild. Tap a service to see what is included, the symptoms to watch for, and the answers owners ask us most.</p></div>
+ <div class="grid grid--3 reveal">{svc_cards}</div>
+ <div class="cta-inline"><a class="btn btn--dark" href="/services/">View all {len(SERVICES)} services {I("arrow")}</a></div>
+</div></section>
+
+{book_band()}
+
+<section class="section section--dark"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">Every generation, every model</p><h2>Vogue, Sport, Velar, Evoque, Defender, Discovery.</h2><p class="lede">Each model has its own known weaknesses. We have dedicated pages for every one, with the faults we see most and how we fix them permanently.</p></div>
+ <div class="models reveal">{models}</div>
+ <div class="cta-inline"><a class="btn btn--ghost" href="/models/">All models {I("arrow")}</a></div>
+</div></section>
+
+<section class="section"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">Why Al Rahal</p><h2>The dealer's tools. A specialist's attention. A neighbour's prices.</h2></div>
+ <div class="features reveal">
+  <div class="feature">{I("diagnostics")}<h3>Dealer-level diagnostics</h3><p>We run Land Rover's own Pathfinder and SDD platforms, so software updates, coding and guided tests are done exactly as the factory intends.</p></div>
+  <div class="feature">{I("wrench")}<h3>Rebuilt in-house</h3><p>Engines, gearboxes, air suspension and transfer cases are rebuilt on our own benches, not sent away. Faster, cheaper and fully accountable.</p></div>
+  <div class="feature">{I("shield")}<h3>Genuine parts, written warranty</h3><p>Genuine Land Rover parts by default, high-quality OE alternatives where they make sense, and a warranty term printed on every invoice.</p></div>
+  <div class="feature">{I("wa")}<h3>Everything on WhatsApp</h3><p>Booking, diagnostic reports, photos of worn parts and approval for every item of work. You are never surprised by the invoice.</p></div>
+  <div class="feature">{I("clock")}<h3>Same-day for common jobs</h3><p>Air struts, brakes, batteries, servicing and diagnostics are usually completed the same day. Collection and delivery available.</p></div>
+  <div class="feature">{I("award")}<h3>Trained on Land Rover</h3><p>Our senior technicians are former main-dealer master technicians. They chose to specialise because they love these cars.</p></div>
+ </div>
+</div></section>
+
+<section class="section section--bone"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">How it works</p><h2>Four steps from message to handover.</h2></div>
+ <div class="steps reveal">
+  <div class="step"><h3>Message us</h3><p>Send your model, year and symptoms on WhatsApp. We reply within minutes with an initial view and a booking time.</p></div>
+  <div class="step"><h3>Diagnose properly</h3><p>Your car goes on the lift and the diagnostic platform. You receive a written report with photos and a fixed price.</p></div>
+  <div class="step"><h3>Approve each item</h3><p>Nothing is done without your approval. We show you the worn parts and explain what can wait.</p></div>
+  <div class="step"><h3>Collect with confidence</h3><p>Road tested, cleaned, service record updated and warranty documented. Or we deliver it to your door.</p></div>
+ </div>
+</div></section>
+
+<section class="section"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">Also welcome here</p><h2>Specialists in Land Rover. Experts in the rest.</h2></div>
+ <div class="brands reveal">{brands}</div>
+</div></section>
+
+<section class="section section--dark"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">Owners' words</p><h2>What Range Rover owners say after their first visit.</h2></div>
+ <div class="quotes reveal">{quotes}</div>
+</div></section>
+
+<section class="section"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">From the workshop</p><h2>Knowledge that keeps your Range Rover out of the workshop.</h2></div>
+ <div class="grid grid--3 reveal">{posts}</div>
+ <div class="cta-inline"><a class="btn btn--dark" href="/blog/">Read the blog {I("arrow")}</a></div>
+</div></section>
+
+<section class="section section--bone"><div class="wrap"><div class="section-head"><p class="kicker">Good to know</p></div>{faq_html.replace('class="mt-7"','')}<div class="cta-inline"><a class="btn btn--ghost" href="/faq/">More questions answered {I("arrow")}</a></div></div></section>
+
+{book_band("Get a fixed price for your Range Rover today", "One message on WhatsApp is all it takes.")}
+'''
+    page("", f"Range Rover & Land Rover Specialist in {CFG['city']} | {CFG['name']}",
+         f"Independent Range Rover and Land Rover specialists in {CFG['city']}. Dealer-level diagnostics, air suspension, engine, gearbox and servicing with genuine parts. Book on WhatsApp {CFG['phone']}.",
+         body, "/", schema=faq_schema)
+
+def build_services_index():
+    cards = "".join(service_card(s) for s in SERVICES)
+    body = page_hero("Range Rover & Land Rover services", f"{len(SERVICES)} specialist services, each with a dedicated page explaining what is included, the symptoms to watch for and honest answers to the questions owners ask.", [("Home","/"),("Services","/services/")], "assets/img/hero/services-hero.jpg")
+    body += f'<section class="section"><div class="wrap"><div class="grid grid--3">{cards}</div></div></section>' + book_band()
+    page("services/", f"Range Rover Repair & Service Menu | {CFG['name']} {CFG['city']}", f"All {len(SERVICES)} Range Rover and Land Rover services at Al Rahal: engine, gearbox, air suspension, brakes, diagnostics, AC and more. Fixed prices on WhatsApp.", body, "/services/", breadcrumbs=[("Home","/"),("Services","/services/")], image="assets/img/hero/services-hero.jpg")
+
+def service_page(s, m=None):
+    """Service page, optionally specialised for a model (programmatic SEO)."""
+    slug = f"services/{s['slug']}/" + (f"{m['slug']}/" if m else "")
+    car = m['name'] if m else "Range Rover & Land Rover"
+    title_h = f"{e(s['name'])} <br>for {e(car)}" if m else f"{e(s['name'])} <br>for Range Rover & Land Rover"
+    bcs = [("Home","/"),("Services","/services/"),(s['name'], f"/services/{s['slug']}/")] + ([(m['name'], f"/{slug}")] if m else [])
+    intro = "".join(f"<p>{e(p)}</p>" for p in s['intro'])
+    model_note = ""
+    if m:
+        model_note = f'''<h2>{e(s['name'])} on the {e(m['name'])}</h2><p>{e(m['intro'])}</p><p>Engines we cover on this model: {e(m['engines'])}. Production {e(m['years'])} ({e(m['short'])}). Faults we see most often on the {e(m['name'])} include {", ".join(e(x.lower()) for x in m['issues'][:3])}, and each is diagnosed with the model-specific procedure before any parts are recommended.</p>'''
+    faq_html, faq_schema = faq_block(s['faqs'])
+    related = "".join(f'<li><a href="/services/{x["slug"]}/{m["slug"]+"/" if m else ""}">{e(x["name"])} {I("arrow")}</a></li>' for x in SERVICES if x is not s)[:0] or "".join(f'<li><a href="/services/{x["slug"]}/{(m["slug"]+"/") if m else ""}">{e(x["name"])}<span>›</span></a></li>' for x in SERVICES[:12] if x is not s)
+    models_list = "".join(f'<a href="/services/{s["slug"]}/{x["slug"]}/">{e(x["name"])}</a>' for x in MODELS if x is not m)
+    body = page_hero(title_h, e(s['short']), bcs, f"assets/img/services/{s['slug']}.jpg")
+    body += f'''
+<section class="section"><div class="wrap with-aside">
+ <article class="prose">
+  {intro}
+  {model_note}
+  <h2>What the service includes</h2>{checks(s['includes'])}
+  <h2>Signs you need it</h2>{checks(s['signs'])}
+  <h2>How we work</h2>
+  <p>Every job begins with a proper diagnosis on the lift and on Land Rover's diagnostic platform. You receive a written report, photos and a fixed price on WhatsApp before any work begins. Genuine or OE-equivalent parts are used, every repair carries a written warranty, and the vehicle is road tested before handover.</p>
+  {faq_html}
+  <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I need {s['name']} for my {car}. ")}" target="_blank" rel="noopener">{I("wa")} Get a fixed price on WhatsApp</a></div>
+  <h2>This service by model</h2><div class="tags">{models_list}</div>
+ </article>
+ <aside class="aside">
+  <div class="aside__box aside__box--dark"><h3>Book {e(s['name'].lower())}</h3><p>Message us with your model and year. We reply within minutes during working hours.</p><a class="btn btn--wa" href="{wa(f"Hello Al Rahal, I need {s['name']} for my {car}. ")}" target="_blank" rel="noopener">{I("wa")} {CFG['phone']}</a><a class="btn btn--ghost" href="tel:+{CFG['phone_intl']}">{I("phone")} Call</a></div>
+  <div class="aside__box"><h3>Other services</h3><ul role="list">{related}</ul><a class="card__link" href="/services/">All services {I("arrow")}</a></div>
+ </aside>
+</div></section>''' + book_band(f"Book {e(s['name'].lower())} on WhatsApp")
+    svc_schema = {"@context":"https://schema.org","@type":"Service","name":f"{s['name']} for {car}","serviceType":s['name'],"provider":{"@id":CFG['url']+"/#business"},"areaServed":CFG['city'],"url":CFG['url']+"/"+slug,"description":s['short']}
+    t = f"{s['name']} for {car} in {CFG['city']} | {CFG['name']}"
+    page(slug, t[:70] if len(t)<=70 else f"{s['name']} · {car} | {CFG['short']}", f"{s['short']} Specialist {s['name'].lower()} for {car} in {CFG['city']}. Fixed price on WhatsApp {CFG['phone']}.", body, "/services/", schema=[svc_schema, faq_schema], image=f"assets/img/services/{s['slug']}.jpg", breadcrumbs=bcs)
+
+def build_models():
+    cards = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])} · {e(m["years"])}</span><em>Known issues & services</em></a>' for m in MODELS)
+    body = page_hero("Range Rover & Land Rover models we specialise in", "Every model has its own personality and its own weak points. Choose yours for the faults we see most, the engines we cover and the services built around it.", [("Home","/"),("Models","/models/")], "assets/img/hero/models-hero.jpg")
+    body += f'<section class="section"><div class="wrap"><div class="models">{cards}</div></div></section>' + book_band()
+    page("models/", f"Range Rover & Land Rover Models Serviced | {CFG['name']}", "Specialist servicing and repair for Range Rover Vogue, Sport, Velar, Evoque, Defender, Discovery and Discovery Sport in "+CFG['city']+".", body, "/models/", breadcrumbs=[("Home","/"),("Models","/models/")], image="assets/img/hero/models-hero.jpg")
+    for m in MODELS:
+        svcs = "".join(f'<a class="card" href="/services/{s["slug"]}/{m["slug"]}/"><div class="card__body"><h3>{e(s["name"])}</h3><p>{e(s["short"])}</p><span class="card__link">{e(m["name"])} {e(s["name"].lower())} {I("arrow")}</span></div></a>' for s in SERVICES)
+        issues = "".join(f'<li>{I("check")}<span>{e(i)}</span></li>' for i in m['issues'])
+        faqs = [(f"How often should a {m['name']} be serviced?", f"Every 16,000 km or 12 months, with an interim oil change at 8,000 km recommended in Gulf conditions for the {m['engines'].split(',')[0]} and other engines fitted to the {m['name']}."),
+                (f"What are the most common {m['name']} problems?", f"On the {m['name']} we most often see {', '.join(x.lower() for x in m['issues'][:3])}. All are diagnosed and repaired in-house."),
+                (f"Do you use genuine parts on the {m['name']}?", "Yes. Genuine Land Rover parts by default, with high-quality OE-equivalent options offered where they provide better value.")]
+        faq_html, faq_schema = faq_block(faqs)
+        body = page_hero(f"{e(m['name'])} <br>specialist service & repair", e(m['intro']), [("Home","/"),("Models","/models/"),(m['name'], f"/models/{m['slug']}/")], f"assets/img/models/{m['slug']}.jpg")
+        body += f'''<section class="section"><div class="wrap split">
+  <div class="prose"><h2>Known issues on the {e(m['name'])}</h2><p>These are the faults that bring {e(m['name'])} owners to us most often. Each has a proven, permanent repair.</p><ul class="checks" role="list">{issues}</ul>
+   <p class="mt-6"><strong>Generations:</strong> {e(m['short'])} · <strong>Years:</strong> {e(m['years'])}<br><strong>Engines covered:</strong> {e(m['engines'])}</p>
+   <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa(f"Hello Al Rahal, I have a {m['name']} and need help with: ")}" target="_blank" rel="noopener">{I("wa")} Book {e(m['name'].split('(')[0].strip())} service</a></div></div>
+  <div class="card__media" style="border-radius:var(--radius-lg);aspect-ratio:4/5">{img(f"assets/img/models/{m['slug']}-detail.jpg", m['name']+" in the workshop")}</div>
+ </div></section>
+ <section class="section section--bone"><div class="wrap"><div class="section-head"><h2>Every service for the {e(m['name'])}</h2></div><div class="grid grid--3">{svcs}</div></div></section>
+ <section class="section"><div class="wrap">{faq_html.replace('class="mt-7"','')}</div></section>''' + book_band(f"Book your {e(m['name'].split('(')[0].strip())} on WhatsApp")
+        page(f"models/{m['slug']}/", f"{m['name']} Specialist Repair & Service {CFG['city']} | {CFG['short']}", f"{m['name']} servicing, repair and known-issue fixes in {CFG['city']}: {', '.join(m['issues'][:3]).lower()}. Genuine parts, dealer diagnostics. WhatsApp {CFG['phone']}.", body, "/models/", schema=faq_schema, image=f"assets/img/models/{m['slug']}.jpg", breadcrumbs=[("Home","/"),("Models","/models/"),(m['name'], f"/models/{m['slug']}/")])
+
+def build_brands():
+    for b in BRANDS:
+        models = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])}</span><em>Known issues & services</em></a>' for m in MODELS if m['slug'] in b['models'])
+        svcs = "".join(f'<a href="/services/{s["slug"]}/">{I(s["icon"])}<div><strong>{e(s["name"])}</strong><span>{e(s["short"][:60])}…</span></div></a>' for s in SERVICES)
+        extra = f'<section class="section section--dark"><div class="wrap"><div class="section-head"><h2>{e(b["name"])} models we specialise in</h2></div><div class="models">{models}</div></div></section>' if models else ""
+        body = page_hero(f"{e(b['name'])} <br>specialist service & repair in {e(CFG['city'])}", e(b['intro']), [("Home","/"),("Brands","/services/"),(b['name'], f"/brands/{b['slug']}/")], f"assets/img/brands/{b['slug']}.jpg")
+        body += extra + f'<section class="section"><div class="wrap cq"><div class="section-head"><h2>Services for {e(b["name"])}</h2></div><div class="service-row">{svcs}</div></div></section>' + book_band(f"Book your {e(b['name'])} on WhatsApp")
+        page(f"brands/{b['slug']}/", f"{b['name']} Specialist Garage {CFG['city']} | {CFG['name']}", f"{b['name']} servicing, diagnostics and repair in {CFG['city']} with genuine parts and dealer-level equipment. Fixed prices on WhatsApp {CFG['phone']}.", body, f"/brands/{b['slug']}/", image=f"assets/img/brands/{b['slug']}.jpg", breadcrumbs=[("Home","/"),(b['name'], f"/brands/{b['slug']}/")])
+
+def build_blog():
+    cards = "".join(post_card(p) for p in sorted(POSTS, key=lambda p: p['date'], reverse=True))
+    body = page_hero("The Al Rahal workshop journal", "Plain-English guides written by our technicians: what fails on Range Rovers, why, and how to prevent it. No jargon, no sales pitch.", [("Home","/"),("Blog","/blog/")], "assets/img/hero/blog-hero.jpg")
+    body += f'<section class="section"><div class="wrap"><div class="grid grid--3">{cards}</div></div></section>' + book_band()
+    page("blog/", f"Range Rover Maintenance Guides & Advice | {CFG['name']} Blog", "Expert Range Rover and Land Rover maintenance guides from Al Rahal's technicians: air suspension, timing chains, gearboxes, buying advice and summer preparation.", body, "/blog/", image="assets/img/hero/blog-hero.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/")])
+    for i,p in enumerate(POSTS):
+        d = datetime.date.fromisoformat(p['date']).strftime("%d %B %Y")
+        others = [x for x in POSTS if x is not p][:3]
+        rel = "".join(post_card(x) for x in others)
+        body = f'''<section class="page-hero"><div class="wrap">{crumbs([("Home","/"),("Blog","/blog/"),(p['title'], f"/blog/{p['slug']}/")])}<p class="kicker">{e(p['cat'])}</p><h1>{e(p['title'])}</h1><p class="meta"><time datetime="{p['date']}">{d}</time><span>{p['read']} min read</span><span>By the Al Rahal technical team</span></p></div></section>
+<section class="section"><div class="wrap with-aside">
+ <article class="prose"><div class="post-hero">{img(f"assets/img/blog/{p['slug']}.jpg", p['title'], loading="eager")}</div>{p['body']}
+  <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I read your article \"" + p['title'] + "\" and would like advice about my car.")}" target="_blank" rel="noopener">{I("wa")} Ask a technician on WhatsApp</a></div></article>
+ <aside class="aside"><div class="aside__box aside__box--dark"><h3>Worried about this on your car?</h3><p>Send a message or a short video of the symptom. We will tell you what to expect before you drive in.</p><a class="btn btn--wa" href="{wa("Hello Al Rahal, I would like advice about my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} {CFG['phone']}</a></div>
+  <div class="aside__box"><h3>Related services</h3><ul role="list">{"".join(f'<li><a href="/services/{s["slug"]}/">{e(s["name"])}<span>›</span></a></li>' for s in SERVICES[:8])}</ul></div></aside>
+</div></section>
+<section class="section section--bone related"><div class="wrap"><h2>Keep reading</h2><div class="grid grid--3 mt-6">{rel}</div></div></section>''' + book_band()
+        schema = {"@context":"https://schema.org","@type":"BlogPosting","headline":p['title'],"description":p['excerpt'],"datePublished":p['date'],"dateModified":p['date'],"image":f"{CFG['url']}/assets/img/blog/{p['slug']}.jpg","author":{"@type":"Organization","name":CFG['name']},"publisher":{"@id":CFG['url']+"/#business"},"mainEntityOfPage":f"{CFG['url']}/blog/{p['slug']}/"}
+        page(f"blog/{p['slug']}/", f"{p['title']} | {CFG['short']}", p['excerpt'], body, "/blog/", schema=schema, image=f"assets/img/blog/{p['slug']}.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/"),(p['title'], f"/blog/{p['slug']}/")], kind="article")
+
+def build_about():
+    TEAM=[("Founder & Master Technician","Engine and gearbox specialist, 22 years on Land Rover"),("Co-founder & Diagnostics Lead","Electrical and software, former dealer diagnostic specialist"),("Air Suspension & Chassis Lead","Air suspension, steering and alignment"),("Customer Care Manager","Your WhatsApp contact from booking to handover")]
+    team=''.join('<div class="card"><div class="card__media" style="aspect-ratio:1">'+img(f'assets/img/team/team-0{i}.jpg', n)+f'</div><div class="card__body"><h3>{n}</h3><p>{r}</p></div></div>' for i,(n,r) in enumerate(TEAM,1))
+    body = page_hero("Built by Land Rover technicians, for Land Rover owners", f"Since {CFG['founded']} Al Rahal has done one thing exceptionally well: keep Range Rovers and Land Rovers running as their designers intended.", [("Home","/"),("About","/about/")], "assets/img/about/about-hero.jpg")
+    body += f'''<section class="section"><div class="wrap split">
+ <div class="prose"><p class="kicker">Our story</p><h2>A workshop that grew out of a frustration.</h2>
+  <p>Al Rahal began in {CFG['founded']} in a single bay with two master technicians who had left the main dealer network for a simple reason: they wanted to fix cars properly, explain the work honestly and charge fairly. Owners who were tired of being told 'replace the whole unit' started arriving with their Range Rovers, and word travelled.</p>
+  <p>Today we occupy a purpose-built facility in {e(CFG['address'])} with dedicated bays for engines, gearboxes, air suspension and electronics, a body and paint shop, a detailing studio and a parts store holding the components Range Rovers need most. The two founders still lead the technical team.</p>
+  <p>Our promise has not changed: the dealer's tools, a specialist's attention and a neighbour's honesty.</p></div>
+ <div class="card__media" style="border-radius:var(--radius-lg)">{img("assets/img/about/workshop.jpg", "Al Rahal workshop floor")}</div>
+</div></section>
+<section class="section section--dark"><div class="wrap"><div class="stats">
+ <div class="stat"><strong data-count="17" data-suffix="+">17+</strong><span>Years specialising in Land Rover</span></div>
+ <div class="stat"><strong data-count="12000" data-suffix="+">12,000+</strong><span>Range Rovers serviced and repaired</span></div>
+ <div class="stat"><strong data-count="9">9</strong><span>Dedicated service bays</span></div>
+ <div class="stat"><strong data-count="14">14</strong><span>Technicians, 6 former dealer master techs</span></div>
+</div></div></section>
+<section class="section"><div class="wrap split split--rev">
+ <div class="prose"><p class="kicker">Milestones</p><h2>Seventeen years of Land Rover.</h2>
+  <ol class="timeline" role="list">
+   <li><strong>{CFG['founded']}</strong><p>Two former dealer master technicians open a single-bay workshop dedicated to Range Rover.</p></li>
+   <li><strong>2013</strong><p>First independent workshop in the area to invest in Land Rover SDD diagnostics and aluminium body repair training for the new L405.</p></li>
+   <li><strong>2017</strong><p>Move to the current facility. In-house gearbox and air suspension rebuild benches commissioned.</p></li>
+   <li><strong>2021</strong><p>Pathfinder diagnostics added for Pivi Pro vehicles. Detailing studio and ceramic coating service launched.</p></li>
+   <li><strong>2024</strong><p>WhatsApp-first customer process introduced: reports, photos and approvals for every job.</p></li>
+   <li><strong>Today</strong><p>More than 12,000 Range Rovers and Land Rovers through the doors, and a 4.9-star rating from the owners who drive them.</p></li>
+  </ol></div>
+ <div class="card__media" style="border-radius:var(--radius-lg);aspect-ratio:4/5">{img("assets/img/about/founders.jpg", "Al Rahal founding technicians")}</div>
+</div></section>
+<section class="section section--bone"><div class="wrap"><div class="section-head"><p class="kicker">Our people</p><h2>The team behind the work.</h2></div><div class="grid grid--4">
+ {team}
+</div><p class="form__note mt-6">Replace the placeholder names with your team's real names in build.py.</p></div></section>''' + book_band()
+    page("about/", f"About Al Rahal | Range Rover Specialists in {CFG['city']} since {CFG['founded']}", f"Al Rahal Auto Maintenance was founded in {CFG['founded']} by former Land Rover master technicians. Meet the team and see the facility behind {CFG['city']}'s trusted Range Rover specialist.", body, "/about/", image="assets/img/about/about-hero.jpg", breadcrumbs=[("Home","/"),("About","/about/")])
+
+def build_contact():
+    form = wa_form("Booking request", BOOK_FIELDS)
+    body = page_hero("Contact & book", "Every enquiry goes straight to a technician on WhatsApp. Fill in the form or message us directly.", [("Home","/"),("Contact","/contact/")], "assets/img/hero/contact-hero.jpg")
+    body += f'''<section class="section"><div class="wrap split">
+ <div><h2>Book on WhatsApp</h2><p class="lede">Complete the form and tap send. WhatsApp opens with your details pre-filled and we reply within minutes during working hours.</p><div class="mt-6">{form}</div></div>
+ <div class="contact-info">
+  <div>{I("wa")}<div><strong>WhatsApp</strong><a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener"><span>{e(CFG['phone'])} · tap to chat</span></a></div></div>
+  <div>{I("phone")}<div><strong>Phone</strong><a href="tel:+{CFG['phone_intl']}"><span>+{CFG['phone_intl'][:3]} {CFG['phone_intl'][3:5]} {CFG['phone_intl'][5:8]} {CFG['phone_intl'][8:]}</span></a></div></div>
+  <div>{I("mail")}<div><strong>Email</strong><a href="mailto:{CFG['email']}"><span>{CFG['email']}</span></a></div></div>
+  <div>{I("pin")}<div><strong>Workshop</strong><span>{e(CFG['address'])}, {e(CFG['city'])}, {e(CFG['country'])}</span></div></div>
+  <div>{I("clock")}<div><strong>Hours</strong><span>{e(CFG['hours'])}</span></div></div>
+  <div class="map" style="display:block"><iframe src="{CFG['map_embed']}" title="Map to Al Rahal Auto Maintenance" loading="lazy" allowfullscreen></iframe></div>
+ </div>
+</div></section>'''
+    page("contact/", f"Contact & Book | {CFG['name']} {CFG['city']} · WhatsApp {CFG['phone']}", f"Book your Range Rover or Land Rover service on WhatsApp {CFG['phone']}. Address, hours and map for Al Rahal Auto Maintenance in {CFG['city']}.", body, "/contact/", image="assets/img/hero/contact-hero.jpg", breadcrumbs=[("Home","/"),("Contact","/contact/")])
+    # Booking page (same form, service-focused)
+    body = page_hero("Book a service", "Choose your model and the service you need. We confirm a time and a fixed price on WhatsApp.", [("Home","/"),("Book","/book/")], "assets/img/hero/contact-hero.jpg") + f'<section class="section"><div class="wrap" style="max-inline-size:820px">{form}</div></section>'
+    page("book/", f"Book a Range Rover Service on WhatsApp | {CFG['short']}", f"Book your Range Rover or Land Rover service in {CFG['city']} in under a minute. Fixed price confirmed on WhatsApp {CFG['phone']}.", body, "/contact/", breadcrumbs=[("Home","/"),("Book","/book/")])
+
+def build_misc():
+    faq_html, faq_schema = faq_block(GENERAL_FAQ + [(q,a) for s in SERVICES[:6] for q,a in s['faqs'][:1]], "Everything owners ask us")
+    body = page_hero("Frequently asked questions", "Honest answers about servicing, warranty, parts, pricing and booking.", [("Home","/"),("FAQ","/faq/")], "assets/img/hero/services-hero.jpg") + f'<section class="section"><div class="wrap">{faq_html.replace("class=\"mt-7\"","")}</div></section>' + book_band()
+    page("faq/", f"Range Rover Servicing FAQ | {CFG['name']}", "Answers to the questions Range Rover and Land Rover owners ask most about servicing, warranty, genuine parts, pricing and booking at Al Rahal.", body, "/faq/", schema=faq_schema, breadcrumbs=[("Home","/"),("FAQ","/faq/")])
+    figs = "".join(f'<figure>{img(f"assets/img/gallery/{f}", c)}<figcaption>{e(c)}</figcaption></figure>' for f,c in GALLERY)
+    body = page_hero("Inside the workshop", "A look at the facility, the equipment and the work.", [("Home","/"),("Gallery","/gallery/")], "assets/img/hero/models-hero.jpg") + f'<section class="section"><div class="wrap"><div class="gallery">{figs}</div></div></section>' + book_band()
+    page("gallery/", f"Workshop Gallery | {CFG['name']}", "Photos from inside Al Rahal Auto Maintenance: Range Rover engine rebuilds, air suspension, diagnostics, detailing and the customer lounge.", body, "/gallery/", breadcrumbs=[("Home","/"),("Gallery","/gallery/")])
+    body = page_hero("Privacy policy", "How this website handles your information.", [("Home","/"),("Privacy","/privacy/")], "assets/img/hero/contact-hero.jpg") + f'''<section class="section"><div class="wrap prose"><p>This website does not store personal information. Contact and booking forms open WhatsApp on your device with the details you entered; nothing is saved on our servers. We may use Google Analytics to understand which pages are visited. You can contact us at {CFG['email']} to ask any question about your data.</p><p>Last updated {TODAY}.</p></div></section>'''
+    page("privacy/", f"Privacy Policy | {CFG['name']}", "Privacy policy for the Al Rahal Auto Maintenance website.", body, "/privacy/", breadcrumbs=[("Home","/"),("Privacy","/privacy/")])
+    # 404
+    body = f'<section class="section" style="min-block-size:60dvh;display:grid;place-items:center;text-align:center"><div><p class="kicker">Page not found</p><h1>That page has gone off-road.</h1><p class="lede mt-6">Try the services menu, or message us on WhatsApp and we will point you the right way.</p><div class="cta-inline" style="justify-content:center"><a class="btn btn--dark" href="/services/">All services</a><a class="btn btn--wa" href="{wa("Hello Al Rahal")}" target="_blank" rel="noopener">{I("wa")} WhatsApp</a></div></div></section>'
+    page("404/", f"Page not found | {CFG['short']}", "Page not found.", body)
+    SITEMAP.pop()  # do not list 404
+    shutil.move(os.path.join(OUT,"404","index.html"), os.path.join(OUT,"404.html")); os.rmdir(os.path.join(OUT,"404"))
+
+def build_static():
+    assets_src = os.path.join(os.path.dirname(__file__), "assets")
+    shutil.copytree(assets_src, os.path.join(OUT, "assets"), dirs_exist_ok=True)
+    # favicon / logo svg
+    fav = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#1B1F23"/><path d="M14 33 24 11l10 22h-5l-5-11-5 11z" fill="#B59255"/><path d="M17 36h14" stroke="#B59255" stroke-width="3" stroke-linecap="round"/></svg>'
+    open(os.path.join(OUT,"assets/img/favicon.svg"),"w").write(fav)
+    open(os.path.join(OUT,"assets/img/logo.svg"),"w").write(fav)
+    # robots + sitemap + htaccess
+    open(os.path.join(OUT,"robots.txt"),"w").write(f"User-agent: *\nAllow: /\nSitemap: {CFG['url']}/sitemap.xml\n")
+    urls = "".join(f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod><changefreq>weekly</changefreq><priority>{p}</priority></url>" for u,p in SITEMAP)
+    open(os.path.join(OUT,"sitemap.xml"),"w").write(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
+    open(os.path.join(OUT,".htaccess"),"w").write(HTACCESS)
+
+HTACCESS = r"""# Al Rahal Auto Maintenance — Apache config for Namecheap shared hosting
+ErrorDocument 404 /404.html
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# Force HTTPS + www (edit if you use a non-www domain)
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+RewriteRule ^ https://www.%1%{REQUEST_URI} [R=301,L]
+# Add trailing slash to directory URLs
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*[^/])$ /$1/ [R=301,L]
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml text/xml application/xml
+</IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/css "access plus 1 month"
+ExpiresByType application/javascript "access plus 1 month"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/webp "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+<IfModule mod_headers.c>
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+"""
+
+# ------------------------------------------------------------------ RUN
+if __name__ == "__main__":
+    if os.path.exists(OUT): shutil.rmtree(OUT)
+    os.makedirs(OUT)
+    build_home(); build_services_index()
+    for s in SERVICES:
+        service_page(s)
+        for m in MODELS: service_page(s, m)
+    build_models(); build_brands(); build_blog(); build_about(); build_contact(); build_misc()
+    build_static()
+    n = sum(len(f) for _,_,f in os.walk(OUT) if True)
+    print(f"Built {len(SITEMAP)} pages → {OUT}")
