@@ -361,7 +361,6 @@ LOGO_STRIP = [
 def logo_strip():
     items = "".join(f'<li class="lstrip__item" title="{e(n)} service & repair"><picture><source srcset="/assets/img/brands/logos/{slug}.svg" type="image/svg+xml"><img src="/assets/img/brands/logos/{slug}.png" alt="{e(n)}" loading="lazy" decoding="async" width="160" height="64" onerror="this.closest(\'picture\').replaceWith(Object.assign(document.createElement(\'span\'),{{className:\'lstrip__name\',textContent:\'{e(n)}\'}}))"></picture></li>' for slug,n,g in LOGO_STRIP)
     return f'''<section class="lstrip" aria-label="Brands we service">
- <div class="wrap lstrip__head"><p class="kicker">Brands we service</p><p class="lstrip__sub">Specialists in Range Rover &amp; Land Rover, with the diagnostic platforms for every major British, German, American, Japanese and Korean marque.</p></div>
  <div class="lstrip__track"><ul class="lstrip__row" role="list">{items}</ul><ul class="lstrip__row" role="list" aria-hidden="true">{items}</ul></div>
 </section>'''
 
