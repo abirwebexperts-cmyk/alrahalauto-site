@@ -84,7 +84,7 @@ POSTS = [
 <p>Chain wear on this engine correlates almost perfectly with oil change discipline. Extended intervals, incorrect specification oil and short journeys that never let the oil reach temperature all accelerate wear. Our recommendation for the Gulf is an oil and filter change every 8,000 km with the correct low-SAPS oil, regardless of what the service indicator says.</p>
 <h2>When to act</h2>
 <p>If you hear the rattle, book a diagnostic check. We can measure chain stretch from live camshaft timing data without dismantling anything. If stretch is confirmed, replacing the chain, guides and tensioners costs a fraction of an engine and returns the car to silent running. Leaving it risks the chain jumping timing, which bends valves and usually means a rebuild.</p>"""),
- dict(slug="range-rover-service-cost-dubai", title="How Much Does Range Rover Servicing Really Cost in Dubai?", date="2026-07-30", cat="Servicing", read=5,
+ dict(slug="range-rover-service-cost-sharjah", title="How Much Does Range Rover Servicing Really Cost in Sharjah?", date="2026-07-30", cat="Servicing", read=5,
   excerpt="An honest breakdown of what goes into a service, why dealer prices are what they are, and where a specialist saves you money without cutting corners.",
   body="""<p>Owners are often surprised by dealer service quotes, and equally surprised by cheap garages offering an 'oil change' for the price of a lunch. Neither tells the full story. Here is what a proper Range Rover service actually involves and what drives the cost.</p>
 <h2>What is in a service</h2>

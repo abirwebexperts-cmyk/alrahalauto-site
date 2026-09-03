@@ -1,5 +1,7 @@
 # Al Rahal Auto Maintenance — Apache config for Namecheap shared hosting
 ErrorDocument 404 /404.html
+# Redirects for renamed pages
+Redirect 301 /blog/range-rover-service-cost-dubai/ /blog/range-rover-service-cost-sharjah/
 Options -Indexes
 DirectoryIndex index.html
 

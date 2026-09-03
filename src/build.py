@@ -14,15 +14,16 @@ CFG = dict(
   tagline="Range Rover & Land Rover Specialists",
   url="https://www.alrahalauto.ae",           # <-- your live domain, no trailing slash
   phone="055 747 9292", phone_intl="971557479292",
-  email="info@alrahalauto.ae",                # <-- change
-  city="Dubai", country="United Arab Emirates",
-  address="Al Quoz Industrial Area 3",         # <-- change
-  map_embed="https://www.google.com/maps?q=Al+Quoz+Industrial+Area+3+Dubai&output=embed",
-  lat="25.1290", lng="55.2270",
+  email="alrahal8881@gmail.com",
+  landline="06 558 3559", landline_intl="97165583559",
+  city="Sharjah", country="United Arab Emirates",
+  address="Jabel Tarek Street, opposite Sharjah Cricket Stadium",
+  map_embed="https://www.google.com/maps?q=Al+Rahal+Auto+Maintenance+Workshop+Jabel+Tarek+Street+Sharjah&output=embed",
+  lat="25.3308", lng="55.4197",
   hours="Saturday – Thursday · 8:00 AM – 1:00 PM & 4:00 PM – 9:00 PM · Friday closed",
   hours_lines=[("Saturday – Thursday","8:00 AM – 1:00 PM"),("Break","1:00 PM – 4:00 PM"),("Reopen","4:00 PM – 9:00 PM"),("Friday","Closed")],
-  founded="2009", ga_id="",                    # GA4 id e.g. G-XXXXXXX, blank = off
-  instagram="https://instagram.com/alrahalauto", facebook="https://facebook.com/alrahalauto", tiktok="https://tiktok.com/@alrahalauto",
+  experience="25+", ga_id="",                    # GA4 id e.g. G-XXXXXXX, blank = off
+  instagram="https://instagram.com/alrahal_auto_maintenance/",
 )
 WA = f"https://wa.me/{CFG['phone_intl']}"
 OUT = os.path.join(os.path.dirname(__file__), "..", "dist")
@@ -123,12 +124,12 @@ def footer():
     return f'''
 <footer class="footer"><div class="wrap">
  <div class="footer__top">
-  <div class="footer__brand">{LOGO}<p>Independent Range Rover and Land Rover specialists in {CFG['city']} since {CFG['founded']}. Dealer-level diagnostics, genuine parts and honest advice, without dealer pricing.</p>
-   <div class="social"><a href="{CFG['instagram']}" aria-label="Instagram" rel="noopener" target="_blank">{I("instagram")}</a><a href="{CFG['facebook']}" aria-label="Facebook" rel="noopener" target="_blank">{I("facebook")}</a><a href="{CFG['tiktok']}" aria-label="TikTok" rel="noopener" target="_blank">{I("tiktok")}</a></div></div>
+  <div class="footer__brand">{LOGO}<p>Independent Range Rover and Land Rover specialists in {CFG['city']} with more than {CFG['experience']} years of Land Rover experience. Dealer-level diagnostics, genuine parts and honest advice, without dealer pricing.</p>
+   <div class="social"><a href="{CFG['instagram']}" aria-label="Instagram" rel="noopener" target="_blank">{I("instagram")}</a></div></div>
   <div><h4>Services</h4><ul>{svc}<li><a href="/services/">All services</a></li></ul></div>
   <div><h4>Models</h4><ul>{mdl}</ul></div>
   <div><h4>Brands</h4><ul>{brd}</ul></div>
-  <div><h4>Visit us</h4><ul><li>{e(CFG['address'])}, {e(CFG['city'])}</li>{"".join(f'<li><span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span></li>' for d,t in CFG['hours_lines'])}<li><a href="tel:+{CFG['phone_intl']}">{e(CFG['phone'])}</a></li><li><a href="mailto:{CFG['email']}">{CFG['email']}</a></li><li><a href="/contact/">Contact & map</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li></ul></div>
+  <div><h4>Visit us</h4><ul><li>{e(CFG['address'])}, {e(CFG['city'])}</li>{"".join(f'<li><span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span></li>' for d,t in CFG['hours_lines'])}<li><a href="tel:+{CFG['phone_intl']}">Mobile / WhatsApp {e(CFG['phone'])}</a></li><li><a href="tel:+{CFG['landline_intl']}">Tel {e(CFG['landline'])}</a></li><li><a href="mailto:{CFG['email']}">{CFG['email']}</a></li><li><a href="/contact/">Contact & map</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li></ul></div>
  </div>
  <div class="footer__bottom"><span>© {TODAY[:4]} {e(CFG['name'])}. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/sitemap.xml">Sitemap</a></span></div>
 </div></footer>
@@ -137,13 +138,13 @@ def footer():
 
 def local_business_schema():
     return {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+"/#business","name":CFG['name'],"url":CFG['url'],
-      "image":CFG['url']+"/assets/img/hero/home-hero.jpg","logo":CFG['url']+"/assets/img/logo.svg","telephone":"+"+CFG['phone_intl'],"email":CFG['email'],
-      "priceRange":"$$","foundingDate":CFG['founded'],
+      "image":CFG['url']+"/assets/img/hero/home-hero.jpg","logo":CFG['url']+"/assets/img/logo.svg","telephone":["+"+CFG['phone_intl'],"+"+CFG['landline_intl']],"email":CFG['email'],
+      "priceRange":"$$",
       "address":{"@type":"PostalAddress","streetAddress":CFG['address'],"addressLocality":CFG['city'],"addressCountry":"AE"},
       "geo":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},
       "openingHoursSpecification":[
         {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],"opens":"08:00","closes":"13:00"},
-        {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],"opens":"16:00","closes":"21:00"}],"sameAs":[CFG['instagram'],CFG['facebook'],CFG['tiktok']],
+        {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],"opens":"16:00","closes":"21:00"}],"sameAs":[CFG['instagram']],
       "areaServed":CFG['city'],"knowsAbout":["Range Rover repair","Land Rover repair","BMW repair","Mercedes-Benz repair","Audi repair"],
       "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":s['name'],"url":f"{CFG['url']}/services/{s['slug']}/"}} for s in SERVICES]}
 
@@ -255,7 +256,7 @@ def build_home():
     svc_cards = "".join(service_card(s) for s in feat[:6])
     models = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])} · {e(m["years"])}</span><em>View specialist services</em></a>' for m in MODELS[:4])
     brands = "".join(f'<a href="/brands/{b["slug"]}/">{I("car")}<span>{e(b["name"])}</span><small>{"Specialist" if b["primary"] else "Serviced & repaired"}</small></a>' for b in BRANDS)
-    quotes = "".join(f'<blockquote class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><p>{e(t)}</p><footer><span>{e(n)}</span><span>{e(c)}</span></footer></blockquote>' for t,n,c in TESTIMONIALS)
+    _unused = "".join(f'<blockquote class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><p>{e(t)}</p><footer><span>{e(n)}</span><span>{e(c)}</span></footer></blockquote>' for t,n,c in TESTIMONIALS)
     posts = "".join(post_card(p) for p in POSTS[:3])
     faq_html, faq_schema = faq_block(GENERAL_FAQ[:5])
     marquee = "".join(f'<span>{e(s["name"])}<i></i></span>' for s in SERVICES[:12])
@@ -273,10 +274,10 @@ def build_home():
 </section>
 
 <section class="trust"><div class="wrap">
- <div class="trust__item">{I("award")}<div><strong data-count="17" data-suffix="+">17+</strong><span>Years dedicated to Land Rover</span></div></div>
- <div class="trust__item">{I("car")}<div><strong data-count="12000" data-suffix="+">12,000+</strong><span>Range Rovers serviced</span></div></div>
- <div class="trust__item">{I("star")}<div><strong>4.9 / 5</strong><span>Google rating from owners</span></div></div>
- <div class="trust__item">{I("shield")}<div><strong>Warranty</strong><span>On every part and repair</span></div></div>
+ <div class="trust__item">{I("award")}<div><strong>25+ years</strong><span>Land Rover experience</span></div></div>
+ <div class="trust__item">{I("diagnostics")}<div><strong>Dealer-level</strong><span>Diagnostic equipment</span></div></div>
+ <div class="trust__item">{I("shield")}<div><strong>Genuine parts</strong><span>With written warranty</span></div></div>
+ <div class="trust__item">{I("wa")}<div><strong>WhatsApp</strong><span>Booking, reports & photos</span></div></div>
 </div></section>
 
 <section class="section" id="services"><div class="wrap">
@@ -320,10 +321,7 @@ def build_home():
  <div class="brands reveal">{brands}</div>
 </div></section>
 
-<section class="section section--dark"><div class="wrap">
- <div class="section-head reveal"><p class="kicker">Owners' words</p><h2>What Range Rover owners say after their first visit.</h2></div>
- <div class="quotes reveal">{quotes}</div>
-</div></section>
+
 
 <section class="section"><div class="wrap">
  <div class="section-head reveal"><p class="kicker">From the workshop</p><h2>Knowledge that keeps your Range Rover out of the workshop.</h2></div>
@@ -434,38 +432,27 @@ def build_blog():
         page(f"blog/{p['slug']}/", f"{p['title']} | {CFG['short']}", p['excerpt'], body, "/blog/", schema=schema, image=f"assets/img/blog/{p['slug']}.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/"),(p['title'], f"/blog/{p['slug']}/")], kind="article")
 
 def build_about():
-    TEAM=[("Founder & Master Technician","Engine and gearbox specialist, 22 years on Land Rover"),("Co-founder & Diagnostics Lead","Electrical and software, former dealer diagnostic specialist"),("Air Suspension & Chassis Lead","Air suspension, steering and alignment"),("Customer Care Manager","Your WhatsApp contact from booking to handover")]
-    team=''.join('<div class="card"><div class="card__media" style="aspect-ratio:1">'+img(f'assets/img/team/team-0{i}.jpg', n)+f'</div><div class="card__body"><h3>{n}</h3><p>{r}</p></div></div>' for i,(n,r) in enumerate(TEAM,1))
-    body = page_hero("Built by Land Rover technicians, for Land Rover owners", f"Since {CFG['founded']} Al Rahal has done one thing exceptionally well: keep Range Rovers and Land Rovers running as their designers intended.", [("Home","/"),("About","/about/")], "assets/img/about/about-hero.jpg")
+    body = page_hero("Built by Land Rover technicians, for Land Rover owners", f"For more than {CFG['experience']} years Al Rahal Auto Maintenance Workshop has done one thing exceptionally well: keep Range Rovers and Land Rovers running as their designers intended.", [("Home","/"),("About","/about/")], "assets/img/about/about-hero.jpg")
     body += f'''<section class="section"><div class="wrap split">
  <div class="prose"><p class="kicker">Our story</p><h2>A workshop that grew out of a frustration.</h2>
-  <p>Al Rahal began in {CFG['founded']} in a single bay with two master technicians who had left the main dealer network for a simple reason: they wanted to fix cars properly, explain the work honestly and charge fairly. Owners who were tired of being told 'replace the whole unit' started arriving with their Range Rovers, and word travelled.</p>
-  <p>Today we occupy a purpose-built facility in {e(CFG['address'])} with dedicated bays for engines, gearboxes, air suspension and electronics, a body and paint shop, a detailing studio and a parts store holding the components Range Rovers need most. The two founders still lead the technical team.</p>
-  <p>Our promise has not changed: the dealer's tools, a specialist's attention and a neighbour's honesty.</p></div>
+  <p>Al Rahal Auto Maintenance Workshop was established to serve Land Rover owners to a higher standard of repair than the dealership provides, and at more competitive prices. We carry out all the same repairs and services as the dealer-owned workshops, with the benefits only an independent specialist can offer: honest advice, fair pricing and convenient scheduling.</p>
+  <p>Located on Jabel Tarek Street in {e(CFG['city'])}, opposite the Cricket Stadium, our workshop is equipped with dealer-level diagnostic equipment, touchless wheel alignment and camera and radar calibration systems, alongside dedicated bays for engine, gearbox, air suspension, electrical and air-conditioning work.</p>
+  <p>Our technicians have spent their careers inside Land Rover engine bays. We are not just the alternative to the dealer; we aim to be the workshop of choice for every Land Rover in the UAE.</p></div>
  <div class="card__media" style="border-radius:var(--radius-lg)">{img("assets/img/about/workshop.jpg", "Al Rahal workshop floor")}</div>
 </div></section>
 <section class="section section--dark"><div class="wrap"><div class="stats">
- <div class="stat"><strong data-count="17" data-suffix="+">17+</strong><span>Years specialising in Land Rover</span></div>
- <div class="stat"><strong data-count="12000" data-suffix="+">12,000+</strong><span>Range Rovers serviced and repaired</span></div>
- <div class="stat"><strong data-count="9">9</strong><span>Dedicated service bays</span></div>
- <div class="stat"><strong data-count="14">14</strong><span>Technicians, 6 former dealer master techs</span></div>
+ <div class="stat"><strong>{CFG['experience']}</strong><span>Years of Land Rover experience</span></div>
+ <div class="stat"><strong>Dealer-level</strong><span>Diagnostics, alignment & ADAS calibration</span></div>
+ <div class="stat"><strong>Genuine</strong><span>Parts with written warranty</span></div>
+ <div class="stat"><strong>Sat – Thu</strong><span>8 AM – 1 PM & 4 PM – 9 PM</span></div>
 </div></div></section>
 <section class="section"><div class="wrap split split--rev">
- <div class="prose"><p class="kicker">Milestones</p><h2>Seventeen years of Land Rover.</h2>
-  <ol class="timeline" role="list">
-   <li><strong>{CFG['founded']}</strong><p>Two former dealer master technicians open a single-bay workshop dedicated to Range Rover.</p></li>
-   <li><strong>2013</strong><p>First independent workshop in the area to invest in Land Rover SDD diagnostics and aluminium body repair training for the new L405.</p></li>
-   <li><strong>2017</strong><p>Move to the current facility. In-house gearbox and air suspension rebuild benches commissioned.</p></li>
-   <li><strong>2021</strong><p>Pathfinder diagnostics added for Pivi Pro vehicles. Detailing studio and ceramic coating service launched.</p></li>
-   <li><strong>2024</strong><p>WhatsApp-first customer process introduced: reports, photos and approvals for every job.</p></li>
-   <li><strong>Today</strong><p>More than 12,000 Range Rovers and Land Rovers through the doors, and a 4.9-star rating from the owners who drive them.</p></li>
-  </ol></div>
- <div class="card__media" style="border-radius:var(--radius-lg);aspect-ratio:4/5">{img("assets/img/about/founders.jpg", "Al Rahal founding technicians")}</div>
-</div></section>
-<section class="section section--bone"><div class="wrap"><div class="section-head"><p class="kicker">Our people</p><h2>The team behind the work.</h2></div><div class="grid grid--4">
- {team}
-</div><p class="form__note mt-6">Replace the placeholder names with your team's real names in build.py.</p></div></section>''' + book_band()
-    page("about/", f"About Al Rahal | Range Rover Specialists in {CFG['city']} since {CFG['founded']}", f"Al Rahal Auto Maintenance was founded in {CFG['founded']} by former Land Rover master technicians. Meet the team and see the facility behind {CFG['city']}'s trusted Range Rover specialist.", body, "/about/", image="assets/img/about/about-hero.jpg", breadcrumbs=[("Home","/"),("About","/about/")])
+ <div class="prose"><p class="kicker">What we stand for</p><h2>The dealer's tools. A specialist's attention. Fair prices.</h2>
+  <ul class="checks" role="list"><li>{I("check")}<span>Every fault diagnosed properly before any part is recommended</span></li><li>{I("check")}<span>A fixed price on WhatsApp before work begins</span></li><li>{I("check")}<span>Genuine Land Rover parts, or high-quality OE alternatives explained and agreed with you</span></li><li>{I("check")}<span>Photos of worn parts and every stage of the repair</span></li><li>{I("check")}<span>Road test and quality check before handover</span></li><li>{I("check")}<span>Written warranty on parts and labour</span></li></ul>
+  <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a></div></div>
+ <div class="card__media" style="border-radius:var(--radius-lg);aspect-ratio:4/5">{img("assets/img/about/founders.jpg", "Al Rahal technicians at work")}</div>
+</div></section>''' + book_band()
+    page("about/", f"About Al Rahal | Range Rover Specialists in {CFG['city']}, {CFG['experience']} Years", f"Al Rahal Auto Maintenance Workshop, {CFG['city']}: more than {CFG['experience']} years of Range Rover and Land Rover service and repair with dealer-level diagnostics and genuine parts.", body, "/about/", image="assets/img/about/about-hero.jpg", breadcrumbs=[("Home","/"),("About","/about/")])
 
 def build_contact():
     form = wa_form("Booking request", BOOK_FIELDS)
@@ -474,7 +461,7 @@ def build_contact():
  <div><h2>Book on WhatsApp</h2><p class="lede">Complete the form and tap send. WhatsApp opens with your details pre-filled and we reply within minutes during working hours.</p><div class="mt-6">{form}</div></div>
  <div class="contact-info">
   <div>{I("wa")}<div><strong>WhatsApp</strong><a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener"><span>{e(CFG['phone'])} · tap to chat</span></a></div></div>
-  <div>{I("phone")}<div><strong>Phone</strong><a href="tel:+{CFG['phone_intl']}"><span>+{CFG['phone_intl'][:3]} {CFG['phone_intl'][3:5]} {CFG['phone_intl'][5:8]} {CFG['phone_intl'][8:]}</span></a></div></div>
+  <div>{I("phone")}<div><strong>Phone</strong><a href="tel:+{CFG['phone_intl']}"><span>Mobile +971 55 747 9292</span></a><br><a href="tel:+{CFG['landline_intl']}"><span>Tel +971 6 558 3559</span></a></div></div>
   <div>{I("mail")}<div><strong>Email</strong><a href="mailto:{CFG['email']}"><span>{CFG['email']}</span></a></div></div>
   <div>{I("pin")}<div><strong>Workshop</strong><span>{e(CFG['address'])}, {e(CFG['city'])}, {e(CFG['country'])}</span></div></div>
   <div>{I("clock")}<div><strong>Opening hours</strong><span class="hours-table">{"".join(f'<span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span>' for d,t in CFG['hours_lines'])}</span><span class="hours__status hours__status--inline mt-6" data-hours-status><i></i><b>Checking hours…</b></span></div></div>
@@ -516,6 +503,8 @@ def build_static():
 
 HTACCESS = r"""# Al Rahal Auto Maintenance — Apache config for Namecheap shared hosting
 ErrorDocument 404 /404.html
+# Redirects for renamed pages
+Redirect 301 /blog/range-rover-service-cost-dubai/ /blog/range-rover-service-cost-sharjah/
 Options -Indexes
 DirectoryIndex index.html
 
