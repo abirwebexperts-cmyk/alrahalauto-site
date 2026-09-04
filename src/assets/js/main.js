@@ -146,7 +146,7 @@
       summary.innerHTML = `<div>${rows}</div>`;
     };
     form.addEventListener('input', () => { if (cur === steps.length - 1) renderSummary(); });
-    document.querySelectorAll('[data-bk-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); if (drawer?.hasAttribute('data-open')) close(); dlg.showModal(); show(0); }));
+    document.querySelectorAll('[data-bk-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); if (drawer?.hasAttribute('data-open')) close(); openDlg(); show(0); const v = b.dataset.bkVehicle; if (v) { const sel = form.querySelector('[name=Vehicle]'); if ([...sel.options].some(o => o.value === v)) sel.value = v; } }));
     const closeDlg = () => { if (dlg.open && typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open'); document.body.style.overflow = ''; };
     dlg.querySelectorAll('[data-bk-close]').forEach(b => b.addEventListener('click', closeDlg));
     dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });

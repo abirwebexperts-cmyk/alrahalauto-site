@@ -124,7 +124,12 @@ def header(current):
 def booking_dialog():
     models_by_brand = [("Range Rover",["Range Rover (Vogue)","Range Rover Sport","Range Rover Velar","Range Rover Evoque"]),
                        ("Land Rover",["Defender","Discovery","Discovery Sport","Freelander"]),
-                       ("Other brands",["BMW","Mercedes-Benz","Audi","Porsche","Jaguar","Bentley","Rolls-Royce","Other"])]
+                       ("British",["Jaguar","Bentley","Rolls-Royce","MINI","Aston Martin"]),
+                       ("German",["Mercedes-Benz","BMW","Audi","Porsche","Volkswagen","Maybach","Mercedes-AMG","BMW M"]),
+                       ("American",["Ford","Chevrolet","GMC","Cadillac","Jeep","Dodge","Lincoln","Chrysler","Tesla"]),
+                       ("Japanese",["Toyota","Lexus","Nissan","Infiniti","Honda","Mitsubishi","Mazda"]),
+                       ("Korean",["Hyundai","Kia","Genesis"]),
+                       ("Other",["Other"])]
     vehicle_opts = "".join(f'<optgroup label="{e(b)}">'+"".join(f'<option>{e(m)}</option>' for m in ms)+'</optgroup>' for b,ms in models_by_brand)
     years = "".join(f'<option>{y}</option>' for y in range(datetime.date.today().year+1, 1999, -1))
     svc_groups = [("Servicing & diagnostics",["Periodic Service & Oil Change","Computer Diagnostics","Pre-Purchase Inspection","Battery Replacement"]),
@@ -386,11 +391,29 @@ def logo_strip():
  <div class="lstrip__track"><ul class="lstrip__row" role="list">{items}</ul><ul class="lstrip__row" role="list" aria-hidden="true">{items}</ul></div>
 </section>'''
 
+REGIONS = [
+ ("British", ["Range Rover","Land Rover","Jaguar","Bentley","Rolls-Royce","MINI","Aston Martin"]),
+ ("German", ["Mercedes-Benz","BMW","Audi","Porsche","Volkswagen","Maybach","Mercedes-AMG","BMW M"]),
+ ("American", ["Ford","Chevrolet","GMC","Cadillac","Jeep","Dodge","Lincoln","Chrysler","Tesla"]),
+ ("Japanese", ["Toyota","Lexus","Nissan","Infiniti","Honda","Mitsubishi","Mazda"]),
+ ("Korean", ["Hyundai","Kia","Genesis"]),
+]
+BRAND_PAGE = {"Range Rover":"range-rover","Land Rover":"land-rover","Jaguar":"jaguar","Bentley":"bentley-rolls-royce","Rolls-Royce":"bentley-rolls-royce","Mercedes-Benz":"mercedes-benz","BMW":"bmw","Audi":"audi","Porsche":"porsche"}
+def region_grid():
+    out = ""
+    for region, brands in REGIONS:
+        pills = ""
+        for bname in brands:
+            if bname in BRAND_PAGE: pills += f'<a href="/brands/{BRAND_PAGE[bname]}/">{e(bname)}</a>'
+            else: pills += f'<a data-bk-open data-bk-vehicle="{e(bname)}" href="{wa(f"Hello Al Rahal, I have a {bname} and would like to book a service.")}" target="_blank" rel="noopener">{e(bname)}</a>'
+        out += f'<div class="region"><h3>{e(region)}</h3><div class="tags">{pills}</div></div>'
+    return out
+
 def build_home():
     feat = [s for s in SERVICES if s.get('featured')]
     svc_cards = "".join(service_card(s) for s in feat[:6])
     models = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])} · {e(m["years"])}</span><em>View specialist services</em></a>' for m in MODELS[:4])
-    brands = "".join(f'<a href="/brands/{b["slug"]}/">{I("car")}<span>{e(b["name"])}</span><small>{"Specialist" if b["primary"] else "Serviced & repaired"}</small></a>' for b in BRANDS)
+    regions = region_grid()
     _unused = "".join(f'<blockquote class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><p>{e(t)}</p><footer><span>{e(n)}</span><span>{e(c)}</span></footer></blockquote>' for t,n,c in TESTIMONIALS)
     posts = "".join(post_card(p) for p in POSTS[:3])
     faq_html, faq_schema = faq_block(GENERAL_FAQ[:5])
@@ -457,9 +480,10 @@ def build_home():
  </div>
 </div></section>
 
-<section class="section"><div class="wrap">
- <div class="section-head reveal"><p class="kicker">Also welcome here</p><h2>Specialists in Land Rover. Experts in the rest.</h2></div>
- <div class="brands reveal">{brands}</div>
+<section class="section brands-x"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">Also welcome here</p><h2>Specialists in Land Rover. Experts in the rest.</h2><p class="lede">The same dealer-level approach, genuine parts and fixed WhatsApp pricing for the German, American, Japanese and Korean cars in your household or fleet. Every marque below is diagnosed on its manufacturer's own platform.</p></div>
+ <div class="regions reveal">{regions}</div>
+ <p class="brands-x__note reveal">{I("diagnostics")} Diagnostic platforms in house: Land Rover Pathfinder &amp; SDD · BMW ISTA · Mercedes-Benz XENTRY · Audi &amp; Volkswagen ODIS · Porsche PIWIS · Ford IDS · GM GDS2 · Chrysler wiTECH · Toyota Techstream · Hyundai &amp; Kia GDS.</p>
 </div></section>
 
 
