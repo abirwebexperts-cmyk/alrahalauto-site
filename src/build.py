@@ -249,9 +249,28 @@ def local_business_schema():
       "areaServed":[{"@type":"City","name":a["name"]} for a in AREAS if a.get("hub")]+[{"@type":"Place","name":a["name"]+", "+a["emirate"]} for a in AREAS if not a.get("hub")],"serviceArea":{"@type":"GeoCircle","geoMidpoint":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},"geoRadius":"160000"},"knowsAbout":["Range Rover repair","Land Rover repair","BMW repair","Mercedes-Benz repair","Audi repair"],
       "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":s['name'],"url":f"{CFG['url']}/services/{s['slug']}/"}} for s in SERVICES]}
 
+def fit_title(t, limit=62):
+    """Keep titles within Google's ~600px display width."""
+    if len(t) <= limit: return t
+    t2 = t.replace(f" | {CFG['name']}", f" | {CFG['short']}")
+    if len(t2) <= limit: return t2
+    t3 = t2.replace(" | Service & Repair", "").replace(" | Range Rover Specialist", "")
+    if len(t3) <= limit: return t3
+    t4 = re.sub(r"\s*\|\s*Al Rahal$", "", t3)
+    return t4
+def fit_desc(d, limit=158):
+    """Trim descriptions at a sentence/word boundary under ~158 chars."""
+    if len(d) <= limit: return d
+    cut = d[:limit]
+    for sep in [". ", "; ", ", ", " "]:
+        i = cut.rfind(sep)
+        if i > 90: return cut[:i].rstrip(",;") + ("." if sep != ". " and not cut[:i].endswith(".") else ".") if sep!=". " else cut[:i+1]
+    return cut.rstrip() + "…"
+
 def page(path, title, desc, body, current="/", schema=None, image="assets/brand/hero-home-1871.07ec78f3.jpg", breadcrumbs=None, kind="website"):
     """Write one HTML page. path like 'services/x/' → dist/services/x/index.html"""
     canonical = CFG['url'] + "/" + path
+    title = fit_title(title); desc = fit_desc(desc)
     schemas = [local_business_schema()]
     if breadcrumbs:
         schemas.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":i+1,"name":n,"item":CFG['url']+u} for i,(n,u) in enumerate(breadcrumbs)]})
@@ -310,7 +329,7 @@ def book_band(h="Book your Range Rover service on WhatsApp", p="Send your model,
 </div></section>'''
 
 def service_card(s):
-    return f'''<a class="card" href="/services/{s['slug']}/"><div class="card__media">{img(f"assets/img/services/{s['slug']}.jpg", s['name'] + " for Range Rover")}</div>
+    return f'''<a class="card" href="/services/{s['slug']}/"><div class="card__media"><span class="card__icon">{I(s['icon'])}</span>{img(f"assets/img/services/{s['slug']}.jpg", s['name'] + " for Range Rover")}</div>
     <div class="card__body"><h3>{e(s['name'])}</h3><p>{e(s['short'])}</p><span class="card__link">View service {I("arrow")}</span></div></a>'''
 
 def post_card(p):
@@ -455,7 +474,7 @@ def build_home():
 
 {book_band("Get a fixed price for your Range Rover today", "One message on WhatsApp is all it takes.")}
 '''
-    page("", f"Range Rover & Land Rover Specialist Sharjah, Dubai & Ajman | {CFG['name']}",
+    page("", f"Range Rover & Land Rover Specialist | Sharjah · Dubai · Ajman | Al Rahal",
          f"Independent Range Rover and Land Rover specialists in Sharjah serving Dubai, Ajman and the UAE with collection & delivery. Dealer-level diagnostics, air suspension, engine, gearbox and servicing with genuine parts. WhatsApp {CFG['phone']}.",
          body, "/", schema=faq_schema)
 
@@ -507,8 +526,8 @@ def service_page(s, m=None):
  </aside>
 </div></section>''' + book_band(f"Book {e(s['name'].lower())} on WhatsApp")
     svc_schema = {"@context":"https://schema.org","@type":"Service","name":f"{s['name']} for {car}","serviceType":s['name'],"provider":{"@id":CFG['url']+"/#business"},"areaServed":[{"@type":"City","name":a["name"]} for a in AREAS if a.get("hub")]+[{"@type":"Place","name":a["name"]+", "+a["emirate"]} for a in AREAS if not a.get("hub")],"serviceArea":{"@type":"GeoCircle","geoMidpoint":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},"geoRadius":"160000"},"url":CFG['url']+"/"+slug,"description":s['short']}
-    t = f"{s['name']} for {car} in {CFG['city']} | {CFG['name']}"
-    page(slug, t[:70] if len(t)<=70 else f"{s['name']} · {car} | {CFG['short']}", f"{s['short']} Specialist {s['name'].lower()} for {car} in {CFG['city']}. Fixed price on WhatsApp {CFG['phone']}.", body, "/services/", schema=[svc_schema, faq_schema], image=f"assets/img/services/{s['slug']}.jpg", breadcrumbs=bcs)
+    t = f"{s['name']} · {car} | {CFG['short']}" if m else f"{s['name']} Sharjah & Dubai | Range Rover | {CFG['short']}"
+    page(slug, t, f"{s['short']} Specialist {s['name'].lower()} for {car} in {CFG['city']}. Fixed price on WhatsApp {CFG['phone']}.", body, "/services/", schema=[svc_schema, faq_schema], image=f"assets/img/services/{s['slug']}.jpg", breadcrumbs=bcs)
 
 def build_models():
     cards = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])} · {e(m["years"])}</span><em>Known issues & services</em></a>' for m in MODELS)
@@ -531,7 +550,7 @@ def build_models():
  </div></section>
  <section class="section section--bone"><div class="wrap"><div class="section-head"><h2>Every service for the {e(m['name'])}</h2></div><div class="grid grid--3">{svcs}</div></div></section>
  <section class="section"><div class="wrap">{faq_html.replace('class="mt-7"','')}</div></section>''' + book_band(f"Book your {e(m['name'].split('(')[0].strip())} on WhatsApp")
-        page(f"models/{m['slug']}/", f"{m['name']} Specialist Repair & Service {CFG['city']} | {CFG['short']}", f"{m['name']} servicing, repair and known-issue fixes in {CFG['city']}: {', '.join(m['issues'][:3]).lower()}. Genuine parts, dealer diagnostics. WhatsApp {CFG['phone']}.", body, "/models/", schema=faq_schema, image=f"assets/img/models/{m['slug']}.jpg", breadcrumbs=[("Home","/"),("Models","/models/"),(m['name'], f"/models/{m['slug']}/")])
+        page(f"models/{m['slug']}/", f"{m['name']} Specialist Sharjah & Dubai | {CFG['short']}", f"{m['name']} servicing, repair and known-issue fixes in {CFG['city']}: {', '.join(m['issues'][:3]).lower()}. Genuine parts, dealer diagnostics. WhatsApp {CFG['phone']}.", body, "/models/", schema=faq_schema, image=f"assets/img/models/{m['slug']}.jpg", breadcrumbs=[("Home","/"),("Models","/models/"),(m['name'], f"/models/{m['slug']}/")])
 
 def build_brands():
     for b in BRANDS:
@@ -540,7 +559,7 @@ def build_brands():
         extra = f'<section class="section section--dark"><div class="wrap"><div class="section-head"><h2>{e(b["name"])} models we specialise in</h2></div><div class="models">{models}</div></div></section>' if models else ""
         body = page_hero(f"{e(b['name'])} <br>specialist service & repair in {e(CFG['city'])}", e(b['intro']), [("Home","/"),("Brands","/services/"),(b['name'], f"/brands/{b['slug']}/")], f"assets/img/brands/{b['slug']}.jpg")
         body += extra + f'<section class="section"><div class="wrap cq"><div class="section-head"><h2>Services for {e(b["name"])}</h2></div><div class="service-row">{svcs}</div></div></section>' + book_band(f"Book your {e(b['name'])} on WhatsApp")
-        page(f"brands/{b['slug']}/", f"{b['name']} Specialist Garage {CFG['city']} | {CFG['name']}", f"{b['name']} servicing, diagnostics and repair in {CFG['city']} with genuine parts and dealer-level equipment. Fixed prices on WhatsApp {CFG['phone']}.", body, f"/brands/{b['slug']}/", image=f"assets/img/brands/{b['slug']}.jpg", breadcrumbs=[("Home","/"),(b['name'], f"/brands/{b['slug']}/")])
+        page(f"brands/{b['slug']}/", f"{b['name']} Specialist Garage Sharjah & Dubai | {CFG['short']}", f"{b['name']} servicing, diagnostics and repair in {CFG['city']} with genuine parts and dealer-level equipment. Fixed prices on WhatsApp {CFG['phone']}.", body, f"/brands/{b['slug']}/", image=f"assets/img/brands/{b['slug']}.jpg", breadcrumbs=[("Home","/"),(b['name'], f"/brands/{b['slug']}/")])
 
 def build_blog():
     cards = "".join(post_card(p) for p in sorted(POSTS, key=lambda p: p['date'], reverse=True))
@@ -647,7 +666,7 @@ def build_areas():
  </aside>
 </div></section>
 <section class="section section--bone"><div class="wrap"><div class="section-head"><h2>Specialist services for {e(a['name'])}</h2></div><div class="grid grid--3">{svcs}</div></div></section>''' + book_band(f"Book your Range Rover service from {e(a['name'])}")
-        page(f"locations/{a['slug']}/", f"Range Rover & Land Rover Specialist {a['name']} | Service & Repair | {CFG['short']}", f"Range Rover and Land Rover service, repair and diagnostics for {a['name']} owners. {dist} {collect} Fixed prices on WhatsApp {CFG['phone']}.", body, "/locations/", schema=faq_schema, breadcrumbs=[("Home","/"),("Areas","/locations/"),(a['name'], f"/locations/{a['slug']}/")])
+        page(f"locations/{a['slug']}/", f"Range Rover Specialist {a['name']} | Service & Repair | {CFG['short']}", f"Range Rover and Land Rover service, repair and diagnostics for {a['name']} owners. {dist} {collect} Fixed prices on WhatsApp {CFG['phone']}.", body, "/locations/", schema=faq_schema, breadcrumbs=[("Home","/"),("Areas","/locations/"),(a['name'], f"/locations/{a['slug']}/")])
         for sv in AREA_SERVICES:
             s_ = SV[sv]
             bcs=[("Home","/"),("Areas","/locations/"),(a['name'], f"/locations/{a['slug']}/"),(s_['name'], f"/locations/{a['slug']}/{sv}/")]
@@ -671,7 +690,7 @@ def build_areas():
  </aside>
 </div></section>''' + book_band(f"Book {e(s_['name'].lower())} from {e(a['name'])}")
             svc_schema={"@context":"https://schema.org","@type":"Service","name":f"{s_['name']} in {a['name']}","serviceType":s_['name'],"provider":{"@id":CFG['url']+"/#business"},"areaServed":{"@type":"Place","name":f"{a['name']}, {a['emirate']}"},"url":f"{CFG['url']}/locations/{a['slug']}/{sv}/","description":s_['short']}
-            page(f"locations/{a['slug']}/{sv}/", f"{s_['name']} {a['name']} | Range Rover Specialist | {CFG['short']}", f"Range Rover {s_['name'].lower()} for {a['name']} owners. {dist} {collect} Genuine parts, written warranty, fixed price on WhatsApp {CFG['phone']}.", body, "/locations/", schema=[svc_schema, faq_schema2], image=f"assets/img/services/{sv}.jpg", breadcrumbs=bcs)
+            page(f"locations/{a['slug']}/{sv}/", f"Range Rover {s_['name']} {a['name']} | {CFG['short']}", f"Range Rover {s_['name'].lower()} for {a['name']} owners. {dist} {collect} Genuine parts, written warranty, fixed price on WhatsApp {CFG['phone']}.", body, "/locations/", schema=[svc_schema, faq_schema2], image=f"assets/img/services/{sv}.jpg", breadcrumbs=bcs)
 
 def build_misc():
     faq_html, faq_schema = faq_block(GENERAL_FAQ + [(q,a) for s in SERVICES[:6] for q,a in s['faqs'][:1]], "Everything owners ask us")

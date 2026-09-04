@@ -16,7 +16,9 @@
       if (img.dataset.done) return; img.dataset.done = 1;
       const box = document.createElement('div');
       box.className = 'img-fallback';
-      box.textContent = 'Upload: ' + img.getAttribute('src');
+      box.title = 'Photo coming soon';
+      box.dataset.src = img.getAttribute('src');
+      box.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6 8 15v18l16 9 16-9V15z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15 31 24 13l9 18h-4.5L24 22l-4.5 9z" fill="currentColor"/></svg>';
       img.replaceWith(box);
     };
     img.addEventListener('error', show);
@@ -25,6 +27,13 @@
 
   /* Brand strip: revealed by the first logo that loads (inline onload); items without a file remove themselves */
   document.querySelectorAll('.lstrip img').forEach(im => { if (im.complete && im.naturalWidth > 0) im.closest('.lstrip').hidden = false; });
+
+  /* Gallery: hide tiles whose photo is not uploaded yet */
+  const gal = document.querySelector('.gallery');
+  if (gal) {
+    const check = () => { gal.querySelectorAll('figure').forEach(f => { if (f.querySelector('.img-fallback')) f.remove(); }); if (!gal.querySelector('figure')) { const p = document.createElement('p'); p.className = 'lede'; p.textContent = 'Workshop photos are being added — follow us on Instagram for the latest.'; gal.replaceWith(p); } };
+    setTimeout(check, 1500); addEventListener('load', () => setTimeout(check, 300));
+  }
 
   /* Reveal (one entrance per section) */
   if ('IntersectionObserver' in window) {
