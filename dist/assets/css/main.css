@@ -552,7 +552,6 @@
   .wa-float{border:0}
 
   /* Image placeholder fallback */
-  .hero__media .img-fallback,.page-hero__bg .img-fallback{background:linear-gradient(150deg,#1c332c 0%,var(--green-2) 60%,#2f5142 100%)}.hero__media .img-fallback svg,.page-hero__bg .img-fallback svg{display:none}
   .img-fallback{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:var(--green-2)}
   .img-fallback svg{inline-size:clamp(2.4rem,16%,3.6rem);block-size:auto;color:color-mix(in oklab,var(--ivory) 92%,transparent);opacity:.9}
   .hero__media .img-fallback,.page-hero__bg .img-fallback{background:var(--green-2)}
