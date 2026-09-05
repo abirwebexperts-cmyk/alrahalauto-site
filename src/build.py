@@ -409,6 +409,7 @@ def region_grid():
         out += f'<div class="region"><h3>{e(region)}</h3><div class="tags">{pills}</div></div>'
     return out
 
+HOME_SEO_INTRO = '<p class="vh">Al Rahal Auto Maintenance is a trusted, independent Range Rover and Land Rover garage in Sharjah with more than 25 years of experience. We are widely regarded as one of the best Range Rover garages in Sharjah for engine repair, gearbox and transmission, air suspension, brakes, diagnostics and periodic servicing, using dealer-level equipment and genuine parts. We also serve Range Rover and Land Rover owners across Dubai, Ajman, Umm Al Quwain, Ras Al Khaimah, Fujairah and Abu Dhabi with collection and delivery.</p>'
 def build_home():
     feat = [s for s in SERVICES if s.get('featured')]
     svc_cards = "".join(service_card(s) for s in feat[:6])
@@ -419,6 +420,7 @@ def build_home():
     faq_html, faq_schema = faq_block(GENERAL_FAQ[:5])
     marquee = "".join(f'<span>{e(s["name"])}<i></i></span>' for s in SERVICES[:12])
     body = f'''
+{HOME_SEO_INTRO}
 <section class="hero">
  <div class="hero__media">
   <picture>
@@ -445,7 +447,7 @@ def build_home():
 </div></section>
 
 <section class="section" id="services"><div class="wrap">
- <div class="section-head reveal"><p class="kicker">Range Rover & Land Rover services</p><h2>Everything a Range Rover needs, under one roof.</h2><p class="lede">From a scheduled service to a full engine rebuild. Tap a service to see what is included, the symptoms to watch for, and the answers owners ask us most.</p></div>
+ <div class="section-head reveal"><p class="kicker">Range Rover & Land Rover services</p><h2>Sharjah\u2019s trusted Range Rover garage — everything under one roof.</h2><p class="lede">As one of Sharjah\u2019s most experienced independent Range Rover and Land Rover garages, we handle everything from a scheduled service to a full engine rebuild. Tap a service to see what is included, the symptoms to watch for, and the answers owners ask us most.</p></div>
  <div class="grid grid--3 reveal">{svc_cards}</div>
  <div class="cta-inline"><a class="btn btn--dark" href="/services/">View all {len(SERVICES)} services {I("arrow")}</a></div>
 </div></section>
@@ -505,8 +507,8 @@ def build_home():
 
 {book_band("Get a fixed price for your Range Rover today", "One message on WhatsApp is all it takes.")}
 '''
-    page("", f"Range Rover & Land Rover Specialist | Sharjah · Dubai · Ajman | Al Rahal",
-         f"Independent Range Rover and Land Rover specialists in Sharjah serving Dubai, Ajman and the UAE with collection & delivery. Dealer-level diagnostics, air suspension, engine, gearbox and servicing with genuine parts. WhatsApp {CFG['phone']}.",
+    page("", f"Best Range Rover Garage in Sharjah | Land Rover Specialist | Al Rahal",
+         f"Trusted Range Rover & Land Rover garage in Sharjah with 25+ years\u2019 experience. Dealer-level diagnostics, engine, gearbox & air suspension repair, genuine parts. Serving Sharjah, Dubai & Ajman. WhatsApp {CFG['phone']}.",
          body, "/", schema=faq_schema)
 
 def build_services_index():

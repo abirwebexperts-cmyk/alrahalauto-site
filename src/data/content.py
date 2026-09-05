@@ -215,6 +215,7 @@ GENERAL_FAQ = [
  ("How do I book?","Tap any WhatsApp button on this site, or message 055 747 9292 with your model, year and the issue. We reply within minutes during working hours and confirm a time."),
  ("Do you offer pick-up and delivery?","Yes, we offer vehicle collection and return within the city. Ask on WhatsApp when booking."),
  ("Do you provide a warranty on repairs?","All repairs carry a parts and labour warranty. The term is stated on your invoice before work begins."),
+ ("What makes Al Rahal one of the best Range Rover garages in Sharjah?","More than 25 years of dedicated Land Rover experience, dealer-level Pathfinder and SDD diagnostics, in-house engine, gearbox and air suspension rebuilds, genuine parts, a written warranty, and every job confirmed with a fixed price and photos on WhatsApp. Owners across Sharjah, Dubai and Ajman trust us as the honest, specialist alternative to the dealership."),
  ("Can I wait while my car is serviced?","Yes. Our customer lounge has fast Wi-Fi, coffee and a view into the workshop so you can watch the work being done."),
  ("Do you use genuine parts?","Yes. We use genuine Land Rover parts by default, and where a high-quality OE-equivalent from the original manufacturer offers better value we will explain the choice and let you decide."),
 ]
