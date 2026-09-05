@@ -363,6 +363,11 @@
   .brands-x__note{display:flex;gap:.6rem;align-items:flex-start;margin-block-start:var(--sp-5);font-size:var(--fs--1);color:var(--muted);max-inline-size:none}
   .brands-x__note svg{inline-size:1.3rem;block-size:1.3rem;color:var(--bronze);flex:none;margin-block-start:.1rem}
 
+  /* Google reviews embed */
+  .reviews-x__embed{margin-block:var(--sp-6) var(--sp-5);min-block-size:8rem}
+  .reviews-x__embed .sk-ww-google-reviews{max-inline-size:100%}
+  .reviews-x .cta-inline{margin-block-start:0}
+
   /* Testimonials */
   .quotes{display:grid;gap:var(--sp-5);grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
   .quote{display:grid;gap:1rem;padding:var(--sp-6);border-radius:var(--radius-lg);background:color-mix(in oklab,var(--ivory) 6%,transparent);border:1px solid var(--line)}

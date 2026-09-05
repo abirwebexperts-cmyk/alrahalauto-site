@@ -496,6 +496,13 @@ def build_home():
 
 <section class="section section--bone"><div class="wrap"><div class="section-head"><p class="kicker">Good to know</p></div>{faq_html.replace('class="mt-7"','')}<div class="cta-inline"><a class="btn btn--ghost" href="/faq/">More questions answered {I("arrow")}</a></div></div></section>
 
+<section class="section reviews-x"><div class="wrap">
+ <div class="section-head section-head--center reveal"><p class="kicker">What owners say</p><h2>Rated by Range Rover owners across the UAE.</h2><p class="lede">Real, verified Google reviews from customers who trust us with their Range Rover and Land Rover.</p></div>
+ <div class="reviews-x__embed reveal"><div class="sk-ww-google-reviews" data-embed-id="25711190"></div></div>
+ <script src="https://widgets.sociablekit.com/google-reviews/widget.js" defer></script>
+ <div class="cta-inline" style="justify-content:center"><a class="btn btn--dark" href="https://search.google.com/local/reviews?placeid=" target="_blank" rel="noopener">Read us on Google {I("arrow")}</a></div>
+</div></section>
+
 {book_band("Get a fixed price for your Range Rover today", "One message on WhatsApp is all it takes.")}
 '''
     page("", f"Range Rover & Land Rover Specialist | Sharjah · Dubai · Ajman | Al Rahal",
