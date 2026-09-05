@@ -24,7 +24,7 @@ CFG = dict(
   hours="Saturday – Thursday · 8:00 AM – 1:00 PM & 4:00 PM – 9:00 PM · Friday closed",
   hours_lines=[("Saturday – Thursday","8:00 AM – 1:00 PM"),("Break","1:00 PM – 4:00 PM"),("Reopen","4:00 PM – 9:00 PM"),("Friday","Closed")],
   experience="25+", ga_id="",                    # GA4 id e.g. G-XXXXXXX, blank = off
-  instagram="https://instagram.com/alrahal_auto_maintenance/",
+  instagram="https://www.instagram.com/alrahalauto.ae/",
 )
 WA = f"https://wa.me/{CFG['phone_intl']}"
 OUT = os.path.join(os.path.dirname(__file__), "..", "dist")
@@ -233,7 +233,7 @@ def footer():
    <p>© {TODAY[:4]} {e(CFG['name'])} Workshop. All rights reserved.</p>
    <p class="ft__legal">Independent specialist workshop. Not affiliated with Jaguar Land Rover Limited; vehicle names are used for identification only.</p>
    <ul class="ft__links" role="list"><li><a href="/about/">About</a></li><li><a href="/blog/">Blog</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy/">Privacy</a></li><li><a href="/sitemap.xml">Sitemap</a></li></ul>
-   <div class="ft__social"><a href="{CFG['instagram']}" aria-label="Instagram" rel="noopener" target="_blank">{I("instagram")}<span>@alrahal_auto_maintenance</span></a></div>
+   <div class="ft__social"><a href="{CFG['instagram']}" aria-label="Instagram" rel="noopener" target="_blank">{I("instagram")}<span>@alrahalauto.ae</span></a></div>
   </div>
  </div>
  <a class="ft__top-link" href="#top" aria-label="Back to top">{I("arrow")}</a>
