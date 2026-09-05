@@ -28,11 +28,10 @@
   /* Brand strip: revealed by the first logo that loads (inline onload); items without a file remove themselves */
   document.querySelectorAll('.lstrip img').forEach(im => { if (im.complete && im.naturalWidth > 0) im.closest('.lstrip').hidden = false; });
 
-  /* Gallery: hide tiles whose photo is not uploaded yet */
+  /* Gallery: keep branded placeholders, just relabel the caption when a photo is missing */
   const gal = document.querySelector('.gallery');
   if (gal) {
-    const check = () => { gal.querySelectorAll('figure').forEach(f => { if (f.querySelector('.img-fallback')) f.remove(); }); if (!gal.querySelector('figure')) { const p = document.createElement('p'); p.className = 'lede'; p.textContent = 'Workshop photos are being added — follow us on Instagram for the latest.'; gal.replaceWith(p); } };
-    setTimeout(check, 1500); addEventListener('load', () => setTimeout(check, 300));
+    setTimeout(() => { gal.querySelectorAll('figure').forEach(f => { if (f.querySelector('.img-fallback')) { const cap = f.querySelector('figcaption'); if (cap) cap.textContent = 'Photo coming soon'; } }); }, 1200);
   }
 
   /* Reveal (one entrance per section) */
