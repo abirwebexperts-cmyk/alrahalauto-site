@@ -25,10 +25,6 @@ MODELS = [
   engines="2.7 TDV6, 3.0 TDV6/SDV6, 5.0 V8, 3.0 Ingenium D300, 2.0 Ingenium",
   intro="The Discovery is the family workhorse, and Discovery 3 and 4 owners know its weak points well. Air suspension, timing chains and crankshaft concerns on the 2.7 and 3.0 diesels are our specialities.",
   issues=["Front air suspension and compressor on D3/D4","Timing chain stretch on 3.0 TDV6/SDV6","Crankshaft failure on early 3.0 diesels","Lower control arm and bush wear","Parking brake actuator failure on D3/D4"]),
- dict(slug="discovery-sport", name="Discovery Sport", short="L550", years="2014 – present",
-  engines="2.0 Si4, 2.2 SD4, 2.0 Ingenium petrol and diesel, P300e PHEV",
-  intro="Sharing much with the Evoque, the Discovery Sport adds seven seats and family practicality. We see many of these vehicles for gearbox, Haldex and Ingenium engine work.",
-  issues=["Nine-speed gearbox and Haldex servicing","Ingenium timing chain rattle","Turbo and intercooler pipe leaks","Coolant pipe leaks behind the engine","Infotainment reboot faults"]),
 ]
 
 # Brands. Image: assets/img/brands/<slug>.jpg (1600x900)
@@ -38,7 +34,7 @@ BRANDS = [
   models=["range-rover-vogue","range-rover-sport","range-rover-velar","range-rover-evoque"]),
  dict(slug="land-rover", name="Land Rover", primary=True,
   intro="Defender, Discovery and Discovery Sport share their engineering DNA with the Range Rover family, and we service them with the same dealer-level tools and genuine parts. From classic TD5 Defenders to the new L663, no Land Rover is unfamiliar here.",
-  models=["land-rover-defender","land-rover-discovery","discovery-sport"]),
+  models=["land-rover-defender","land-rover-discovery"]),
  dict(slug="bmw", name="BMW", primary=False,
   intro="Our BMW bay handles the full range from 3 Series to X7 and M models. ISTA diagnostics, N-series and B-series engine repairs, ZF gearbox services, timing chain replacements and the notorious oil filter housing and VANOS faults are all everyday work for our technicians.",
   models=[]),
@@ -134,9 +130,9 @@ POSTS = [
 <h2>5. Oil consumption and PCV</h2>
 <p>A clogged crankcase ventilation system raises oil consumption and can push oil past seals. A PCV service is cheap and often transforms consumption.</p>
 <p>Every one of these repairs is carried out in-house with genuine or upgraded parts. If your V8 is showing any of these symptoms, message us for a diagnosis before summer arrives.</p>"""),
- dict(slug="evoque-haldex-service-guide", title="Evoque and Discovery Sport Owners: Your Haldex Unit Needs a Service", date="2026-06-04", cat="Drivetrain", read=4,
+ dict(slug="evoque-haldex-service-guide", title="Evoque Owners: Your Haldex Unit Needs a Service", date="2026-06-04", cat="Drivetrain", read=4,
   excerpt="The all-wheel-drive coupling on the Evoque has a filter and oil that most garages ignore. Here is why that leads to a very expensive repair.",
-  body="""<p>The Evoque and Discovery Sport send power to the rear wheels through a Haldex coupling, an electronically controlled clutch pack that engages when the front wheels slip. It is compact, clever and almost always neglected.</p>
+  body="""<p>The Range Rover Evoque sends power to the rear wheels through a Haldex coupling, an electronically controlled clutch pack that engages when the front wheels slip. It is compact, clever and almost always neglected.</p>
 <h2>What goes wrong</h2>
 <p>The Haldex unit has its own oil and a small filter screen. Over time, clutch material clogs the filter, the pump starves and the unit either stops engaging or sets a fault. Many owners only discover the problem when a warning appears or the rear wheels no longer drive on a wet road.</p>
 <h2>The service that prevents it</h2>
@@ -170,7 +166,7 @@ POSTS = [
 <p>If your battery has been replaced twice and the problem persists, it was never the battery.</p>"""),
  dict(slug="ingenium-engine-oil-dilution-explained", title="Ingenium Diesel Oil Dilution Explained", date="2026-04-22", cat="Engine", read=5,
   excerpt="If your oil level is rising rather than falling, your Ingenium diesel is telling you something important about how it is being driven.",
-  body="""<p>Owners of Ingenium-engined Velars, Evoques, Discovery Sports and Defenders sometimes notice the oil level creeping upward between services. It seems impossible. The explanation is oil dilution, and understanding it will protect your engine.</p>
+  body="""<p>Owners of Ingenium-engined Velars, Evoques and Defenders sometimes notice the oil level creeping upward between services. It seems impossible. The explanation is oil dilution, and understanding it will protect your engine.</p>
 <h2>What is happening</h2>
 <p>To regenerate the diesel particulate filter, the engine injects extra fuel late in the combustion cycle to raise exhaust temperature. Some of that fuel washes past the piston rings into the sump. On a long motorway run, the heat evaporates it off again. On short urban journeys the regeneration is interrupted, the fuel accumulates, and the oil thins.</p>
 <h2>Why it matters</h2>

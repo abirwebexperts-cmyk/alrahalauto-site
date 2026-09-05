@@ -123,7 +123,7 @@ def header(current):
 
 def booking_dialog():
     models_by_brand = [("Range Rover",["Range Rover (Vogue)","Range Rover Sport","Range Rover Velar","Range Rover Evoque"]),
-                       ("Land Rover",["Defender","Discovery","Discovery Sport","Freelander"]),
+                       ("Land Rover",["Defender","Discovery","Freelander"]),
                        ("British",["Jaguar","Bentley","Rolls-Royce","MINI","Aston Martin"]),
                        ("German",["Mercedes-Benz","BMW","Audi","Porsche","Volkswagen","Maybach","Mercedes-AMG","BMW M"]),
                        ("American",["Ford","Chevrolet","GMC","Cadillac","Jeep","Dodge","Lincoln","Chrysler","Tesla"]),
@@ -412,7 +412,7 @@ def region_grid():
 def build_home():
     feat = [s for s in SERVICES if s.get('featured')]
     svc_cards = "".join(service_card(s) for s in feat[:6])
-    models = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])} · {e(m["years"])}</span><em>View specialist services</em></a>' for m in MODELS[:4])
+    models = "".join(f'<a class="model" href="/models/{m["slug"]}/">{img(f"assets/img/models/{m["slug"]}.jpg", m["name"])}<h3>{e(m["name"])}</h3><span>{e(m["short"])} · {e(m["years"])}</span><em>View specialist services</em></a>' for m in MODELS)
     regions = region_grid()
     _unused = "".join(f'<blockquote class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><p>{e(t)}</p><footer><span>{e(n)}</span><span>{e(c)}</span></footer></blockquote>' for t,n,c in TESTIMONIALS)
     posts = "".join(post_card(p) for p in POSTS[:3])
@@ -746,6 +746,9 @@ HTACCESS = r"""# Al Rahal Auto Maintenance — Apache config for Namecheap share
 ErrorDocument 404 /404.html
 # Redirects for renamed pages
 Redirect 301 /blog/range-rover-service-cost-dubai/ /blog/range-rover-service-cost-sharjah/
+RedirectMatch 301 ^/models/discovery-sport/?$ /models/
+RedirectMatch 301 ^/services/([^/]+)/discovery-sport/?$ /services/$1/
+RedirectMatch 301 ^/locations/([^/]+)/[^/]*discovery-sport[^/]*/?$ /locations/$1/
 Options -Indexes
 DirectoryIndex index.html
 

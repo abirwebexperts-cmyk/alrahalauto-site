@@ -68,7 +68,7 @@ AREAS = [
   local="Long, fast runs on Emirates Road and Sheikh Zayed Road are good for engines but demanding on brakes and tyres. Alignment and brake inspections are included in every Dubai South service."),
  dict(slug="jumeirah-village-circle", name="Jumeirah Village Circle", emirate="Dubai", km=40, mins=42,
   intro="JVC and JVT owners are served by collection and delivery, or a 40-minute drive when you prefer to wait with us. Every job is confirmed with a fixed price on WhatsApp before we start.",
-  local="Newer Evoque, Velar and Discovery Sport models are popular in JVC. Nine-speed gearbox servicing and Haldex all-wheel-drive maintenance are the specialist jobs we handle for these cars."),
+  local="Newer Evoque, Velar and Discovery models are popular in JVC. Nine-speed gearbox servicing and Haldex all-wheel-drive maintenance are the specialist jobs we handle for these cars."),
  dict(slug="motor-city", name="Motor City", emirate="Dubai", km=44, mins=45,
   intro="Motor City and Sports City residents can book collection or drive to us in about 45 minutes. Enthusiast owners here appreciate our in-house engine and gearbox rebuild capability.",
   local="Motor City has a strong community of Range Rover Sport and SVR owners. Supercharger nose bearings, brake upgrades and coolant crossover pipes on the 5.0 V8 are regular work from this area."),
