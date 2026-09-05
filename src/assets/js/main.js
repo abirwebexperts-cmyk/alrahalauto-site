@@ -166,6 +166,20 @@
     if (ctxV) { const sel = form.querySelector('[name=Vehicle]'); if ([...sel.options].some(o => o.value === ctxV)) sel.value = ctxV; }
   }
 
+  /* Lazy-load Google reviews widget only when it nears the viewport (saves main-thread blocking on first paint) */
+  const lazyReviews = document.querySelector('[data-lazy-reviews]');
+  if (lazyReviews && 'IntersectionObserver' in window) {
+    const ro = new IntersectionObserver((es, obs) => {
+      es.forEach(e => { if (e.isIntersecting) {
+        const sc = document.createElement('script'); sc.src = 'https://widgets.sociablekit.com/google-reviews/widget.js'; sc.defer = true; document.body.appendChild(sc);
+        obs.disconnect();
+      }});
+    }, { rootMargin: '400px' });
+    ro.observe(lazyReviews);
+  } else if (lazyReviews) {
+    const sc = document.createElement('script'); sc.src = 'https://widgets.sociablekit.com/google-reviews/widget.js'; sc.defer = true; document.body.appendChild(sc);
+  }
+
   /* Sticky header shadow */
   const header = document.querySelector('.header');
   const onScroll = () => header?.classList.toggle('is-stuck', scrollY > 10);

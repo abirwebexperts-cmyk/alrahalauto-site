@@ -299,7 +299,7 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/brand/
 <meta name="geo.region" content="AE"><meta name="geo.placename" content="{e(CFG['city'])}">
 <link rel="icon" href="/assets/brand/favicon.ico" sizes="any"><link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml"><link rel="icon" href="/assets/brand/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/main.css?v={ASSET_VER}">
 {ld}{ga}
 </head>
@@ -500,8 +500,7 @@ def build_home():
 
 <section class="section reviews-x"><div class="wrap">
  <div class="section-head section-head--center reveal"><p class="kicker">What owners say</p><h2>Rated by Range Rover owners across the UAE.</h2><p class="lede">Real, verified Google reviews from customers who trust us with their Range Rover and Land Rover.</p></div>
- <div class="reviews-x__embed reveal"><div class="sk-ww-google-reviews" data-embed-id="25711190"></div></div>
- <script src="https://widgets.sociablekit.com/google-reviews/widget.js" defer></script>
+ <div class="reviews-x__embed reveal" data-lazy-reviews><div class="sk-ww-google-reviews" data-embed-id="25711190"></div></div>
  <div class="cta-inline" style="justify-content:center"><a class="btn btn--dark" href="https://search.google.com/local/reviews?placeid=" target="_blank" rel="noopener">Read us on Google {I("arrow")}</a></div>
 </div></section>
 
