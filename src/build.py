@@ -427,6 +427,7 @@ def build_home():
   </picture>
  </div>
  <div class="wrap hero__inner">
+  <div class="hero__panel">
   <p class="hero__eyebrow"><span class="hero__rule"></span>Independent Range Rover &amp; Land Rover specialists<span class="hero__dot"></span>{e(CFG['city'])}</p>
   <h1 class="hero__title">Your Range Rover, <br><em>cared for</em> by people <br>who know it best.</h1>
   <p class="hero__lede">Dealer-level diagnostics, genuine parts and technicians who have spent their careers inside Land Rover engine bays. Fixed prices, honest advice and every job documented on WhatsApp.</p>
