@@ -248,7 +248,7 @@
   .page-hero .wrap{padding-block:clamp(3rem,3rem + 4vw,7rem) clamp(2.5rem,2rem + 3vw,5rem);display:grid;gap:var(--sp-4)}
   .page-hero h1{font-size:var(--fs-4);max-inline-size:18ch}
   .page-hero .lede{color:color-mix(in oklab,var(--ivory) 78%,transparent)}
-  .crumbs{display:flex;flex-wrap:wrap;gap:.5rem;font-size:var(--fs--1);color:color-mix(in oklab,var(--ivory) 65%,transparent)}
+  .crumbs{display:none}
   .crumbs a:hover{color:var(--bronze-2)}
   .crumbs li+li::before{content:"/";margin-inline-end:.5rem;opacity:.5}
 
