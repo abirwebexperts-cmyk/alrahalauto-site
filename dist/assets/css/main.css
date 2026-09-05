@@ -284,13 +284,13 @@
   /* Cards */
   .card{display:grid;grid-template-rows:auto 1fr;border-radius:var(--radius-lg);overflow:clip;background:var(--white);border:1px solid var(--line);transition:box-shadow .3s,transform .3s var(--ease)}
   .card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
-  .card__media{aspect-ratio:4/3;background:linear-gradient(150deg,#20362f,var(--green-2));position:relative;overflow:clip}
+  .card__media{aspect-ratio:4/3;background:var(--green-2);position:relative;overflow:clip}
   .card__media img{inline-size:100%;block-size:100%;object-fit:cover;transition:transform .8s var(--ease)}
   .card:hover .card__media img{transform:scale(1.04)}
   .card__media--wide{aspect-ratio:16/9}
   .card__icon{display:none;position:absolute;inset:0;z-index:1;place-items:center;color:var(--bronze);pointer-events:none}
   .card__icon svg{inline-size:3.2rem;block-size:3.2rem;opacity:.9}
-  .card__media:has(.img-fallback) .card__icon{display:grid;color:var(--ivory)}
+  .card__media:has(.img-fallback) .card__icon{display:grid;z-index:4;color:color-mix(in oklab,var(--ivory) 92%,transparent)}
   .card__media:has(.img-fallback) .img-fallback svg{display:none}
   .card__body{padding:var(--sp-5);display:grid;gap:.6rem;align-content:start}
   .card__body h3{font-size:var(--fs-1)}
@@ -335,7 +335,7 @@
 
   /* Models showcase */
   .models{display:grid;gap:var(--sp-4);grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr))}
-  .model{position:relative;aspect-ratio:4/5;border-radius:var(--radius-lg);overflow:clip;background:linear-gradient(160deg,#1c332c,var(--green-2));display:grid;align-content:end;padding:var(--sp-5);color:var(--ivory);isolation:isolate}
+  .model{position:relative;aspect-ratio:4/5;border-radius:var(--radius-lg);overflow:clip;background:var(--green-2);display:grid;align-content:end;padding:var(--sp-5);color:var(--ivory);isolation:isolate}
   .model img{position:absolute;inset:0;z-index:-2;inline-size:100%;block-size:100%;object-fit:cover;transition:transform .9s var(--ease)}
   .model::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 35%,rgb(27 31 35 / .92))}
   .model:hover img{transform:scale(1.05)}
@@ -413,7 +413,7 @@
 
   /* Gallery */
   .gallery{display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,14rem),1fr));grid-auto-flow:dense}
-  .gallery figure{border-radius:var(--radius);overflow:clip;aspect-ratio:1;background:linear-gradient(150deg,#20362f,var(--green-2));position:relative}
+  .gallery figure{border-radius:var(--radius);overflow:clip;aspect-ratio:1;background:var(--green-2);position:relative}
   .gallery figure:nth-child(5n+1){grid-column:span 2;grid-row:span 2}
   .gallery img{inline-size:100%;block-size:100%;object-fit:cover;transition:transform .8s var(--ease)}
   .gallery figure:hover img{transform:scale(1.05)}
@@ -553,10 +553,11 @@
 
   /* Image placeholder fallback */
   .hero__media .img-fallback,.page-hero__bg .img-fallback{background:linear-gradient(150deg,#1c332c 0%,var(--green-2) 60%,#2f5142 100%)}.hero__media .img-fallback svg,.page-hero__bg .img-fallback svg{display:none}
-  .img-fallback{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;color:color-mix(in oklab,var(--ivory) 88%,transparent);background:linear-gradient(150deg,#20362f 0%,var(--green-2) 55%,#31543f 100%)}
-  .img-fallback::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent 0 14px,rgb(255 255 255 / .04) 14px 15px),radial-gradient(120% 90% at 15% 0%,rgb(255 255 255 / .10),transparent 60%)}
-  .img-fallback::after{content:"";position:absolute;inset-inline:0;inset-block-end:0;block-size:35%;background:linear-gradient(0deg,rgb(0 0 0 / .16),transparent)}
-  .img-fallback svg{position:relative;z-index:1;inline-size:clamp(2.2rem,16%,3.4rem);block-size:auto;opacity:.85;color:var(--bronze-2);filter:drop-shadow(0 2px 6px rgb(0 0 0 / .2))}
+  .img-fallback{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:var(--green-2)}
+  .img-fallback svg{inline-size:clamp(2.4rem,16%,3.6rem);block-size:auto;color:color-mix(in oklab,var(--ivory) 92%,transparent);opacity:.9}
+  .hero__media .img-fallback,.page-hero__bg .img-fallback{background:var(--green-2)}
+  .hero__media .img-fallback svg,.page-hero__bg .img-fallback svg{display:none}
+
   img[data-fallback]{position:relative;z-index:1}
 
   /* Reveal on scroll (single orchestrated moment per section) */

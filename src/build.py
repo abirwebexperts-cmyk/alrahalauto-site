@@ -423,7 +423,7 @@ def build_home():
  <div class="hero__media">
   <picture>
    <source type="image/webp" srcset="/assets/brand/hero-home-900.07ec78f3.webp 900w, /assets/brand/hero-home-1400.07ec78f3.webp 1400w, /assets/brand/hero-home-1871.07ec78f3.webp 1870w" sizes="100vw">
-   <img src="/assets/brand/hero-home-1400.07ec78f3.jpg" srcset="/assets/brand/hero-home-900.07ec78f3.jpg 900w, /assets/brand/hero-home-1400.07ec78f3.jpg 1400w, /assets/brand/hero-home-1871.07ec78f3.jpg 1870w" sizes="100vw" alt="Al Rahal Auto Maintenance Workshop in Sharjah at dusk, with Range Rovers parked outside" width="1871" height="840" loading="eager" fetchpriority="high" decoding="async">
+   <img src="/assets/brand/hero-home-1400.07ec78f3.jpg" srcset="/assets/brand/hero-home-900.07ec78f3.jpg 900w, /assets/brand/hero-home-1400.07ec78f3.jpg 1400w, /assets/brand/hero-home-1871.07ec78f3.jpg 1870w" sizes="100vw" alt="Al Rahal Auto Maintenance Workshop in Sharjah at dusk, with Range Rovers parked outside" width="1871" height="840" loading="eager" fetchpriority="high" decoding="async" data-fallback>
   </picture>
  </div>
  <div class="wrap hero__inner">
