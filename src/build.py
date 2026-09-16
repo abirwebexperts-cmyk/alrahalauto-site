@@ -23,7 +23,7 @@ CFG = dict(
   lat="25.3308", lng="55.4197",
   hours="Saturday – Thursday · 8:00 AM – 1:00 PM & 4:00 PM – 9:00 PM · Friday closed",
   hours_lines=[("Saturday – Thursday","8:00 AM – 1:00 PM"),("Break","1:00 PM – 4:00 PM"),("Reopen","4:00 PM – 9:00 PM"),("Friday","Closed")],
-  experience="25+", ga_id="",                    # GA4 id e.g. G-XXXXXXX, blank = off
+  experience="25+", ga_id="AW-18439899260",      # Google Ads / gtag.js tag ID, blank = off
   instagram="https://www.instagram.com/alrahalauto.ae/",
 )
 WA = f"https://wa.me/{CFG['phone_intl']}"
