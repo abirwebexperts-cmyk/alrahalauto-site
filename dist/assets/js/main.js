@@ -180,6 +180,18 @@
     const sc = document.createElement('script'); sc.src = 'https://widgets.sociablekit.com/google-reviews/widget.js'; sc.defer = true; document.body.appendChild(sc);
   }
 
+  /* Google Ads: Click-to-call conversion (delegated, fires once per tel: click, never WhatsApp/nav, never on load) */
+  (() => {
+    const sendTo = document.documentElement.dataset.adsCall;
+    if (!sendTo || typeof window.gtag !== 'function') return;
+    document.addEventListener('click', e => {
+      const link = e.target.closest && e.target.closest('a[href^="tel:"]');
+      if (!link) return;
+      window.gtag('event', 'conversion', { send_to: sendTo, value: 1.0, currency: 'AED' });
+      // Do NOT preventDefault or redirect: the tel: link proceeds natively on all devices.
+    }, { passive: true, capture: true });
+  })();
+
   /* Sticky header shadow */
   const header = document.querySelector('.header');
   const onScroll = () => header?.classList.toggle('is-stuck', scrollY > 10);

@@ -24,6 +24,7 @@ CFG = dict(
   hours="Saturday – Thursday · 8:00 AM – 1:00 PM & 4:00 PM – 9:00 PM · Friday closed",
   hours_lines=[("Saturday – Thursday","8:00 AM – 1:00 PM"),("Break","1:00 PM – 4:00 PM"),("Reopen","4:00 PM – 9:00 PM"),("Friday","Closed")],
   experience="25+", ga_id="AW-18439899260",      # Google Ads / gtag.js tag ID, blank = off
+  ads_call_conversion="AW-18439899260/_2f_CLOztfkcEPyQ6thE",  # Click-to-call conversion send_to, blank = off
   instagram="https://www.instagram.com/alrahalauto.ae/",
 )
 WA = f"https://wa.me/{CFG['phone_intl']}"
@@ -281,10 +282,11 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/brand/
         schemas.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":i+1,"name":n,"item":CFG['url']+u} for i,(n,u) in enumerate(breadcrumbs)]})
     if schema: schemas += schema if isinstance(schema, list) else [schema]
     ld = "".join(f'<script type="application/ld+json">{json.dumps(s, ensure_ascii=False)}</script>' for s in schemas)
+    ads_attr = f' data-ads-call="{CFG["ads_call_conversion"]}"' if CFG.get("ads_call_conversion") and CFG.get("ga_id") else ""
     ga = f'<script async src="https://www.googletagmanager.com/gtag/js?id={CFG["ga_id"]}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{CFG["ga_id"]}");</script>' if CFG['ga_id'] else ""
     stamp = BUILD_STAMP
     doc = f'''<!DOCTYPE html>
-<html lang="en" data-wa="{CFG['phone_intl']}">
+<html lang="en" data-wa="{CFG['phone_intl']}"{ads_attr}>
 <head>
 <meta charset="utf-8">
 <!-- build {stamp} -->
