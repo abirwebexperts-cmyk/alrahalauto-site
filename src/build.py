@@ -25,6 +25,7 @@ CFG = dict(
   hours_lines=[("Saturday – Thursday","8:00 AM – 1:00 PM"),("Break","1:00 PM – 4:00 PM"),("Reopen","4:00 PM – 9:00 PM"),("Friday","Closed")],
   experience="25+", ga_id="AW-18439899260",      # Google Ads / gtag.js tag ID, blank = off
   ads_call_conversion="AW-18439899260/_2f_CLOztfkcEPyQ6thE",  # Click-to-call conversion send_to, blank = off
+  ads_whatsapp_conversion="AW-18439899260/3-yCCJzV_IEdEPyQ6thE",  # WhatsApp-click conversion send_to, blank = off
   instagram="https://www.instagram.com/alrahalauto.ae/",
 )
 WA = f"https://wa.me/{CFG['phone_intl']}"
@@ -283,6 +284,7 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/brand/
     if schema: schemas += schema if isinstance(schema, list) else [schema]
     ld = "".join(f'<script type="application/ld+json">{json.dumps(s, ensure_ascii=False)}</script>' for s in schemas)
     ads_attr = f' data-ads-call="{CFG["ads_call_conversion"]}"' if CFG.get("ads_call_conversion") and CFG.get("ga_id") else ""
+    ads_attr += f' data-ads-whatsapp="{CFG["ads_whatsapp_conversion"]}"' if CFG.get("ads_whatsapp_conversion") and CFG.get("ga_id") else ""
     ga = f'<script async src="https://www.googletagmanager.com/gtag/js?id={CFG["ga_id"]}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{CFG["ga_id"]}");</script>' if CFG['ga_id'] else ""
     stamp = BUILD_STAMP
     doc = f'''<!DOCTYPE html>

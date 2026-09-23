@@ -63,6 +63,7 @@
       lines.push('', `Sent from ${location.href}`);
       const url = `https://wa.me/${WA}?text=${encodeURIComponent(lines.join('\n'))}`;
       window.open(url, '_blank', 'noopener');
+      window.reportWhatsAppConversion && window.reportWhatsAppConversion();
       form.querySelector('[data-sent]')?.removeAttribute('hidden');
     });
   });
@@ -156,6 +157,7 @@
     form.addEventListener('submit', e => {
       e.preventDefault(); if (!validate(2)) return;
       window.open(`https://wa.me/${WA}?text=${encodeURIComponent(buildLines().join('\n'))}`, '_blank', 'noopener');
+      window.reportWhatsAppConversion && window.reportWhatsAppConversion();
       closeDlg();
     });
     // pre-select service from page context
@@ -191,6 +193,26 @@
       // Do NOT preventDefault or redirect: the tel: link proceeds natively on all devices.
     }, { passive: true, capture: true });
   })();
+
+  /* Google Ads: WhatsApp conversion — reusable helper + delegated link tracking.
+     Fires once per genuine WhatsApp action (link click, enquiry form, booking send). Never on load, nav, or tel:. */
+  const waSendTo = document.documentElement.dataset.adsWhatsapp;
+  window.reportWhatsAppConversion = function () {
+    if (!waSendTo || typeof window.gtag !== 'function') return;
+    window.gtag('event', 'conversion', { send_to: waSendTo, value: 1.0, currency: 'AED' });
+  };
+  if (waSendTo) {
+    document.addEventListener('click', e => {
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href') || '';
+      const h = href.toLowerCase();
+      if (h.indexOf("wa.me/") > -1 || h.indexOf("api.whatsapp.com/") > -1 || h.indexOf("web.whatsapp.com/") > -1) {
+        window.reportWhatsAppConversion();
+        // Do not preventDefault: link opens WhatsApp natively / in new tab as before.
+      }
+    }, { passive: true, capture: true });
+  }
 
   /* Sticky header shadow */
   const header = document.querySelector('.header');
