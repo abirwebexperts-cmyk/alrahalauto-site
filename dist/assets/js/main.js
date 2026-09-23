@@ -205,6 +205,9 @@
     document.addEventListener('click', e => {
       const a = e.target.closest && e.target.closest('a[href]');
       if (!a) return;
+      // Skip JS-controlled triggers: these open the booking dialog (or are handled by an explicit
+      // reportWhatsAppConversion() call on the real send), so they must NOT count here.
+      if (a.matches('[data-bk-open]')) return;
       const href = a.getAttribute('href') || '';
       const h = href.toLowerCase();
       if (h.indexOf("wa.me/") > -1 || h.indexOf("api.whatsapp.com/") > -1 || h.indexOf("web.whatsapp.com/") > -1) {
