@@ -130,6 +130,8 @@
       const svcs = g('Service');
       const dt = g('Date') ? new Date(g('Date') + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '';
       const L = ['*New booking request — Al Rahal Auto Maintenance*', ''];
+      const br = document.querySelector('[data-page-branch]')?.dataset.pageBranch;
+      if (br) L.push(`*Branch:* ${br}`);
       L.push(`*Vehicle:* ${g('Vehicle')} ${g('Year')}`.trim());
       if (g('Plate')) L.push(`*Plate:* ${g('Plate')}`);
       L.push(`*Service:* ${svcs}`);
