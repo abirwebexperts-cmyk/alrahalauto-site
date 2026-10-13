@@ -253,7 +253,11 @@ def footer():
 <script src="/assets/js/main.js?v={ASSET_VER}" defer></script>'''
 
 def local_business_schema():
-    return {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+"/#business","name":CFG['name'],"url":CFG['url'],
+    return {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+"/#business","name":CFG['name'],"alternateName":["Al Rahal Auto Maintenance Workshop","Al Rahal Auto Main. W.Shop","الرحال لصيانة السيارات","Al Rahal Range Rover Specialist Sharjah"],
+      "description":"Independent Range Rover and Land Rover specialist garage in Sharjah, UAE, with more than 25 years of Land Rover experience. Dealer-level Land Rover diagnostics, engine, gearbox and air suspension repair, genuine parts, written warranty and fixed WhatsApp pricing. Collection and delivery across Sharjah, Dubai and Ajman.",
+      "slogan":"Your Range Rover, cared for by people who know it best.",
+      "hasMap":"https://www.google.com/maps/search/?api=1&query=Al+Rahal+Auto+Maintenance+Workshop+Jabel+Tarek+Street+Sharjah",
+      "department":{"@type":"AutoRepair","@id":CFG['url']+"/branch-1/#branch","name":"Al Rahal Auto Maintenance - Branch 1","url":CFG['url']+"/branch-1/"},"url":CFG['url'],
       "image":CFG['url']+"/assets/brand/hero-home-1871.07ec78f3.jpg","logo":CFG['url']+"/assets/brand/logo.png","telephone":["+"+CFG['phone_intl'],"+"+CFG['landline_intl']],"email":CFG['email'],
       "priceRange":"$$",
       "address":{"@type":"PostalAddress","streetAddress":CFG['address'],"addressLocality":CFG['city'],"addressCountry":"AE"},
@@ -429,10 +433,9 @@ def build_home():
     regions = region_grid()
     _unused = "".join(f'<blockquote class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><p>{e(t)}</p><footer><span>{e(n)}</span><span>{e(c)}</span></footer></blockquote>' for t,n,c in TESTIMONIALS)
     posts = "".join(post_card(p) for p in POSTS[:3])
-    faq_html, faq_schema = faq_block(GENERAL_FAQ[:5])
+    faq_html, faq_schema = faq_block(GENERAL_FAQ[:6])
     marquee = "".join(f'<span>{e(s["name"])}<i></i></span>' for s in SERVICES[:12])
     body = f'''
-{HOME_SEO_INTRO}
 <section class="hero">
  <div class="hero__media">
   <picture>
@@ -612,18 +615,19 @@ def build_blog():
     page("blog/", f"Range Rover Maintenance Guides & Advice | {CFG['name']} Blog", "Expert Range Rover and Land Rover maintenance guides from Al Rahal's specialists: air suspension, timing chains, gearboxes, buying advice and summer preparation.", body, "/blog/", image="assets/img/hero/blog-hero.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/")])
     for i,p in enumerate(POSTS):
         d = datetime.date.fromisoformat(p['date']).strftime("%d %B %Y")
+        post_faq_html, post_faq_schema = faq_block(p['faqs'], "Frequently asked questions") if p.get('faqs') else ("", None)
         others = [x for x in POSTS if x is not p][:3]
         rel = "".join(post_card(x) for x in others)
         body = f'''<section class="page-hero"><div class="wrap">{crumbs([("Home","/"),("Blog","/blog/"),(p['title'], f"/blog/{p['slug']}/")])}<p class="kicker">{e(p['cat'])}</p><h1>{e(p['title'])}</h1><p class="meta"><time datetime="{p['date']}">{d}</time><span>{p['read']} min read</span><span>By the Al Rahal technical team</span></p></div></section>
 <section class="section"><div class="wrap with-aside">
- <article class="prose"><div class="post-hero">{img(f"assets/img/blog/{p['slug']}.jpg", p['title'], loading="eager")}</div>{p['body']}
+ <article class="prose"><div class="post-hero">{img(f"assets/img/blog/{p['slug']}.jpg", p['title'], loading="eager")}</div>{p['body']}{post_faq_html}
   <div class="cta-inline"><a class="btn btn--wa btn--lg" href="{wa("Hello Al Rahal, I read your article \"" + p['title'] + "\" and would like advice about my car.")}" target="_blank" rel="noopener">{I("wa")} Ask an expert on WhatsApp</a></div></article>
  <aside class="aside"><div class="aside__box aside__box--dark"><h3>Worried about this on your car?</h3><p>Send a message or a short video of the symptom. We will tell you what to expect before you drive in.</p><a class="btn btn--wa" href="{wa("Hello Al Rahal, I would like advice about my Range Rover.")}" target="_blank" rel="noopener">{I("wa")} {CFG['phone']}</a></div>
   <div class="aside__box"><h3>Related services</h3><ul role="list">{"".join(f'<li><a href="/services/{s["slug"]}/">{e(s["name"])}<span>›</span></a></li>' for s in SERVICES[:8])}</ul></div></aside>
 </div></section>
 <section class="section section--bone related"><div class="wrap"><h2>Keep reading</h2><div class="grid grid--3 mt-6">{rel}</div></div></section>''' + book_band()
         schema = {"@context":"https://schema.org","@type":"BlogPosting","headline":p['title'],"description":p['excerpt'],"datePublished":p['date'],"dateModified":p['date'],"image":f"{CFG['url']}/assets/img/blog/{p['slug']}.jpg","author":{"@type":"Organization","name":CFG['name']},"publisher":{"@id":CFG['url']+"/#business"},"mainEntityOfPage":f"{CFG['url']}/blog/{p['slug']}/"}
-        page(f"blog/{p['slug']}/", f"{p['title']} | {CFG['short']}", p['excerpt'], body, "/blog/", schema=schema, image=f"assets/img/blog/{p['slug']}.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/"),(p['title'], f"/blog/{p['slug']}/")], kind="article")
+        page(f"blog/{p['slug']}/", f"{p['title']} | {CFG['short']}", p['excerpt'], body, "/blog/", schema=[schema, post_faq_schema] if post_faq_schema else schema, image=f"assets/img/blog/{p['slug']}.jpg", breadcrumbs=[("Home","/"),("Blog","/blog/"),(p['title'], f"/blog/{p['slug']}/")], kind="article")
 
 def build_about():
     body = page_hero("Built by Land Rover technicians, for Land Rover owners", f"For more than {CFG['experience']} years Al Rahal Auto Maintenance Workshop has done one thing exceptionally well: keep Range Rovers and Land Rovers running as their designers intended.", [("Home","/"),("About","/about/")], "assets/img/about/about-hero.jpg")
@@ -751,13 +755,63 @@ def build_misc():
     SITEMAP.pop()  # do not list 404
     shutil.move(os.path.join(OUT,"404","index.html"), os.path.join(OUT,"404.html")); os.rmdir(os.path.join(OUT,"404"))
 
+
+def build_llms_txt():
+    U = CFG['url']
+    L = []
+    L.append(f"# {CFG['name']}")
+    L.append("")
+    L.append("> Independent Range Rover and Land Rover specialist garage in Sharjah, UAE (Arabic name: الرحال لصيانة السيارات). More than 25 years of Land Rover experience, dealer-level Land Rover diagnostics (Pathfinder and SDD), in-house engine, gearbox and air suspension repair, genuine parts, a written warranty on every repair, and a fixed price confirmed on WhatsApp before work starts.")
+    L.append("")
+    L.append("## Key facts")
+    L.append(f"- Address: {CFG['address']}, {CFG['city']}, {CFG['country']}")
+    L.append(f"- WhatsApp / mobile: {CFG['phone']} (+{CFG['phone_intl']})")
+    L.append(f"- Workshop telephone: {CFG['landline']}")
+    L.append(f"- Email: {CFG['email']}")
+    L.append("- Hours: Saturday to Thursday, 8:00 AM to 1:00 PM and 4:00 PM to 9:00 PM. Closed Friday.")
+    L.append("- Speciality: Range Rover (Vogue), Range Rover Sport, Range Rover Velar, Range Rover Evoque, Land Rover Defender, Land Rover Discovery")
+    L.append("- Branch 1 (same address): German, European, American, luxury and Japanese cars")
+    L.append("- Booking: WhatsApp booking form on every page; collection and delivery across Sharjah, Dubai and Ajman")
+    L.append(f"- Website: {U}/")
+    L.append(f"- Instagram: {CFG['instagram']}")
+    L.append("")
+    L.append("## Most useful pages")
+    L.append(f"- [How to choose the best Range Rover garage in Sharjah]({U}/blog/best-range-rover-garage-sharjah/): criteria, questions to ask, and where Al Rahal fits")
+    L.append(f"- [Range Rover specialist in Sharjah]({U}/locations/sharjah/)")
+    L.append(f"- [All services]({U}/services/)")
+    L.append(f"- [Range Rover & Land Rover models]({U}/models/)")
+    L.append(f"- [Branch 1: German, European, American, luxury & Japanese cars]({U}/branch-1/)")
+    L.append(f"- [About]({U}/about/)")
+    L.append(f"- [FAQ]({U}/faq/)")
+    L.append(f"- [Contact & booking]({U}/contact/)")
+    L.append("")
+    L.append("## Services")
+    for x in SERVICES:
+        L.append(f"- [{x['name']}]({U}/services/{x['slug']}/): {x['short']}")
+    L.append("")
+    L.append("## Models")
+    for m in MODELS:
+        L.append(f"- [{m['name']}]({U}/models/{m['slug']}/): {m['years']}; engines covered: {m['engines']}")
+    L.append("")
+    L.append("## Areas served")
+    L.append(", ".join(f"[{a['name']}]({U}/locations/{a['slug']}/)" for a in AREAS))
+    L.append("")
+    L.append("## Guides")
+    for p in POSTS:
+        L.append(f"- [{p['title']}]({U}/blog/{p['slug']}/): {p['excerpt']}")
+    L.append("")
+    return "\n".join(L)
+
 def build_static():
     assets_src = os.path.join(os.path.dirname(__file__), "assets")
     shutil.copytree(assets_src, os.path.join(OUT, "assets"), dirs_exist_ok=True)
     # favicon / logo svg
     fav = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#1B1F23"/><path d="M14 33 24 11l10 22h-5l-5-11-5 11z" fill="#B59255"/><path d="M17 36h14" stroke="#B59255" stroke-width="3" stroke-linecap="round"/></svg>'
     # robots + sitemap + htaccess
-    open(os.path.join(OUT,"robots.txt"),"w").write(f"User-agent: *\nAllow: /\nSitemap: {CFG['url']}/sitemap.xml\n")
+    bots = ["Googlebot","Google-Extended","Bingbot","GPTBot","OAI-SearchBot","ChatGPT-User","PerplexityBot","Perplexity-User","ClaudeBot","Claude-SearchBot","Claude-User","Applebot","Applebot-Extended","DuckDuckBot"]
+    robots = "".join(f"User-agent: {b}\nAllow: /\n\n" for b in bots) + f"User-agent: *\nAllow: /\n\nSitemap: {CFG['url']}/sitemap.xml\n"
+    open(os.path.join(OUT,"robots.txt"),"w").write(robots)
+    open(os.path.join(OUT,"llms.txt"),"w",encoding="utf-8").write(build_llms_txt())
     urls = "".join(f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod><changefreq>weekly</changefreq><priority>{p}</priority></url>" for u,p in SITEMAP)
     open(os.path.join(OUT,"sitemap.xml"),"w").write(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     open(os.path.join(OUT,".htaccess"),"w").write(HTACCESS)

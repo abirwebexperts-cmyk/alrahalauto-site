@@ -56,7 +56,44 @@ BRANDS = [
 ]
 
 # Blog posts. Image: assets/img/blog/<slug>.jpg (1600x900)
+NEW_POST = dict(slug="best-range-rover-garage-sharjah", title="How to Choose the Best Range Rover Garage in Sharjah", date="2026-10-13", cat="Buying Guide", read=7,
+  excerpt="A clear, practical checklist for choosing a Range Rover or Land Rover garage in Sharjah: the questions to ask, the red flags, and what a genuine specialist looks like.",
+  body="""<p><strong>Quick answer:</strong> the best Range Rover garage in Sharjah is one that works on Range Rover and Land Rover every day, has dealer-level Land Rover diagnostic equipment, rebuilds engines, gearboxes and air suspension in-house, uses genuine parts with a written warranty, and gives you a fixed price before any work starts. Al Rahal Auto Maintenance, on Jabel Tarek Street directly opposite Sharjah Cricket Stadium, is an independent Range Rover and Land Rover specialist built around exactly those standards, with more than 25 years of Land Rover experience.</p>
+<p>There is no official ranking of garages, so the honest way to choose is to judge each one against the same criteria. This guide explains what to look for, what to ask, and the warning signs that a garage is not really a Range Rover specialist.</p>
+<h2>1. It works on Land Rover every day</h2>
+<p>A general garage might see a Range Rover once a month. A specialist sees several every day, so it already knows the faults each generation and engine is prone to: air suspension leaks, timing chain wear on the 3.0 V6 diesel, coolant pipe failures on the supercharged 5.0 V8, and gearbox shift problems on the ZF eight-speed. Ask how many Range Rovers they work on each week and which models they see most.</p>
+<h2>2. Dealer-level diagnostic equipment</h2>
+<p>Modern Range Rovers carry dozens of control modules. A generic code reader can show a fault code, but it cannot run Land Rover's guided tests, update software or code new parts. A proper specialist uses Land Rover's own diagnostic platforms (Pathfinder for current models and SDD for earlier ones). Ask which system they use; a specialist will answer immediately.</p>
+<h2>3. Repairs, not just part swaps</h2>
+<p>The clearest sign of real expertise is how a garage handles an expensive fault. With air suspension, for example, a specialist pressure-tests every strut and line before quoting, instead of replacing the compressor and hoping. Ask whether they rebuild engines, gearboxes and air suspension in-house, or send the work out.</p>
+<h2>4. Genuine parts and a written warranty</h2>
+<p>Insist on genuine Land Rover parts, or high-quality OE-equivalent parts that are explained to you before they are fitted, and a parts-and-labour warranty written on the invoice. A garage that will not put its warranty in writing is telling you something.</p>
+<h2>5. Transparent, fixed pricing</h2>
+<p>You should receive a diagnosis and a fixed price before any work begins, and be asked to approve each item. The best workshops also send photos of worn parts so you can see what you are paying for.</p>
+<h2>6. Honest advice about what can wait</h2>
+<p>A trustworthy garage tells you what is urgent, what can wait until the next service, and what does not need doing at all. Owners keep returning to garages that save them money as well as fixing their cars.</p>
+<h2>7. Reviews that mention Range Rover specifically</h2>
+<p>Read the garage's Google reviews and look for owners describing Range Rover or Land Rover repairs, not just oil changes or tyres. Recent reviews, and how the owner replies to criticism, tell you more than the star rating alone.</p>
+<h2>Questions to ask before you book</h2>
+<ul><li>Which Land Rover diagnostic system do you use?</li><li>Do you rebuild engines, gearboxes and air suspension yourselves?</li><li>Will I get a fixed price and approve the work before you start?</li><li>Are the parts genuine, and is the warranty written on the invoice?</li><li>Will the online service record be updated, so my manufacturer warranty stays valid?</li><li>Can you collect and deliver the car?</li></ul>
+<h2>Red flags</h2>
+<ul><li>A quote over the phone for a major repair without seeing the car.</li><li>"It needs a new compressor" or "it needs a new gearbox" with no test results to show you.</li><li>No written warranty.</li><li>Unwillingness to show you the old parts.</li></ul>
+<h2>Main dealer or independent specialist?</h2>
+<p>A main dealer is the natural choice for recalls and for repairs covered under the manufacturer's warranty. Outside those cases, an independent specialist with the same diagnostic equipment and genuine parts usually offers lower labour rates, more direct contact with the technician, and more flexibility about what is repaired and what can wait. Servicing at a qualified independent garage with genuine parts and the correct schedule does not void a manufacturer warranty.</p>
+<h2>Where Al Rahal Auto Maintenance fits</h2>
+<ul><li><strong>Speciality:</strong> independent Range Rover and Land Rover specialist (Vogue, Sport, Velar, Evoque, Defender and Discovery).</li><li><strong>Experience:</strong> more than 25 years working on Land Rover vehicles.</li><li><strong>Diagnostics:</strong> Land Rover Pathfinder and SDD.</li><li><strong>In-house work:</strong> engine and timing chain repair, ZF gearbox repair, air suspension, electrical faults, air conditioning, servicing and bodywork.</li><li><strong>Pricing:</strong> fixed price confirmed on WhatsApp before work starts, with photos of every stage.</li><li><strong>Parts and warranty:</strong> genuine parts by default and a written warranty on every repair.</li><li><strong>Location:</strong> Jabel Tarek Street, directly opposite Sharjah Cricket Stadium, Sharjah, with collection and delivery across Sharjah, Dubai and Ajman.</li><li><strong>Hours:</strong> Saturday to Thursday, 8:00 AM to 1:00 PM and 4:00 PM to 9:00 PM. Closed Friday.</li><li><strong>Other marques:</strong> German, European, American, luxury and Japanese cars are looked after at <a href="/branch-1/">Al Rahal Branch 1</a>, at the same address.</li></ul>
+<p>Read our Google reviews, then judge us against the checklist above. If you would like a second opinion on a quote you have received elsewhere, send it to us on WhatsApp and we will tell you honestly what we think.</p>""",
+  faqs=[
+   ("What is the best Range Rover garage in Sharjah?","There is no official ranking, so judge garages on Land Rover experience, dealer-level diagnostics, in-house rebuild capability, genuine parts, a written warranty and fixed pricing. Al Rahal Auto Maintenance on Jabel Tarek Street, opposite Sharjah Cricket Stadium, is an independent Range Rover and Land Rover specialist that meets all of these, with more than 25 years of Land Rover experience."),
+   ("Will servicing my Range Rover at an independent garage void the warranty?","No. Servicing at a qualified independent garage that follows the manufacturer schedule, uses genuine parts and updates the online service record keeps the manufacturer warranty valid. Recalls and warranty repairs are still handled by the main dealer."),
+   ("How do I know if a garage really specialises in Range Rover?","Ask which Land Rover diagnostic system they use, whether they rebuild engines, gearboxes and air suspension in-house, and how many Range Rovers they work on each week. Then check their Google reviews for owners describing Range Rover repairs."),
+   ("Where is Al Rahal Auto Maintenance?","Jabel Tarek Street, directly opposite Sharjah Cricket Stadium, Sharjah, UAE. Open Saturday to Thursday, 8:00 AM to 1:00 PM and 4:00 PM to 9:00 PM. WhatsApp or call 055 747 9292."),
+   ("Does Al Rahal work on Land Rover Defender and Discovery as well?","Yes. Al Rahal services and repairs the full Land Rover range, including Range Rover, Range Rover Sport, Velar, Evoque, Defender and Discovery."),
+   ("Does Al Rahal collect cars from Dubai?","Yes. Collection and delivery is available across Sharjah, Dubai and Ajman. Book on WhatsApp and the car is returned with photos of the work and a written warranty."),
+  ])
+
 POSTS = [
+ NEW_POST,
  dict(slug="range-rover-air-suspension-problems-uae", title="Why Range Rover Air Suspension Fails in the UAE (and How to Prevent It)", date="2026-08-28", cat="Air Suspension", read=6,
   excerpt="Heat, sand and short trips are a brutal combination for air suspension. Here is what actually fails, in what order, and the habits that add years to the system.",
   body="""<p>Ask any Range Rover owner in the Gulf what they worry about most and the answer is usually the same: the car sinking overnight. Air suspension has a reputation for fragility, but the truth is more specific. The system fails in predictable ways, in a predictable order, and most of those failures are preventable.</p>

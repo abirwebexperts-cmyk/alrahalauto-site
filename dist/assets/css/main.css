@@ -435,7 +435,9 @@
   /* Blog meta */
   .meta{display:flex;gap:1rem;flex-wrap:wrap;font-size:var(--fs--1);color:var(--muted)}
   .meta time{font-weight:600}
-  .post-hero img{inline-size:100%;aspect-ratio:21/9;object-fit:cover;border-radius:var(--radius-lg)}
+  .post-hero{position:relative;aspect-ratio:21/9;border-radius:var(--radius-lg);overflow:hidden;background:var(--green-2)}
+  .post-hero img{inline-size:100%;block-size:100%;object-fit:cover;border-radius:var(--radius-lg)}
+  .post-hero .img-fallback{inset:0;border-radius:var(--radius-lg)}
 
   /* Footer */
   .ft{position:relative;isolation:isolate;overflow:clip;background:var(--graphite);color:var(--ivory);--muted:color-mix(in oklab,var(--ivory) 58%,transparent);--line:color-mix(in oklab,var(--ivory) 12%,transparent);border-block-start:1px solid color-mix(in oklab,var(--bronze) 45%,transparent)}
