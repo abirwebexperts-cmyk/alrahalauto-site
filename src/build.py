@@ -16,7 +16,6 @@ CFG = dict(
   url="https://www.alrahalauto.ae",           # <-- your live domain, no trailing slash
   phone="055 747 9292", phone_intl="971557479292",
   email="alrahal8881@gmail.com",
-  landline="06 558 3559", landline_intl="97165583559",
   city="Sharjah", country="United Arab Emirates",
   address="Jabel Tarek Street, opposite Sharjah Cricket Stadium",
   map_embed="https://www.google.com/maps?q=Al+Rahal+Auto+Maintenance+Workshop+Jabel+Tarek+Street+Sharjah&output=embed",
@@ -220,7 +219,6 @@ def footer():
     <span class="hours__status" data-hours-status><i></i><b>Checking hours…</b></span>
     <div class="ft__contact">
      <a data-bk-open href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener" class="ft__contact-row">{I("wa")}<span><small>WhatsApp</small>{e(CFG['phone'])}</span></a>
-     <a href="tel:+{CFG['landline_intl']}" class="ft__contact-row">{I("phone")}<span><small>Workshop</small>{e(CFG['landline'])}</span></a>
      <a href="mailto:{CFG['email']}" class="ft__contact-row">{I("mail")}<span><small>Email</small>{CFG['email']}</span></a>
     </div>
    </div>
@@ -258,7 +256,7 @@ def local_business_schema():
       "slogan":"Your Range Rover, cared for by people who know it best.",
       "hasMap":"https://www.google.com/maps/search/?api=1&query=Al+Rahal+Auto+Maintenance+Workshop+Jabel+Tarek+Street+Sharjah",
       "department":{"@type":"AutoRepair","@id":CFG['url']+"/branch-1/#branch","name":"Al Rahal Auto Maintenance - Branch 1","url":CFG['url']+"/branch-1/"},"url":CFG['url'],
-      "image":CFG['url']+"/assets/brand/hero-home-1871.07ec78f3.jpg","logo":CFG['url']+"/assets/brand/logo.png","telephone":["+"+CFG['phone_intl'],"+"+CFG['landline_intl']],"email":CFG['email'],
+      "image":CFG['url']+"/assets/brand/hero-home-1871.07ec78f3.jpg","logo":CFG['url']+"/assets/brand/logo.png","telephone":"+"+CFG['phone_intl'],"email":CFG['email'],
       "priceRange":"$$",
       "address":{"@type":"PostalAddress","streetAddress":CFG['address'],"addressLocality":CFG['city'],"addressCountry":"AE"},
       "geo":{"@type":"GeoCoordinates","latitude":CFG['lat'],"longitude":CFG['lng']},
@@ -665,7 +663,7 @@ def build_contact():
  {card}
  <div class="contact-info">
   <div>{I("wa")}<div><strong>WhatsApp</strong><a href="{wa("Hello Al Rahal, I would like to book a service.")}" target="_blank" rel="noopener"><span>{e(CFG['phone'])} · tap to chat</span></a></div></div>
-  <div>{I("phone")}<div><strong>Phone</strong><a href="tel:+{CFG['phone_intl']}"><span>Mobile +971 55 747 9292</span></a><br><a href="tel:+{CFG['landline_intl']}"><span>Tel +971 6 558 3559</span></a></div></div>
+  <div>{I("phone")}<div><strong>Phone</strong><a href="tel:+{CFG['phone_intl']}"><span>Mobile +971 55 747 9292</span></a></div></div>
   <div>{I("mail")}<div><strong>Email</strong><a href="mailto:{CFG['email']}"><span>{CFG['email']}</span></a></div></div>
   <div>{I("pin")}<div><strong>Workshop</strong><span>{e(CFG['address'])}, {e(CFG['city'])}, {e(CFG['country'])}</span></div></div>
   <div>{I("clock")}<div><strong>Opening hours</strong><span class="hours-table">{"".join(f'<span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span>' for d,t in CFG['hours_lines'])}</span><span class="hours__status hours__status--inline mt-6" data-hours-status><i></i><b>Checking hours…</b></span></div></div>
@@ -766,7 +764,6 @@ def build_llms_txt():
     L.append("## Key facts")
     L.append(f"- Address: {CFG['address']}, {CFG['city']}, {CFG['country']}")
     L.append(f"- WhatsApp / mobile: {CFG['phone']} (+{CFG['phone_intl']})")
-    L.append(f"- Workshop telephone: {CFG['landline']}")
     L.append(f"- Email: {CFG['email']}")
     L.append("- Hours: Saturday to Thursday, 8:00 AM to 1:00 PM and 4:00 PM to 9:00 PM. Closed Friday.")
     L.append("- Speciality: Range Rover (Vogue), Range Rover Sport, Range Rover Velar, Range Rover Evoque, Land Rover Defender, Land Rover Discovery")
