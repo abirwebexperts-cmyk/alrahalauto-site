@@ -63,7 +63,7 @@
       lines.push('', `Sent from ${location.href}`);
       const url = `https://wa.me/${WA}?text=${encodeURIComponent(lines.join('\n'))}`;
       window.open(url, '_blank', 'noopener');
-      window.reportWhatsAppConversion && window.reportWhatsAppConversion();
+      window.reportWhatsAppConversion && window.reportWhatsAppConversion(); window.reportB1WhatsAppConversion && window.reportB1WhatsAppConversion();
       form.querySelector('[data-sent]')?.removeAttribute('hidden');
     });
   });
@@ -159,7 +159,7 @@
     form.addEventListener('submit', e => {
       e.preventDefault(); if (!validate(2)) return;
       window.open(`https://wa.me/${WA}?text=${encodeURIComponent(buildLines().join('\n'))}`, '_blank', 'noopener');
-      window.reportWhatsAppConversion && window.reportWhatsAppConversion();
+      window.reportWhatsAppConversion && window.reportWhatsAppConversion(); window.reportB1WhatsAppConversion && window.reportB1WhatsAppConversion();
       closeDlg();
     });
     // pre-select service from page context
@@ -218,6 +218,33 @@
       }
     }, { passive: true, capture: true });
   }
+
+  /* Branch 1 Google Ads conversions ("B1 – WhatsApp Click", "B1 – Click to Call").
+     Labels are only printed on <html> of /branch-1/, and the path is checked again here,
+     so this never fires on any other page. Fully separate from the main conversions above:
+     a genuine action on /branch-1/ fires the main conversion once AND the B1 conversion once. */
+  (() => {
+    const root = document.documentElement;
+    const b1Wa = root.dataset.adsB1Whatsapp, b1Call = root.dataset.adsB1Call;
+    if (!b1Wa && !b1Call) return;
+    if (location.pathname.indexOf('/branch-1/') !== 0) return;
+    const send = (sendTo, eventName) => {
+      if (!sendTo) return;
+      (window.dataLayer = window.dataLayer || []).push({ event: eventName });
+      if (typeof window.gtag === 'function') window.gtag('event', 'conversion', { send_to: sendTo, value: 1.0, currency: 'AED' });
+    };
+    // Called by the booking form / enquiry form at the moment WhatsApp actually opens.
+    window.reportB1WhatsAppConversion = () => send(b1Wa, 'b1_whatsapp_click');
+    // Real links: tel: and direct WhatsApp links (covers the planned sticky Call + WhatsApp bar).
+    document.addEventListener('click', e => {
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      const href = (a.getAttribute('href') || '').trim().toLowerCase();
+      if (href.indexOf('tel:') === 0) { send(b1Call, 'b1_phone_click'); return; }
+      if (a.matches('[data-bk-open]')) return; // opens the booking form, not WhatsApp
+      if (/^whatsapp:|wa\.me\/|api\.whatsapp\.com\/|web\.whatsapp\.com\//.test(href)) window.reportB1WhatsAppConversion();
+    }, { passive: true, capture: true });
+  })();
 
   /* Sticky header shadow */
   const header = document.querySelector('.header');

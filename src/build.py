@@ -25,6 +25,10 @@ CFG = dict(
   experience="25+", ga_id="AW-18439899260",      # Google Ads / gtag.js tag ID, blank = off
   ads_call_conversion="AW-18439899260/_2f_CLOztfkcEPyQ6thE",  # Click-to-call conversion send_to, blank = off
   ads_whatsapp_conversion="AW-18439899260/3-yCCJzV_IEdEPyQ6thE",  # WhatsApp-click conversion send_to, blank = off
+  # --- Branch 1 Google Ads conversions: fire ONLY on /branch-1/. Paste values from Google Ads account 752-155-4668.
+  ads_b1_tag="",                  # Google tag ID of account 752-155-4668 (e.g. AW-123456789). Leave blank if it is AW-18439899260
+  ads_b1_whatsapp_conversion="",  # PASTE send_to of "B1 – WhatsApp Click" (e.g. AW-123456789/AbCdEfGhIjk). Blank = off
+  ads_b1_call_conversion="",      # PASTE send_to of "B1 – Click to Call"  (e.g. AW-123456789/LmNoPqRsTuv). Blank = off
   instagram="https://www.instagram.com/alrahalauto.ae/",
 )
 WA = f"https://wa.me/{CFG['phone_intl']}"
@@ -284,7 +288,7 @@ def fit_desc(d, limit=158):
         if i > 90: return cut[:i].rstrip(",;") + ("." if sep != ". " and not cut[:i].endswith(".") else ".") if sep!=". " else cut[:i+1]
     return cut.rstrip() + "…"
 
-def page(path, title, desc, body, current="/", schema=None, image="assets/brand/hero-home-1871.07ec78f3.jpg", breadcrumbs=None, kind="website"):
+def page(path, title, desc, body, current="/", schema=None, image="assets/brand/hero-home-1871.07ec78f3.jpg", breadcrumbs=None, kind="website", html_attrs="", head_extra=""):
     """Write one HTML page. path like 'services/x/' → dist/services/x/index.html"""
     canonical = CFG['url'] + "/" + path
     title = fit_title(title); desc = fit_desc(desc)
@@ -298,7 +302,7 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/brand/
     ga = f'<script async src="https://www.googletagmanager.com/gtag/js?id={CFG["ga_id"]}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{CFG["ga_id"]}");</script>' if CFG['ga_id'] else ""
     stamp = BUILD_STAMP
     doc = f'''<!DOCTYPE html>
-<html lang="en" data-wa="{CFG['phone_intl']}"{ads_attr}>
+<html lang="en" data-wa="{CFG['phone_intl']}"{ads_attr}{html_attrs}>
 <head>
 <meta charset="utf-8">
 <!-- build {stamp} -->
@@ -315,7 +319,7 @@ def page(path, title, desc, body, current="/", schema=None, image="assets/brand/
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Manrope:wght@400;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/main.css?v={ASSET_VER}">
-{ld}{ga}
+{ld}{ga}{head_extra}
 </head>
 <body id="top">
 {header(current)}
@@ -941,6 +945,18 @@ BRANCH_FAQS = [
  ("Do you offer collection and delivery?", "Yes, across Sharjah, Dubai and Ajman. Ask on WhatsApp when you book."),
 ]
 
+def b1_html_attrs():
+    a = ""
+    if CFG.get("ga_id") and CFG.get("ads_b1_whatsapp_conversion"): a += f' data-ads-b1-whatsapp="{CFG["ads_b1_whatsapp_conversion"]}"'
+    if CFG.get("ga_id") and CFG.get("ads_b1_call_conversion"): a += f' data-ads-b1-call="{CFG["ads_b1_call_conversion"]}"'
+    return a
+
+def b1_head_extra():
+    t = CFG.get("ads_b1_tag","")
+    if CFG.get("ga_id") and t and t != CFG["ga_id"]:
+        return f'<script>gtag("config","{t}");</script>'
+    return ""
+
 def build_branch():
     msg = "Hello Al Rahal Branch 1, I would like to book a service."
     marq = "".join(f'<span>{e(m)}<i></i></span>' for m in ["Mercedes-Benz","BMW","Audi","Porsche","Toyota Land Cruiser","Lexus","Nissan Patrol","Chevrolet Tahoe","GMC Yukon","Cadillac Escalade","Ford","Jeep","Volkswagen","Volvo","Bentley","Rolls-Royce"])
@@ -1048,6 +1064,7 @@ def build_branch():
     page("branch-1/", "BMW, Mercedes, Land Cruiser & Patrol Garage Sharjah | Al Rahal",
          "Al Rahal Branch 1, Jabel Tarek Street, Sharjah: servicing and repair for Mercedes-Benz, BMW, Audi, Porsche, Land Cruiser, Patrol, Tahoe, Escalade and more.",
          body, BRANCH_URL, schema=[branch_schema, faq_schema], image="assets/brand/hero-home-1871.07ec78f3.jpg",
+         html_attrs=b1_html_attrs(), head_extra=b1_head_extra(),
          breadcrumbs=[("Home","/"),("Branch 1",BRANCH_URL)])
 
 
