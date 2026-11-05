@@ -648,7 +648,29 @@
   .br-fault{padding-inline-start:1.1rem;border-inline-start:2px solid var(--bronze)}
   .br-fault h3{font-size:var(--fs-1);margin-block-end:.35rem}
   .br-fault p{font-size:var(--fs--1);color:var(--muted)}
-  .br-why-photo{border-radius:var(--radius-lg);aspect-ratio:4/5}
+  .br-make__models{font-weight:700;color:var(--fg)!important}
+  /* Branch 1 vs dealer */
+  .br-compare{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--white)}
+  .br-compare table{inline-size:100%;min-inline-size:34rem;border-collapse:collapse;font-size:var(--fs--1)}
+  .br-compare th,.br-compare td{padding:.95rem 1.2rem;text-align:start;vertical-align:top;border-block-end:1px solid var(--line)}
+  .br-compare tbody tr:last-child th,.br-compare tbody tr:last-child td{border-block-end:0}
+  .br-compare thead th{font-family:var(--font-display);font-weight:500;font-size:var(--fs-1);background:var(--ivory)}
+  .br-compare thead th:last-child{background:var(--green);color:var(--ivory)}
+  .br-compare tbody th{font-weight:700;inline-size:30%}
+  .br-compare tbody td{color:var(--muted)}
+  .br-compare tbody td:last-child{color:var(--fg);font-weight:600;background:color-mix(in oklab,var(--green-2) 6%,transparent)}
+  .br-compare td svg{inline-size:1rem;block-size:1rem;color:var(--green-2);display:inline-block;vertical-align:-.15em;margin-inline-end:.4rem}
+  /* Sticky Call + WhatsApp bar (Branch 1, phones only) */
+  .br-sticky{display:none}
+  @media (max-width:760px){
+    .br-sticky{position:fixed;z-index:45;inset-inline:0;inset-block-end:0;display:grid;grid-template-columns:1fr 1.4fr;gap:.6rem;padding:.65rem .9rem calc(.65rem + env(safe-area-inset-bottom));background:color-mix(in oklab,var(--graphite) 96%,transparent);backdrop-filter:blur(10px);border-block-start:1px solid color-mix(in oklab,var(--ivory) 12%,transparent)}
+    .br-sticky a{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1rem;border-radius:999px;font-weight:800;font-size:.95rem}
+    .br-sticky svg{inline-size:1.15rem;block-size:1.15rem}
+    .br-sticky__call{border:1.5px solid color-mix(in oklab,var(--ivory) 35%,transparent);color:var(--ivory)}
+    .br-sticky__wa{background:var(--wa);color:#0B2B18}
+    body:has(.br-sticky) .wa-float{display:none}
+    body:has(.br-sticky){padding-block-end:calc(4.6rem + env(safe-area-inset-bottom))}
+  }
   .br-callout{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem;padding:1.3rem 1.6rem;border:1px solid var(--line);border-inline-start:3px solid var(--bronze);border-radius:var(--radius-lg);background:var(--white)}
   .br-callout p{max-inline-size:62ch}
   .br-callout strong{display:block;font-family:var(--font-display);font-weight:500;font-size:var(--fs-1);margin-block-end:.2rem}

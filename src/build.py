@@ -503,7 +503,7 @@ def build_home():
  <div class="section-head reveal"><p class="kicker">Also welcome here</p><h2>Specialists in Land Rover. Experts in the rest.</h2><p class="lede">The same dealer-level approach, genuine parts and fixed WhatsApp pricing for the German, American, Japanese and Korean cars in your household or fleet. Every marque below is diagnosed on its manufacturer's own platform.</p></div>
  <div class="regions reveal">{regions}</div>
  <p class="brands-x__note reveal">{I("diagnostics")} Diagnostic platforms in house: Land Rover Pathfinder &amp; SDD · BMW ISTA · Mercedes-Benz XENTRY · Audi &amp; Volkswagen ODIS · Porsche PIWIS · Ford IDS · GM GDS2 · Chrysler wiTECH · Toyota Techstream · Hyundai &amp; Kia GDS.</p>
- <div class="cta-inline reveal"><a class="btn btn--dark" href="/branch-1/">Visit Branch 1 for these cars {I("arrow")}</a></div>
+ <div class="cta-inline reveal"><a class="btn btn--dark" href="/branch-1/">Visit Branch 1 {I("arrow")}</a></div>
 </div></section>
 
 
@@ -609,7 +609,7 @@ def build_brands():
         extra = f'<section class="section section--dark"><div class="wrap"><div class="section-head"><h2>{e(b["name"])} models we specialise in</h2></div><div class="models">{models}</div></div></section>' if models else ""
         body = page_hero(f"{e(b['name'])} <br>specialist service & repair in {e(CFG['city'])}", e(b['intro']), [("Home","/"),("Brands","/services/"),(b['name'], f"/brands/{b['slug']}/")], f"assets/img/brands/{b['slug']}.jpg")
         if not b['primary']:
-            body += f'''<section class="section" style="padding-block:var(--sp-6) 0"><div class="wrap"><div class="br-callout"><p><strong>{e(b['name'])} is serviced at Al Rahal Branch 1</strong>Our second workshop at the same address, dedicated to German, Japanese, American, European and luxury cars.</p><a class="btn btn--dark" href="/branch-1/">See Branch 1 {I("arrow")}</a></div></div></section>'''
+            body += f'''<section class="section" style="padding-block:var(--sp-6) 0"><div class="wrap"><div class="br-callout"><p><strong>{e(b['name'])} is serviced at Al Rahal Branch 1</strong>Our second workshop at the same address, dedicated to German, European, American and luxury cars.</p><a class="btn btn--dark" href="/branch-1/">See Branch 1 {I("arrow")}</a></div></div></section>'''
         body += extra + f'<section class="section"><div class="wrap cq"><div class="section-head"><h2>Services for {e(b["name"])}</h2></div><div class="service-row">{svcs}</div></div></section>' + book_band(f"Book your {e(b['name'])} on WhatsApp")
         page(f"brands/{b['slug']}/", f"{b['name']} Specialist Garage Sharjah & Dubai | {CFG['short']}", f"{b['name']} servicing, diagnostics and repair in {CFG['city']} with genuine parts and dealer-level equipment. Fixed prices on WhatsApp {CFG['phone']}.", body, f"/brands/{b['slug']}/", image=f"assets/img/brands/{b['slug']}.jpg", breadcrumbs=[("Home","/"),(b['name'], f"/brands/{b['slug']}/")])
 
@@ -774,7 +774,7 @@ def build_llms_txt():
     L.append(f"- Email: {CFG['email']}")
     L.append("- Hours: Saturday to Thursday, 8:00 AM to 1:00 PM and 4:00 PM to 9:00 PM. Closed Friday.")
     L.append("- Speciality: Range Rover (Vogue), Range Rover Sport, Range Rover Velar, Range Rover Evoque, Land Rover Defender, Land Rover Discovery")
-    L.append("- Branch 1 (same address): German, European, American, luxury and Japanese cars")
+    L.append("- Branch 1 (same address): German, European, American and luxury cars (Mercedes-Benz, BMW, Audi, Porsche, Volkswagen, Chevrolet, GMC, Cadillac, Ford, Jeep, Bentley, Rolls-Royce and more)")
     L.append("- Booking: WhatsApp booking form on every page; collection and delivery across Sharjah, Dubai and Ajman")
     L.append(f"- Website: {U}/")
     L.append(f"- Instagram: {CFG['instagram']}")
@@ -784,7 +784,7 @@ def build_llms_txt():
     L.append(f"- [Range Rover specialist in Sharjah]({U}/locations/sharjah/)")
     L.append(f"- [All services]({U}/services/)")
     L.append(f"- [Range Rover & Land Rover models]({U}/models/)")
-    L.append(f"- [Branch 1: Mercedes-Benz, BMW, Audi, Porsche, Land Cruiser, Patrol, Tahoe, Escalade & other makes]({U}/branch-1/)")
+    L.append(f"- [Branch 1: Mercedes-Benz, BMW, Audi, Porsche, Volkswagen, Tahoe, Yukon, Escalade & other German, European, American and luxury cars]({U}/branch-1/)")
     L.append(f"- [About]({U}/about/)")
     L.append(f"- [FAQ]({U}/faq/)")
     L.append(f"- [Contact & booking]({U}/contact/)")
@@ -890,57 +890,75 @@ Header unset X-Powered-By
 """
 
 
-# ------------------------------------------------------------------ BRANCH 1 (German, European, American, luxury, Japanese)
+# ------------------------------------------------------------------ BRANCH 1 (German, European, American & luxury cars)
 BRANCH_URL = "/branch-1/"
 BRANCH_NAME = "Al Rahal Auto Maintenance - Branch 1"
 BRANCH_HERO_IMG = "/assets/img/branch/branch-1-hero.jpg"          # upload your Branch 1 photo here (1920x1080)
 BRANCH_HERO_FALLBACK = "/assets/brand/hero-home-1400.07ec78f3.jpg"   # workshop photo used until then
 BRANCH_MAKES = [
- # (anchor, title, icon, image file, brands for booking, common work)
- ("german","German cars","engine","german.jpg",["Mercedes-Benz","BMW","Audi","Porsche","Volkswagen","Mercedes-AMG","BMW M"],
-  "Airmatic and air suspension, 7G and 9G-Tronic, DSG and PDK gearbox servicing, oil leaks, cooling and electrical faults."),
- ("japanese","Japanese cars","shield","japanese.jpg",["Toyota","Lexus","Nissan","Infiniti","Honda","Mitsubishi","Mazda"],
-  "Land Cruiser, Prado, LX and Patrol major services, Patrol hydraulic suspension, brakes and bushes worn by desert driving, and AC."),
- ("american","American cars","turbo","american.jpg",["Chevrolet","GMC","Cadillac","Ford","Jeep","Dodge","Ram","Lincoln","Chrysler"],
-  "V8 lifter and fuel-management faults, 8 and 10-speed gearbox servicing and shudder, 4x4 transfer cases, cooling and AC."),
- ("european","European cars","steering","european.jpg",["Jaguar","Volvo","MINI","Peugeot","Renault","Citroën","Alfa Romeo","Fiat"],
-  "Manufacturer-schedule servicing, timing belts and chains, suspension and brakes, warning lights and electrical diagnosis."),
- ("luxury","Luxury cars","award","luxury.jpg",["Bentley","Rolls-Royce","Maybach","Aston Martin","Maserati"],
-  "Discreet servicing, air suspension, electrical diagnosis, bodywork and detailing, with photos of every stage of the job."),
+ # (anchor, title, icon, image file, brands for booking, popular models line, common work)
+ ("mercedes-benz","Mercedes-Benz","engine","mercedes-benz.jpg",["Mercedes-Benz","Mercedes-AMG","Maybach"],
+  "G-Class, S-Class, GLE, GLS, E-Class and AMG models.",
+  "Airmatic air suspension, 7G and 9G-Tronic gearbox servicing, oil leaks, cooling and electrical faults."),
+ ("bmw","BMW & MINI","gearbox","bmw.jpg",["BMW","BMW M","MINI"],
+  "X5, X6, X7, 5 Series, 7 Series and M models.",
+  "Oil filter housing and valve cover leaks, water pumps and thermostats, timing chains and xDrive faults."),
+ ("audi-porsche-volkswagen","Audi, Porsche & Volkswagen","turbo","audi-porsche-vw.jpg",["Audi","Porsche","Volkswagen"],
+  "Q7, Q8, RS models, Cayenne, Macan, Panamera and Touareg.",
+  "DSG, S tronic and PDK gearbox servicing, timing chain tensioners, coolant pipes and air suspension."),
+ ("american","American cars","drivetrain","american.jpg",["Chevrolet","GMC","Cadillac","Ford","Jeep","Dodge","Ram","Lincoln","Chrysler"],
+  "Tahoe, Silverado, Yukon, Escalade, F-150, Explorer, Grand Cherokee and Ram.",
+  "V8 lifter and fuel-management faults, 8 and 10-speed gearbox servicing, 4x4 transfer cases, cooling and AC."),
+ ("european-luxury","European & luxury","award","european-luxury.jpg",["Bentley","Rolls-Royce","Aston Martin","Maserati","Jaguar","Volvo","Peugeot","Renault","Alfa Romeo"],
+  "Bentayga, Continental GT, Cullinan, Ghost, Levante, F-Pace and XC90.",
+  "Discreet servicing, air suspension, electrical diagnosis, bodywork and detailing, with photos of every stage."),
 ]
 BRANCH_MODELS = [
- ("Toyota","Toyota Land Cruiser"),("Toyota","Toyota Prado"),("Lexus","Lexus LX"),("Lexus","Lexus GX"),("Nissan","Nissan Patrol"),("Infiniti","Infiniti QX80"),
- ("Chevrolet","Chevrolet Tahoe"),("Chevrolet","Chevrolet Silverado"),("GMC","GMC Yukon"),("Cadillac","Cadillac Escalade"),("Ford","Ford F-150"),("Ford","Ford Explorer"),("Jeep","Jeep Grand Cherokee"),
- ("Mercedes-Benz","Mercedes-Benz G-Class"),("Mercedes-Benz","Mercedes-Benz S-Class"),("Mercedes-Benz","Mercedes-Benz GLE"),("BMW","BMW X5"),("BMW","BMW X7"),("Audi","Audi Q7"),("Porsche","Porsche Cayenne"),
- ("Bentley","Bentley Bentayga"),("Rolls-Royce","Rolls-Royce Cullinan"),
+ ("Mercedes-Benz","Mercedes-Benz G-Class"),("Mercedes-Benz","Mercedes-Benz S-Class"),("Mercedes-Benz","Mercedes-Benz GLE"),("Mercedes-Benz","Mercedes-Benz GLS"),("Mercedes-Benz","Mercedes-Benz E-Class"),("Mercedes-AMG","Mercedes-AMG G 63"),
+ ("BMW","BMW X5"),("BMW","BMW X6"),("BMW","BMW X7"),("BMW","BMW 7 Series"),("BMW","BMW 5 Series"),
+ ("Audi","Audi Q7"),("Audi","Audi Q8"),("Porsche","Porsche Cayenne"),("Porsche","Porsche Macan"),("Porsche","Porsche Panamera"),("Volkswagen","Volkswagen Touareg"),
+ ("Chevrolet","Chevrolet Tahoe"),("Chevrolet","Chevrolet Silverado"),("GMC","GMC Yukon"),("GMC","GMC Sierra"),("Cadillac","Cadillac Escalade"),("Ford","Ford F-150"),("Ford","Ford Explorer"),("Ford","Ford Expedition"),("Jeep","Jeep Grand Cherokee"),("Jeep","Jeep Wrangler"),("Dodge","Dodge Charger"),("Ram","Ram 1500"),
+ ("Bentley","Bentley Bentayga"),("Rolls-Royce","Rolls-Royce Cullinan"),("Maserati","Maserati Levante"),
 ]
 BRANCH_FAULTS = [
  ("Mercedes-Benz","Airmatic air suspension leaks and compressor failure, 7G-Tronic conductor plate and 9G-Tronic gearbox faults, and engine oil leaks."),
  ("BMW","Oil filter housing and valve cover gasket leaks, electric water pump and thermostat failure, timing chain noise on four-cylinder diesels, and xDrive transfer case faults."),
  ("Audi & Volkswagen","DSG and S tronic mechatronic faults, timing chain tensioner wear on TFSI engines, and oil consumption checks."),
  ("Porsche","PDK gearbox servicing, coolant pipe leaks on V8 Cayennes, and air suspension faults."),
- ("Toyota & Lexus","Major services on Land Cruiser, Prado and LX, front suspension and brake wear from desert driving, and AC performance."),
- ("Nissan & Infiniti","Patrol and QX80 hydraulic body motion control (HBMC) suspension faults, V8 servicing and brake wear."),
  ("Chevrolet, GMC & Cadillac","V8 lifter and active fuel management faults, 8 and 10-speed gearbox shudder, and Magnetic Ride suspension."),
- ("Ford & Jeep","10-speed gearbox servicing, EcoBoost cam phaser rattle, and Grand Cherokee Quadra-Lift air suspension."),
+ ("Ford","10-speed gearbox servicing and harsh shifts, and EcoBoost cam phaser rattle on cold starts."),
+ ("Jeep, Dodge & Ram","HEMI V8 lifter and camshaft wear, Grand Cherokee Quadra-Lift air suspension, and 8-speed gearbox servicing."),
+ ("Bentley & Rolls-Royce","Air suspension and ride-height faults, electrical diagnosis, and brake wear on these very heavy cars."),
 ]
 BRANCH_SERVICES = [
  ("diagnostics","Diagnostics & warning lights","Manufacturer-level fault finding, coding and software updates, with a written report before any repair."),
  ("oil","Major & minor servicing","Factory-schedule servicing with the correct oil specification and genuine filters, logged in your service history."),
  ("engine","Engine repair","Oil leaks, timing chains, turbos, cooling faults and full rebuilds on petrol and diesel engines."),
- ("gearbox","Gearbox & transmission","Automatic, dual-clutch, PDK and CVT servicing, valve body and mechatronic repairs, and rebuilds."),
- ("suspension","Suspension, brakes & alignment","Air struts and compressors, Patrol HBMC, shocks and bushes, brakes and four-wheel alignment."),
+ ("gearbox","Gearbox & transmission","Automatic, DSG, S tronic and PDK servicing, valve body and mechatronic repairs, and rebuilds."),
+ ("suspension","Suspension, brakes & alignment","Airmatic and air suspension, Magnetic Ride, shocks and bushes, brakes and four-wheel alignment."),
  ("ac","Air conditioning","Compressor, condenser and climate-control repairs that hold up in a Sharjah summer."),
  ("electrical","Electrical & electronics","Battery drain, wiring faults, modules, infotainment, cameras and parking sensors."),
  ("paint","Body, paint & detailing","Accident repair, colour-matched paintwork, dent removal, polishing and ceramic coating."),
 ]
+BRANCH_COMPARE = [
+ ("Diagnostic equipment","Manufacturer system","Manufacturer-level equipment"),
+ ("Parts","Genuine","Genuine, or OE-quality if you choose"),
+ ("Price","Estimate at the service desk","Fixed price on WhatsApp before work starts"),
+ ("Who you talk to","Service advisor","The expert working on your car"),
+ ("Photos of the work","Varies","Every stage, sent to your WhatsApp"),
+ ("Labour rate","Main-dealer rates","Independent workshop rates"),
+ ("Routine servicing under warranty","Yes","Yes, warranty stays valid"),
+ ("Recalls & warranty claims","Yes","Done by the dealer; we tell you if one applies"),
+]
 BRANCH_FAQS = [
  ("Where is Al Rahal Branch 1?", "Branch 1 is at the same address as Al Rahal Auto Maintenance: Jabel Tarek Street, directly opposite Sharjah Cricket Stadium, Sharjah. Open Saturday to Thursday, 8:00 AM to 1:00 PM and 4:00 PM to 9:00 PM. Closed Friday."),
- ("Which cars does Branch 1 service?", "German, Japanese, American, European and luxury cars, including Mercedes-Benz, BMW, Audi, Porsche, Volkswagen, Toyota, Lexus, Nissan, Infiniti, Chevrolet, GMC, Cadillac, Ford, Jeep, Jaguar, Volvo, Bentley and Rolls-Royce."),
- ("Do you service Toyota Land Cruiser, Lexus LX and Nissan Patrol?", "Yes. Branch 1 handles major and minor services, suspension (including the Patrol's hydraulic HBMC system), brakes, air conditioning and diagnostics on Land Cruiser, Prado, LX, Patrol and QX80."),
+ ("Which cars does Branch 1 service?", "German, European, American and luxury cars: Mercedes-Benz and AMG, BMW and MINI, Audi, Porsche, Volkswagen, Chevrolet, GMC, Cadillac, Ford, Jeep, Dodge, Ram, Lincoln, Bentley, Rolls-Royce, Aston Martin, Maserati, Jaguar and Volvo."),
+ ("Is there a Mercedes-Benz and BMW specialist in Sharjah?", "Yes. Branch 1 services and repairs Mercedes-Benz, AMG, BMW and MINI with manufacturer-level diagnostics, including Airmatic air suspension, 7G and 9G-Tronic gearboxes, oil leaks, cooling and electrical faults."),
+ ("Do you service Porsche Cayenne, Macan and Panamera?", "Yes. We handle Porsche servicing, PDK gearbox servicing, coolant pipe repairs on V8 Cayennes, air suspension and diagnostics."),
+ ("Do you repair Chevrolet Tahoe, GMC Yukon and Cadillac Escalade?", "Yes. Branch 1 works on GM V8 SUVs and pickups every day, including lifter and fuel-management faults, 8 and 10-speed gearbox servicing, Magnetic Ride suspension, 4x4 transfer cases and AC."),
  ("Can you service my car while it is under the manufacturer warranty?", "Yes. Routine servicing at a qualified independent workshop that follows the manufacturer schedule and uses genuine parts keeps the warranty valid. Recalls and warranty repairs are still done by the main dealer."),
  ("Is Branch 1 cheaper than the main dealer?", "Our labour rates are lower than main-dealer rates, and you receive a fixed price on WhatsApp before any work starts, so there are no surprises on the invoice."),
- ("Are Range Rover and Land Rover serviced at Branch 1?", "Range Rover and Land Rover stay with our main Al Rahal workshop at the same address. Branch 1 is dedicated to all other makes."),
+ ("Are Range Rover and Land Rover serviced at Branch 1?", "Range Rover and Land Rover stay with our main Al Rahal workshop at the same address. Branch 1 is dedicated to German, European, American and luxury cars."),
  ("How do I book at Branch 1?", f"Tap any Book on WhatsApp button, choose your make and the service, and send. An expert replies with a fixed price and the next available slot. You can also call {CFG['phone']}."),
  ("Do you offer collection and delivery?", "Yes, across Sharjah, Dubai and Ajman. Ask on WhatsApp when you book."),
 ]
@@ -959,20 +977,21 @@ def b1_head_extra():
 
 def build_branch():
     msg = "Hello Al Rahal Branch 1, I would like to book a service."
-    marq = "".join(f'<span>{e(m)}<i></i></span>' for m in ["Mercedes-Benz","BMW","Audi","Porsche","Toyota Land Cruiser","Lexus","Nissan Patrol","Chevrolet Tahoe","GMC Yukon","Cadillac Escalade","Ford","Jeep","Volkswagen","Volvo","Bentley","Rolls-Royce"])
-    def pill(make, label=None, note=None):
+    marq = "".join(f'<span>{e(m)}<i></i></span>' for m in ["Mercedes-Benz","BMW","Audi","Porsche","Volkswagen","Chevrolet Tahoe","GMC Yukon","Cadillac Escalade","Ford","Jeep","Bentley","Rolls-Royce","Maserati","MINI"])
+    def pill(make, label=None, note=False):
         label = label or make
         n = f' data-bk-note="Model: {e(label)}"' if note else ""
         return f'<a data-bk-open data-bk-vehicle="{e(make)}"{n} href="{wa(f"Hello Al Rahal Branch 1, I have a {label} and would like to book a service.")}" target="_blank" rel="noopener">{e(label)}</a>'
     cards = ""
-    for k,title,ic,imgf,brands,work in BRANCH_MAKES:
-        cards += f'''<article class="card br-make" id="{k}"><div class="card__media"><span class="card__icon">{I(ic)}</span>{img(f"assets/img/branch/{imgf}", f"{title} serviced at Al Rahal Branch 1, Sharjah")}</div>
-    <div class="card__body"><h3>{e(title)}</h3><p>{e(work)}</p><div class="tags">{"".join(pill(b) for b in brands)}</div></div></article>'''
+    for k,title,ic,imgf,brands,popular,work in BRANCH_MAKES:
+        cards += f'''<article class="card br-make" id="{k}"><div class="card__media"><span class="card__icon">{I(ic)}</span>{img(f"assets/img/branch/{imgf}", f"{title} service and repair at Al Rahal Branch 1, Sharjah")}</div>
+    <div class="card__body"><h3>{e(title)}</h3><p class="br-make__models">{e(popular)}</p><p>{e(work)}</p><div class="tags">{"".join(pill(b) for b in brands)}</div></div></article>'''
     cards += f'''<article class="card br-make br-make--ask"><div class="card__media"><span class="br-ask__icon">{I("wa")}</span></div>
     <div class="card__body"><h3>Don't see your car?</h3><p>Send the make, model and year on WhatsApp. If it isn't something we can do properly, we'll tell you straight away.</p><a data-bk-open class="card__link" href="{wa("Hello Al Rahal Branch 1, can you work on my car? It is a ")}" target="_blank" rel="noopener">Ask Branch 1 {I("arrow")}</a></div></article>'''
     models = "".join(pill(mk, label, note=True) for mk,label in BRANCH_MODELS)
     faults = "".join(f'<div class="br-fault"><h3>{e(mk)}</h3><p>{e(t)}</p></div>' for mk,t in BRANCH_FAULTS)
     svcs = "".join(f'<div class="feature">{I(ic)}<h3>{e(t)}</h3><p>{e(d)}</p></div>' for ic,t,d in BRANCH_SERVICES)
+    rows = "".join(f'<tr><th scope="row">{e(a)}</th><td>{e(b)}</td><td>{I("check")}<span>{e(c)}</span></td></tr>' for a,b,c in BRANCH_COMPARE)
     hrs = "".join(f'<span class="hours-row"><span>{e(d)}</span><span>{e(t)}</span></span>' for d,t in CFG['hours_lines'])
     maps = "https://www.google.com/maps/search/?api=1&query=Al+Rahal+Auto+Maintenance+Workshop+Jabel+Tarek+Street+Sharjah"
     faq_html, faq_schema = faq_block(BRANCH_FAQS, "Branch 1: questions owners ask")
@@ -981,8 +1000,8 @@ def build_branch():
  <div class="hero__media"><img src="{BRANCH_HERO_IMG}" onerror="this.onerror=null;this.src='{BRANCH_HERO_FALLBACK}'" alt="Al Rahal Auto Maintenance Branch 1 workshop on Jabel Tarek Street, Sharjah" width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async"></div>
  <div class="wrap hero__inner">
   <p class="hero__eyebrow"><span class="hero__rule"></span>Al Rahal Auto Maintenance – Branch 1<span class="hero__dot"></span>Now open in {e(CFG['city'])}</p>
-  <h1 class="hero__title">German, American <br>&amp; Japanese cars, <br><em>serviced properly.</em></h1>
-  <p class="hero__lede">Our second workshop at the same address, for Mercedes‑Benz, BMW, Audi, Porsche, Land Cruiser, Patrol, Tahoe and Escalade. Proper diagnosis, genuine parts and a fixed price on WhatsApp first.</p>
+  <h1 class="hero__title">German, European <br>&amp; American cars, <br><em>serviced properly.</em></h1>
+  <p class="hero__lede">Our second workshop at the same address, for Mercedes&#8209;Benz, BMW, Audi, Porsche, Volkswagen, Tahoe, Yukon and Escalade. Proper diagnosis, genuine parts and a fixed price on WhatsApp first.</p>
   <div class="hero__actions"><a data-bk-open class="btn btn--wa btn--lg" href="{wa(msg)}" target="_blank" rel="noopener">{I("wa")} Book at Branch 1</a><a class="btn btn--ghost btn--lg" href="tel:+{CFG['phone_intl']}">{I("phone")} {CFG['phone']}</a></div>
   <a class="hero__scroll" href="#makes" aria-label="Scroll to makes"><span>Scroll</span><i></i></a>
  </div>
@@ -997,7 +1016,7 @@ def build_branch():
 </div></section>
 
 <section class="section" id="makes"><div class="wrap">
- <div class="section-head reveal"><p class="kicker">Makes we service at Branch 1</p><h2>From Land Cruisers and Patrols to German saloons and American V8s.</h2><p class="lede">Choose your make to start a booking with it already selected, or read what we typically fix on each.</p></div>
+ <div class="section-head reveal"><p class="kicker">Makes we service at Branch 1</p><h2>From Mercedes-Benz and BMW to Tahoes and Escalades.</h2><p class="lede">Choose your make to start a booking with it already selected, or read what we typically fix on each.</p></div>
  <div class="grid grid--3 reveal">{cards}</div>
 </div></section>
 
@@ -1018,13 +1037,16 @@ def build_branch():
  <div class="br-faults reveal">{faults}</div>
 </div></section>
 
-<section class="section section--white"><div class="wrap split">
- <div class="prose reveal"><p class="kicker">Why Branch 1</p><h2>A specialist workshop, not a quick-fit garage.</h2>
-  <p>Branch 1 opened next to our Range Rover and Land Rover workshop so that every car in your family, or your company fleet, can be looked after by one team you already trust.</p>
-  {checks(["Manufacturer-level diagnostic equipment for German, Japanese, American and European cars","Genuine or OE-quality parts, explained and agreed with you first","A fixed price on WhatsApp before any work begins","Photos of worn parts and every stage of the repair","Written warranty on parts and labour","Collection and delivery across Sharjah, Dubai and Ajman"])}
-  <div class="cta-inline"><a data-bk-open class="btn btn--wa btn--lg" href="{wa(msg)}" target="_blank" rel="noopener">{I("wa")} Book on WhatsApp</a></div>
- </div>
- <div class="card__media br-why-photo reveal">{img("assets/img/branch/branch-1-workshop.jpg", "Inside Al Rahal Branch 1 workshop, Sharjah")}</div>
+<section class="section section--bone"><div class="wrap">
+ <div class="section-head reveal"><p class="kicker">Branch 1 or the main dealer?</p><h2>How Branch 1 compares with a main dealer.</h2><p class="lede">The main dealer is the right place for recalls and warranty claims. For everything else, this is what changes when you bring your car to us.</p></div>
+ <div class="br-compare reveal"><table><thead><tr><th scope="col"><span class="vh">Compared</span></th><th scope="col">Main dealer</th><th scope="col">Al Rahal Branch 1</th></tr></thead><tbody>{rows}</tbody></table></div>
+ <div class="cta-inline reveal"><a data-bk-open class="btn btn--wa btn--lg" href="{wa(msg)}" target="_blank" rel="noopener">{I("wa")} Get a fixed price</a></div>
+</div></section>
+
+<section class="section reviews-x"><div class="wrap">
+ <div class="section-head section-head--center reveal"><p class="kicker">What our customers say</p><h2>Rated by owners across the UAE.</h2><p class="lede">Real, verified Google reviews for Al Rahal Auto Maintenance.</p></div>
+ <div class="reviews-x__embed reveal" data-lazy-reviews><div class="sk-ww-google-reviews" data-embed-id="25711190"></div></div>
+ <div class="cta-inline" style="justify-content:center"><a class="btn btn--dark" href="{maps}" target="_blank" rel="noopener">Read us on Google {I("arrow")}</a></div>
 </div></section>
 
 <section class="section section--bone"><div class="wrap">
@@ -1051,18 +1073,20 @@ def build_branch():
 </div></section>
 
 <section class="section section--bone"><div class="wrap"><div class="section-head"><p class="kicker">Good to know</p></div>{faq_html.replace('class="mt-7"','')}</div></section>
-''' + book_band("Get a fixed price for your car today", "One message on WhatsApp is all it takes.")
+''' + book_band("Get a fixed price for your car today", "One message on WhatsApp is all it takes.") + f'''
+<nav class="br-sticky" aria-label="Contact Branch 1"><a class="br-sticky__call" href="tel:+{CFG['phone_intl']}">{I("phone")} Call</a><a class="br-sticky__wa" data-bk-open href="{wa(msg)}" target="_blank" rel="noopener">{I("wa")} WhatsApp</a></nav>'''
     lb = local_business_schema()
+    knows = sorted({b for _,_,_,_,bs,_,_ in BRANCH_MAKES for b in bs} | {m for _,m in BRANCH_MODELS})
     branch_schema = {"@context":"https://schema.org","@type":"AutoRepair","@id":CFG['url']+BRANCH_URL+"#branch","name":BRANCH_NAME,
       "alternateName":["Al Rahal Branch 1","Al Rahal Auto Maintenance Branch 1 Sharjah"],
-      "description":"Al Rahal Auto Maintenance Branch 1 in Sharjah services and repairs German, Japanese, American, European and luxury cars, including Mercedes-Benz, BMW, Audi, Porsche, Toyota Land Cruiser, Lexus, Nissan Patrol, Chevrolet, GMC, Cadillac, Ford and Jeep.",
+      "description":"Al Rahal Auto Maintenance Branch 1 in Sharjah services and repairs German, European, American and luxury cars, including Mercedes-Benz, AMG, BMW, MINI, Audi, Porsche, Volkswagen, Chevrolet, GMC, Cadillac, Ford, Jeep, Dodge, Ram, Bentley, Rolls-Royce and Maserati.",
       "url":CFG['url']+BRANCH_URL,"telephone":lb.get("telephone"),"email":CFG['email'],"priceRange":"$$","image":CFG['url']+"/assets/brand/hero-home-1871.07ec78f3.jpg",
       "address":lb.get("address"),"geo":lb.get("geo"),"hasMap":lb.get("hasMap"),"openingHoursSpecification":lb.get("openingHoursSpecification"),
       "parentOrganization":{"@id":CFG['url']+"/#business"},"areaServed":[{"@type":"City","name":c} for c in ["Sharjah","Dubai","Ajman"]],
-      "knowsAbout":sorted({b for _,_,_,_,bs,_ in BRANCH_MAKES for b in bs} | {m for _,m in BRANCH_MODELS}),
+      "knowsAbout":knows,
       "hasOfferCatalog":{"@type":"OfferCatalog","name":"Branch 1 services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":t,"description":d}} for _,t,d in BRANCH_SERVICES]}}
-    page("branch-1/", "BMW, Mercedes, Land Cruiser & Patrol Garage Sharjah | Al Rahal",
-         "Al Rahal Branch 1, Jabel Tarek Street, Sharjah: servicing and repair for Mercedes-Benz, BMW, Audi, Porsche, Land Cruiser, Patrol, Tahoe, Escalade and more.",
+    page("branch-1/", "Mercedes, BMW, Porsche & American Car Garage | Al Rahal Sharjah",
+         "Al Rahal Branch 1, Sharjah: Mercedes-Benz, BMW, Audi, Porsche, VW, Tahoe, Yukon and Escalade specialists. Dealer-level diagnostics, fixed price on WhatsApp.",
          body, BRANCH_URL, schema=[branch_schema, faq_schema], image="assets/brand/hero-home-1871.07ec78f3.jpg",
          html_attrs=b1_html_attrs(), head_extra=b1_head_extra(),
          breadcrumbs=[("Home","/"),("Branch 1",BRANCH_URL)])

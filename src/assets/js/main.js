@@ -166,6 +166,8 @@
     const ctx = document.querySelector('[data-page-service]')?.dataset.pageService;
     if (ctx) { const sel = form.querySelector('[name=Service]'); if ([...sel.options].some(o => o.value === ctx)) sel.value = ctx; }
     if (document.querySelector('[data-bk-autoopen]')) setTimeout(() => { openDlg(); show(0); }, 400);
+    // Branch 1 does not service Japanese cars: hide that group in the vehicle list on that page only
+    if (document.querySelector('[data-page-branch]')) form.querySelector('optgroup[label="Japanese"]')?.remove();
     const ctxV = document.querySelector('[data-page-vehicle]')?.dataset.pageVehicle;
     if (ctxV) { const sel = form.querySelector('[name=Vehicle]'); if ([...sel.options].some(o => o.value === ctxV)) sel.value = ctxV; }
   }
